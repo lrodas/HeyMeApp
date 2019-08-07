@@ -1,0 +1,82 @@
+<div class="col-md-12">
+    <div class="card ">
+        <div class="card-header card-header-rose card-header-text">
+            <div class="card-text">
+                <h4 class="card-title">Programar Notificaciones</h4>
+            </div>
+        </div>
+        <div class="card-body ">
+            <form  #f="ngForm" ngNativeValidate (submit)="guardarNotificacion(f)" class="form-horizontal">
+                <div class="row">
+                    <label class="col-md-2 col-form-label ">Medio</label>
+                    <div class="col-md-10">
+                        <div class="form-group">
+                            <select [(ngModel)]="notificacion.canal.idCanal"
+                                name="canal"
+                                class="selectpicker"
+                                data-style="select-with-transition"
+                                title="Seleccione Medio"
+                                data-size="7"
+                                required>
+                                <option disabled> Seleccione un Medio</option>
+                                <option value="1">Correo electronico </option>
+                                <option value="2">Mensaje de texto </option>
+                                <option value="3">Whatsapp </option>
+                              </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-md-2 col-form-label ">Contacto</label>
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <input 
+                                type="text" 
+                                #inputCliente  
+                                name="contacto" 
+                                class="form-control" 
+                                (keyup)="buscarContacto(inputCliente.value)" 
+                                (focus)="showAutoComplete(true, 'myDropdown')"
+                                [value]="notificacion.destinatario.nombre + ' ' + notificacion.destinatario.apellido">
+                            <div id="myDropdown" class="dropdown-content pointer w-100">
+                                <a class="dropbtn" [routerLink]="['/contact', 'new']"><i class="fa fa-user" aria-hidden="true"></i> Crear nuevo contacto</a>
+                                <a class="dropbtn" *ngFor="let contacto of contactos" (click)="seleccionarContacto(contacto)"><i class="fa fa-user" aria-hidden="true"></i> {{ contacto.nombre + ' ' + contacto.apellido }}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-md-2 col-form-label">Titulo</label>
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <input [(ngModel)]="notificacion.titulo" name="titulo" type="text" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="col-md-5 text-right">
+                        <button class="btn btn-primary">Elegir Plantilla <i class="fa fa-envelope-open" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+                <div class="row">
+                        <label class="col-md-2 col-form-label ">Descripcion</label>
+                    <div class="col-md-10">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="tituloNotificacion" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <textarea [(ngModel)]="notificacion.notificacion" name="notificacion" placeholder="Contenido de la notificacion" required></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 text-right">
+                        <button class="btn btn-dark"><i class="fa fa-arrow-left" aria-hidden="true"></i> Regresar </button>
+                        <button class="btn btn-info">Guardar borrador <i class="fa fa-recycle" aria-hidden="true"></i></button>
+                        <button type="submit" class="btn btn-primary">Programar <i class="fa fa-save"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

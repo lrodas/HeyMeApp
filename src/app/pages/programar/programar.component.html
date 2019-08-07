@@ -1,0 +1,21 @@
+<div class="row">
+    <div class="col-md-10 ml-auto mr-auto">
+        <div class="card card-calendar">
+            <div class="card-body ">
+                <full-calendar
+                    #calendar
+                    defaultView="dayGridMonth"
+                    [header]="{
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+                    }"
+                    [plugins]="calendarPlugins"
+                    [weekends]="calendarWeekends"
+                    [events]="calendarEvents"
+                    (dateClick)="handleDateClick($event)">
+                </full-calendar>
+            </div>
+        </div>
+    </div>
+</div>

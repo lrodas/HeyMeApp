@@ -1,0 +1,85 @@
+<div class="row">
+    <div class="col-md-7">
+        <div class="card">
+            <div class="card-header card-header-icon card-header-rose">
+                <div class="card-icon">
+                    <i class="material-icons">perm_identity</i>
+                </div>
+                <h4 class="card-title">Editar perfil -
+                    <small class="category">Completa tu perfil</small>
+                </h4>
+            </div>
+            <div class="card-body">
+                <form ngNativeValidate #f="ngForm" (submit)="actualizarUsuario(f)">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="bmd-label-floating">Nombres</label>
+                                <input [(ngModel)]="usuario.nombres" name="nombres" type="text" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="bmd-label-floating">Apellidos</label>
+                                <input [(ngModel)]="usuario.apellidos" name="apellidos" type="text" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="bmd-label-floating">Direccion</label>
+                                <input [(ngModel)]="usuario.direccion" name="direccion" type="text" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="bmd-label-floating">Telefono</label>
+                                <input [(ngModel)]="usuario.telefono" name="telefono" type="number" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="bmd-label-floating">Correo</label>
+                                <input [(ngModel)]="usuario.username" name="username" type="email" class="form-control" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-rose pull-right">Actualizar</button>
+                    <div class="clearfix"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <div class="card card-profile">
+            <div class="card-avatar">
+                <a href="#pablo">
+                    <img *ngIf="!imagenTemporal" class="img" [src]="usuario.img | imagen" />
+                    <img *ngIf="imagenTemporal" class="img" [src]="imagenTemporal" />
+                </a>
+            </div>
+            <div class="card-body">
+                <h6 class="card-category text-gray">{{ usuario.role.descripcion }}</h6>
+                <h4 class="card-title">{{ usuario.nombres + ' ' + usuario.apellidos }}</h4>
+                <span class="btn btn-round btn-rose btn-file">
+                    <span *ngIf="!usuario.img" class="fileinput-new">Agregar Foto</span>
+                    <span *ngIf="usuario.img" class="fileinput-exists">Cambiar Foto</span>
+                    <input type="file" (change)="seleccionImagen( $event.target.files[0] )">
+                </span>
+
+
+
+                <button (click)="cambiarImagen()" [disabled]="!imagenSubir" class="btn btn-rose btn-round">
+                    <i class="fa fa-save "></i> Actualizar fotografia
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
