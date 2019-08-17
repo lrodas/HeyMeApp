@@ -35,7 +35,6 @@ export class LoginComponent implements OnInit {
 
   public iniciarSesion(form: NgForm) {
 
-    console.log(form);
     const password = form.value.password;
 
     if (form.invalid) {

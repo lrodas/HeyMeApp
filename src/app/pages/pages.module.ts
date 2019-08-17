@@ -14,7 +14,10 @@ import { NotificacionComponent } from './notificacion/notificacion.component';
 import { ProgramarComponent } from './programar/programar.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { FormProgramarComponent } from './programar/form-programar.component';
-import { ContactoComponent } from './contactos/contacto.component'; // for FullCalendar!
+import { ContactoComponent } from './contactos/contacto.component';
+import { ContactosComponent } from './contactos/contactos.component'; // for FullCalendar!
+import { ReactiveFormsModule } from '@angular/forms';
+import {NgxPaginationModule} from 'ngx-pagination'; // <-- import the module
 
 @NgModule({
     declarations: [
@@ -24,7 +27,8 @@ import { ContactoComponent } from './contactos/contacto.component'; // for FullC
         NotificacionComponent,
         ProgramarComponent,
         FormProgramarComponent,
-        ContactoComponent
+        ContactoComponent,
+        ContactosComponent
     ],
     exports: [
         DashboardComponent,
@@ -37,7 +41,9 @@ import { ContactoComponent } from './contactos/contacto.component'; // for FullC
         CommonModule,
         PipesModule,
         PAGES_ROUTES,
-        FullCalendarModule // for FullCalendar!
+        FullCalendarModule, // for FullCalendar!,
+        ReactiveFormsModule,
+        NgxPaginationModule // <-- include it in your app module
     ]
 })
 export class PagesModule {

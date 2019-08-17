@@ -11,7 +11,8 @@ import { RegionService } from '../../services/region/region.service';
 import { Contacto } from '../../models/contacto.model';
 import { Provincia } from '../../models/provincia.model';
 import { Region } from '../../models/region.model';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import { ContactoResponse } from '../../interfaces/response/contactoResponse.interface';
 
 declare var $: any;
 
@@ -30,13 +31,39 @@ export class ContactoComponent implements OnInit {
     public regionService: RegionService,
     public provinciaService: ProvinciaService,
     public contactoService: ContactoService,
-    public router: Router
-  ) { }
+    public router: Router,
+    public activatedRoute: ActivatedRoute
+  ) {
+
+    this.activatedRoute.params.subscribe( params => {
+      const id = params['id'];
+      if (id !== 'nuevo') {
+        this.obtenerContacto(id);
+      }
+    });
+
+  }
 
   ngOnInit() {
     this.obtenerRegiones();
+    this.obtenerProvincias();
     this.provincias = [];
-    this.contacto = new Contacto(null, null, null, null, null, new Region(null, null), null, null);
+    this.contacto = new Contacto(null, null, null, null, null, new Provincia(null, null, new Region(null, null, null)), null, null);
+  }
+
+  public obtenerContacto(idContacto: number) {
+
+    this.contactoService.obtenerContacto(idContacto, 'Contacto')
+      .subscribe( (response: ContactoResponse) => {
+        this.contacto = response.contacto;
+      });
+  }
+
+  public obtenerProvincias(){
+    this.provinciaService.obtenerProvincias('Contacto')
+      .subscribe( (provincias: ProvinciaResponse) => {
+        this.provincias = provincias.provincias;
+      });
   }
 
   public obtenerRegiones() {
@@ -65,8 +92,10 @@ export class ContactoComponent implements OnInit {
 
     this.contactoService.guardarContacto(this.contacto, 'contacto')
       .subscribe( respuesta => {
+        console.log(respuesta);
         if (respuesta) {
-          // this.router.navigate(['/contacts']);
+          console.log('entro');
+          this.router.navigate(['contact', respuesta.idContacto]);
         }
       });
   }

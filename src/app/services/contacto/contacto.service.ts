@@ -39,7 +39,7 @@ export class ContactoService {
     });
   }
 
-  public guardarContacto (contacto: Contacto, pagina: string) {
+  public guardarContacto(contacto: Contacto, pagina: string) {
 
     const url = URL_SERVICIOS + '/contact/save';
 
@@ -64,7 +64,7 @@ export class ContactoService {
               showConfirmButton: false,
               timer: 3000
             });
-            return true;
+            return response.contacto;
         } else {
           Swal.fire({
             type: 'error',
@@ -88,5 +88,57 @@ export class ContactoService {
         return of(error);
       })
     );
+  }
+
+  public obtenerContacto(idContacto: number, pagina: string) {
+    const url = URL_SERVICIOS + '/contact/findById';
+
+    const contactoRequest: ContactoRequest = {
+      usuario: this.usuarioService.usuario.username,
+      idUsuario: this.usuarioService.usuario.idUsuario,
+      pagina,
+      contacto: new Contacto(idContacto)
+    };
+
+    return this.http.post(url, contactoRequest, {
+      headers: new HttpHeaders()
+        .set('Authorization', 'Bearer ' + this.usuarioService.token)
+    });
+  }
+
+  public obtenerTodosContactos(pagina: string) {
+
+    const url = URL_SERVICIOS + '/contact/findAll';
+
+    const contactoRequest: ContactoRequest = {
+      usuario: this.usuarioService.usuario.username,
+      idUsuario: this.usuarioService.usuario.idUsuario,
+      pagina
+    };
+
+    return this.http.post(url, contactoRequest, {
+      headers: new HttpHeaders()
+        .set('Authorization', 'Bearer ' + this.usuarioService.token)
+    });
+  }
+
+  public buscarContactosPorFecha(fechaInicio: Date, fechaFin: Date, pagina: string) {
+
+    const url = URL_SERVICIOS + '/contact/findByCreationDate';
+
+    const contactoRequest: ContactoRequest = {
+      usuario: this.usuarioService.usuario.username,
+      idUsuario: this.usuarioService.usuario.idUsuario,
+      pagina,
+      fechaInicio,
+      fechaFin
+    };
+
+    console.log(contactoRequest);
+
+    return this.http.post(url, contactoRequest, {
+      headers: new HttpHeaders()
+        .set('Authorization', 'Bearer ' + this.usuarioService.token)
+    });
   }
 }

@@ -1,0 +1,163 @@
+<div class="row animated fadeIn">
+    <div class='col-md-6'>
+        <div class='card '>
+            <div class="card-header card-header-rose card-header-text">
+                <div class="card-text">
+                    <h4 class="card-title">Opciones para filtrar</h4>
+                </div>
+            </div>
+            <div class='card-body '>
+                <div class="row">
+                    <div class="col-sm-12 checkbox-radios">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="radio" name="filtro" (change)="changeFiltro('fecha')" checked> Fecha de Creacion
+                                <span class="circle">
+                                    <span class="check"></span>
+                                </span>
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="radio" name="filtro" (change)="changeFiltro('usuario')"> Usuario
+                                <span class="circle">
+                                    <span class="check"></span>
+                                </span>
+                            </label>
+                        </div>
+                    </div>    
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class='col-md-6'>
+        <div *ngIf="filtro == 'fecha'" class='card '>
+            <form [formGroup]="parametros" (submit)="buscarContactoPorFecha()" ngNativeValidate>
+                <div class="card-header card-header-rose card-header-text">
+                    <div class="card-text">
+                        <h4 class="card-title">Busqueda por Fecha</h4>
+                    </div>
+                </div>
+                <div class='card-body '>
+                    <div class="row">
+                        <label class="col-sm-2 col-form-label">Inicio</label>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <input formControlName="fechaInicio" name="fechaInicio" type="date" class="form-control" value="10/06/2018" required>
+                            </div>
+                        </div>
+                        <label class="col-sm-1 col-form-label">Fin</label>
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <input formControlName="fechaFin" name="fechaFin" type="date" class="form-control" value="10/06/2018" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="errorFechas" class="row">
+                            <div class="col-md-12 text-center">
+                                <div class="alert alert-danger" role="alert">
+                                    La fecha inicial debe ser menor a la fecha final
+                                </div>
+                            </div>
+                        </div>
+                    <div class="row">
+                        <div class="col-md-12 text-right">
+                            <button type="submit" class="btn btn-primary btn-sm"><i class="material-icons">search</i></button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div *ngIf="filtro == 'usuario'" class='card '>
+            <div class="card-header card-header-rose card-header-text">
+                <div class="card-text">
+                    <h4 class="card-title">Busqueda por Usuario</h4>
+                </div>
+            </div>
+            <div class='card-body '>
+                <div class="row">
+                    <label class="col-md-3 col-form-label">Nombre </label>
+                    <div class="col-md-9">
+                        <div class="form-group has-default bmd-form-group">
+                            <input type="text" #nombre (keyup)="buscarContato(nombre.value)" class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="filtro == 'titulo'" class='card '>
+            <div class="card-header card-header-rose card-header-text">
+                <div class="card-text">
+                    <h4 class="card-title">Busqueda por Titulo</h4>
+                </div>
+            </div>
+            <div class='card-body '>
+                <div class="row">
+                    <label class="col-md-3 col-form-label">Titulo</label>
+                    <div class="col-md-9">
+                        <div class="form-group has-default bmd-form-group">
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class='row animated fadeIn'>
+    <div class='col-md-12'>
+        <div class='card '>
+            <div class='card-header card-header-rose card-header-icon'>
+                <div class='card-icon'>
+                    <i class='material-icons'>contacts</i>
+                </div>
+            </div>
+            <div class='card-body '>
+                <div class="text-right">
+                    <button class="btn btn-just-icon btn-round btn-success" [routerLink]="['/contact', 'nuevo']">
+                        <i class="fa fa-plus"> </i>
+                    </button>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Apellido</th>
+                            <th scope="col">Correo electronico</th>
+                            <th scope="col">telefono</th>
+                            <th scope="col">Estado</th>
+                            <th scope="col">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let contacto of contactos | paginate: { itemsPerPage: 10, currentPage: page }">
+                            <td data-label="Codigo">{{ contacto.idContacto }}</td>
+                            <td data-label="Nombre">{{ contacto.nombre }}</td>
+                            <td data-label="Apellido">{{ contacto.apellido }}</td>
+                            <td data-label="Correo">{{ contacto.email }}</td>
+                            <td data-label="Telefono">{{ contacto.telefono }}</td>
+                            <td data-label="Estado" *ngIf="contacto.estado">Activo</td>
+                            <td data-label="Estado" *ngIf="!contacto.estado">Inactivo</td>
+                            <td data-label="Acciones" class="td-actions">
+                                <button type="button" [routerLink]="['/contact', contacto.idContacto]" rel="tooltip" class="btn btn-success btn-link">
+                                    <i class="material-icons">edit</i>
+                                </button>
+                                <button *ngIf="contacto.estado" type="button" rel="tooltip" (click)="cambiarEstadoContacto(contacto, false)" class="btn btn-danger btn-link" title="Inhabilitar">
+                                    <i class="material-icons">close</i>
+                                </button>
+                                <button *ngIf="!contacto.estado" type="button" rel="tooltip" (click)="cambiarEstadoContacto(contacto, true)" class="btn btn-success btn-link" title="habilitar">
+                                    <i class="material-icons">check</i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <pagination-controls (pageChange)="page = $event"></pagination-controls>
+            </div>
+            <div class='card-footer '>
+                
+            </div>
+        </div>
+    </div>
+</div>

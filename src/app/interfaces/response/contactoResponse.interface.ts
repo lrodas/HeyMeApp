@@ -4,4 +4,5 @@ export interface ContactoResponse {
     codigo: string;
     descripcion: string;
     contactos: Contacto[];
+    contacto: Contacto;
 }

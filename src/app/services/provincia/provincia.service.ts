@@ -32,4 +32,20 @@ export class ProvinciaService {
         .set('Authorization', 'Bearer ' + this.usuarioService.token)
     });
   }
+
+  public obtenerProvincias(pagina: string) {
+
+    const url = URL_SERVICIOS + '/province/retrieveProvince';
+
+    const provinciaRequest: ProvinciaRequest = {
+      usuario: this.usuarioService.usuario.username,
+      idUsuario: this.usuarioService.usuario.idUsuario,
+      pagina
+    };
+
+    return this.http.post(url, provinciaRequest, {
+      headers: new HttpHeaders()
+        .set('Authorization', 'Bearer ' + this.usuarioService.token)
+    });
+  }
 }

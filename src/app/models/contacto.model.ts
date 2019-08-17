@@ -1,4 +1,4 @@
-import { Region } from './region.model';
+import { Provincia } from './provincia.model';
 export class Contacto {
     constructor(
         public idContacto?: number,
@@ -6,7 +6,7 @@ export class Contacto {
         public apellido?: string,
         public telefono?: string,
         public email?: string,
-        public region?: Region,
+        public provincia?: Provincia,
         public direccion?: string,
         public estado?: boolean
     ) { }
