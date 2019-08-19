@@ -131,7 +131,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let contacto of contactos | paginate: { itemsPerPage: 10, currentPage: page }">
+                        <tr *ngFor="let contacto of contactos | paginate: { itemsPerPage: 5, currentPage: page }">
                             <td data-label="Codigo">{{ contacto.idContacto }}</td>
                             <td data-label="Nombre">{{ contacto.nombre }}</td>
                             <td data-label="Apellido">{{ contacto.apellido }}</td>

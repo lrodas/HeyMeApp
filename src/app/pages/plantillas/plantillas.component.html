@@ -1,0 +1,71 @@
+<div class='row animated fadeIn'>
+    <div class='col-md-12'>
+        <div class='card '>
+            <div class='card-header card-header-rose card-header-icon'>
+                <div class='card-icon'>
+                    <i class='material-icons'>search</i>
+                </div>
+                <h4 class='card-title'></h4>
+            </div>
+            <div class='card-body '>
+                <div class="row">
+                    <label class="col-md-2 col-form-label">Buscar Plantilla:</label>
+                    <div class="col-md-10">
+                        <div class="form-group has-default">
+                            <input #input (keyup)="buscarPlantillaPorTermino(input.value)" type="text" class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class='row animated fadeIn'>
+    <div class='col-md-12'>
+        <div class='card '>
+            <div class='card-header card-header-rose card-header-icon'>
+                <div class='card-icon'>
+                    <i class='material-icons'>web_asset</i>
+                </div>
+                <h4 class='card-title'></h4>
+            </div>
+            <div class='card-body '>
+                <div class="text-right">
+                    <button class="btn btn-just-icon btn-round btn-success" [routerLink]="['/template', 'nuevo']">
+                        <i class="fa fa-plus"> </i>
+                    </button>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Titulo</th>
+                            <th scope="col">Estado</th>
+                            <th scope="col" class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let plantilla of plantillas | paginate: { itemsPerPage: 5, currentPage: page }">
+                            <td data-label="Codigo">{{ plantilla.idPlantillaNotificacion }}</td>
+                            <td data-label="Titulo" class="titulo-notificaciones">{{ plantilla.titulo }}</td>
+                            <td *ngIf="plantilla.estado" data-label="Estado">Activo</td>
+                            <td *ngIf="!plantilla.estado" data-label="Estado">Inactivo</td>
+                            <td data-label="Acciones" class="text-center">
+                                <button [routerLink]="['/template', plantilla.idPlantillaNotificacion]" type="button" rel="tooltip" class="btn btn-success btn-link">
+                                    <i class="material-icons">edit</i>
+                                </button>
+                                <button *ngIf="!plantilla.estado" (click)="cambiarEstado(plantilla, true)" type="button" title="Activar" class="btn btn-success btn-link">
+                                        <i class="material-icons">check</i>
+                                    </button>
+                                <button *ngIf="plantilla.estado" (click)="cambiarEstado(plantilla, false)" type="button" title="Inactivar" class="btn btn-danger btn-link">
+                                    <i class="material-icons">close</i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <pagination-controls (pageChange)="page = $event"></pagination-controls>
+            </div>
+        </div>
+    </div>
+</div>

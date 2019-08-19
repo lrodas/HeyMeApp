@@ -1,0 +1,39 @@
+<div class='row animated fadeIn'>
+    <div class='col-md-12'>
+        <div class='card '>
+            <div class='card-header card-header-rose card-header-icon'>
+                <div class='card-icon'>
+                    <i class='material-icons'>web_asset</i>
+                </div>
+                <h4 class='card-title'></h4>
+            </div>
+            <div class='card-body '>
+                <form #f="ngForm" ngNativeValidate (submit)="guardarPlantilla(f)" class="form-horizontal">
+                    <div class="row">
+                        <label class="col-md-3 col-form-label">Titulo de la plantilla</label>
+                        <div class="col-md-9">
+                            <div class="form-group has-default">
+                                <input type="text" [(ngModel)]="plantilla.titulo" name="titulo" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <textarea [(ngModel)]="plantilla.plantilla" name="plantilla" cols="30" rows="10" class="form-control"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 text-right">
+                            <button type="submit" class="btn btn-fill btn-rose">Guardar</button>
+                        </div>
+                    </div>  
+                </form>
+            </div>
+            <div class='card-footer '>
+                
+            </div>
+        </div>
+    </div>
+</div>

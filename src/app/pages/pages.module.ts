@@ -17,7 +17,9 @@ import { FormProgramarComponent } from './programar/form-programar.component';
 import { ContactoComponent } from './contactos/contacto.component';
 import { ContactosComponent } from './contactos/contactos.component'; // for FullCalendar!
 import { ReactiveFormsModule } from '@angular/forms';
-import {NgxPaginationModule} from 'ngx-pagination'; // <-- import the module
+import { NgxPaginationModule } from 'ngx-pagination';
+import { PlantillasComponent } from './plantillas/plantillas.component';
+import { PlantillaComponent } from './plantillas/plantilla.component'; // <-- import the module
 
 @NgModule({
     declarations: [
@@ -28,7 +30,9 @@ import {NgxPaginationModule} from 'ngx-pagination'; // <-- import the module
         ProgramarComponent,
         FormProgramarComponent,
         ContactoComponent,
-        ContactosComponent
+        ContactosComponent,
+        PlantillasComponent,
+        PlantillaComponent
     ],
     exports: [
         DashboardComponent,

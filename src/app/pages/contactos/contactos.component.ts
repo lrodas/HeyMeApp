@@ -80,14 +80,4 @@ export class ContactosComponent implements OnInit {
     this.contactoService.guardarContacto(contacto, 'contactos')
       .subscribe();
   }
-
-  public cambiarPagina(index: number) {
-
-    if (!index) {
-      return;
-    }
-
-    index = index * 10;
-  }
-
 }
