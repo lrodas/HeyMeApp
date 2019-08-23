@@ -1,0 +1,147 @@
+<div class='row'>
+    <div class='col-md-6'>
+        <div class='card '>
+            <div class="card-header card-header-rose card-header-text">
+                <div class="card-text">
+                    <h4 class="card-title">Filtrar por</h4>
+                </div>
+            </div>
+            <div class='card-body '>
+                <div class="row">
+                    <div class="col-sm-12 checkbox-radios">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="radio" name="filtro" (change)="changeFiltro('fecha')" checked> Fecha de Creacion
+                                <span class="circle">
+                                    <span class="check"></span>
+                                </span>
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="radio" name="filtro" (change)="changeFiltro('usuario')"> Usuario
+                                <span class="circle">
+                                    <span class="check"></span>
+                                </span>
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="radio" name="filtro" (change)="changeFiltro('titulo')"> Titulo
+                                <span class="circle">
+                                    <span class="check"></span>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class='col-md-6'>
+        <div *ngIf="filtro == 'fecha'" class='card '>
+            <div class="card-header card-header-rose card-header-text">
+                <div class="card-text">
+                    <h4 class="card-title">Fechas</h4>
+                </div>
+            </div>
+            <div class='card-body '>
+                <div class="row">
+                    <label class="col-sm-2 col-form-label">Inicio</label>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <input type="date" class="form-control" value="10/06/2018">
+                        </div>
+                    </div>
+                    <label class="col-sm-1 col-form-label">Fin</label>
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <input type="date" class="form-control" value="10/06/2018">
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="errorFechas" class="row">
+                    <div class="col-md-12 text-center">
+                        <div class="alert alert-danger" role="alert">
+                            La fecha inicial debe ser menor a la fecha final
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 text-right">
+                        <button type="submit" class="btn btn-primary btn-sm"><i class="material-icons">search</i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="filtro == 'usuario'" class='card '>
+            <div class="card-header card-header-rose card-header-text">
+                <div class="card-text">
+                    <h4 class="card-title">Usuario</h4>
+                </div>
+            </div>
+            <div class='card-body '>
+                <div class="row">
+                    <label class="col-md-3 col-form-label">Nombre </label>
+                    <div class="col-md-9">
+                        <div class="form-group has-default bmd-form-group">
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="filtro == 'titulo'" class='card '>
+            <div class="card-header card-header-rose card-header-text">
+                <div class="card-text">
+                    <h4 class="card-title">Titulo</h4>
+                </div>
+            </div>
+            <div class='card-body '>
+                <div class="row">
+                    <label class="col-md-3 col-form-label">Titulo</label>
+                    <div class="col-md-9">
+                        <div class="form-group has-default bmd-form-group">
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class='row animated fadeIn'>
+    <div class='col-md-12'>
+        <div class='card '>
+            <div class='card-header card-header-rose card-header-icon'>
+                <div class='card-icon'>
+                    <i class='material-icons'>mail_outline</i>
+                </div>
+                <h4 class='card-title'></h4>
+            </div>
+            <div class='card-body '>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Titulo</th>
+                            <th scope="col">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let notificacion of notificaciones | paginate: { itemsPerPage: 5, currentPage: page }">
+                            <td data-label="Codigo">{{ notificacion.idNotificacion }}</td>
+                            <td data-label="Titulo">{{ notificacion.titulo }}</td>
+
+                            <td data-label="Acciones" class="td-actions">
+                                <button type="button" rel="tooltip" class="btn btn-success btn-link">
+                                    <i class="material-icons">edit</i>
+                                </button>   
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -10,6 +10,7 @@ import { ContactoComponent } from './contactos/contacto.component';
 import { ContactosComponent } from './contactos/contactos.component';
 import { PlantillasComponent } from './plantillas/plantillas.component';
 import { PlantillaComponent } from './plantillas/plantilla.component';
+import { BorradoresComponent } from './borradores/borradores.component';
 
 const pagesRoutes: Routes = [
     { path: 'dashboard', canActivate: [ SesionGuard ], component: DashboardComponent, data: { titulo: 'Dashboard' } },
@@ -29,6 +30,7 @@ const pagesRoutes: Routes = [
     },
     { path: 'templates', canActivate: [ SesionGuard ], component: PlantillasComponent, data: { titulo: 'Plantillas de notificaciones' }},
     { path: 'template/:id', canActivate: [ SesionGuard ], component: PlantillaComponent, data: { titulo: 'Plantilla de notificacion' }},
+    { path: 'drafts', canActivate: [ SesionGuard ], component: BorradoresComponent, data: { titulo: 'Borradores de notificaciones' }},
     { path: '', redirectTo: '/dashboard', pathMatch: 'full' }
 ];
 

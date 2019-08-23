@@ -19,7 +19,8 @@ import { ContactosComponent } from './contactos/contactos.component'; // for Ful
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { PlantillasComponent } from './plantillas/plantillas.component';
-import { PlantillaComponent } from './plantillas/plantilla.component'; // <-- import the module
+import { PlantillaComponent } from './plantillas/plantilla.component';
+import { BorradoresComponent } from './borradores/borradores.component'; // <-- import the module
 
 @NgModule({
     declarations: [
@@ -32,7 +33,8 @@ import { PlantillaComponent } from './plantillas/plantilla.component'; // <-- im
         ContactoComponent,
         ContactosComponent,
         PlantillasComponent,
-        PlantillaComponent
+        PlantillaComponent,
+        BorradoresComponent
     ],
     exports: [
         DashboardComponent,
