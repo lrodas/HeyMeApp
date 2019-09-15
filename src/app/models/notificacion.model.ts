@@ -9,7 +9,7 @@ export class Notificacion {
         public titulo?: string,
         public fechaEnvio?: Date,
         public fechaProgramacion?: Date,
-        public estadoNotificacion?: EstadoNotificacion,
+        public estado?: EstadoNotificacion,
         public usuario?: Usuario,
         public notificacion?: string,
         public destinatario?: Contacto,

@@ -12,6 +12,6 @@ export class Usuario {
         public password?: string,
         public img?: string,
         public genero?: Genero,
-        public estado?: boolean
+        public enabled?: boolean
     ) { }
 }

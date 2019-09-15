@@ -79,6 +79,29 @@
                     <p> Plantillas de notificaciones </p>
                 </a>
             </li>
+            <div class="collapse" id="componentCollapse">
+                <ul class="nav">
+
+                </ul>
+            </div>
+            <li class="nav-item ">
+                <a class="nav-link" data-toggle="collapse" href="#componentsCollapse">
+                    <span class="sidebar-mini"> ADM </span>
+                    <span class="sidebar-normal"> Administración
+                        <b class="caret"></b>
+                      </span>
+                </a>
+                <div class="collapse" id="componentsCollapse">
+                    <ul class="nav">
+                        <li class="nav-item ">
+                            <a class="nav-link" [routerLink]="['/users']">
+                                <span class="sidebar-mini"> U </span>
+                                <span class="sidebar-normal"> Usuarios </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
         </ul>
     </div>
 </div>

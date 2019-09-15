@@ -1,0 +1,39 @@
+<div [class]="'fondo-negro animated fadeIn ' + modalPlantillasService.oculto">
+    <!-- Classic Modal -->
+    <div class="modal" style="display: block" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Plantillas disponibles</h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Codigo</th>
+                                <th scope="col" class="titulo-tbl-plantilla">Titulo</th>
+                                <th scope="col">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let plantilla of modalPlantillasService.plantillas | paginate: { itemsPerPage: 3, currentPage: page }">
+                                <td data-label="Codigo">{{ plantilla.idPlantillaNotificacion }}</td>
+                                <td data-label="Titulo">{{ plantilla.titulo }}</td>
+                                <td data-label="Acciones" class="td-actions">
+                                    <button (click)="seleccionarPlantilla(plantilla)" type="button" rel="tooltip" class="btn btn-info">
+                                        <i class="material-icons">check</i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <pagination-controls (pageChange)="page = $event"></pagination-controls>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-link" (click)="modalPlantillasService.ocultarModal()">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--  End Modal -->
+</div>

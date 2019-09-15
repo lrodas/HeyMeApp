@@ -92,9 +92,7 @@ export class ContactoComponent implements OnInit {
 
     this.contactoService.guardarContacto(this.contacto, 'contacto')
       .subscribe( respuesta => {
-        console.log(respuesta);
         if (respuesta) {
-          console.log('entro');
           this.router.navigate(['contact', respuesta.idContacto]);
         }
       });

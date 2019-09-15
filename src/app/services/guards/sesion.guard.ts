@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, CanActivate } from '@angular/router';
-import { Observable } from 'rxjs';
+import { CanActivate } from '@angular/router';
 import { UsuarioService } from '../usuario-service/usuario.service';
 
 @Injectable({
@@ -17,7 +16,9 @@ export class SesionGuard implements CanActivate {
       const token = this.usuarioService.token;
       const payload = JSON.parse( atob(token.split('.')[1]));
       const expirado = this.expirado(payload.exp);
-
+      if (expirado) {
+        this.usuarioService.logout();
+      }
       return !expirado;
   }
 

@@ -4,4 +4,5 @@ export interface UsuarioResponse {
     codigo: string;
     descripcion: string;
     usuario: Usuario;
+    usuarios: Usuario[];
 }

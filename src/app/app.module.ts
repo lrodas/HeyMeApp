@@ -12,12 +12,15 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { PagesComponent } from './pages/pages.component';
 import { SharedModule } from './shared/shared.module';
+import { ModalPlantillasComponent } from './components/modal-plantillas/modal-plantillas.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    PagesComponent
+    PagesComponent,
+    ModalPlantillasComponent
   ],
   imports: [
     BrowserModule,
@@ -26,7 +29,8 @@ import { SharedModule } from './shared/shared.module';
     RouterModule,
     ReactiveFormsModule,
     FormsModule,
-    SharedModule
+    SharedModule,
+    NgxPaginationModule // <-- include it in your app module
   ],
   providers: [HttpClientModule],
   bootstrap: [AppComponent]

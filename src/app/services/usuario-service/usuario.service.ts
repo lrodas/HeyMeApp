@@ -67,7 +67,8 @@ export class UsuarioService {
     Swal.fire({
       allowOutsideClick: false,
       type: 'info',
-      text: 'Espere por favor'
+      text: 'Espere por favor',
+      showConfirmButton: false
     });
 
     Swal.showLoading();
@@ -132,7 +133,16 @@ export class UsuarioService {
     return this.http.post(url, user, {
       headers: new HttpHeaders()
         .set('Authorization', 'Bearer ' + token)
-    });
+    }).pipe(
+      map((usuarioResponse: UsuarioResponse) => {
+        Swal.close();
+        return usuarioResponse;
+      }),
+      catchError( error => {
+        Swal.close();
+        return of([error]);
+      })
+    );
   }
 
   public cambiarImagen(file: File, id: number) {
@@ -140,7 +150,8 @@ export class UsuarioService {
     Swal.fire({
       allowOutsideClick: false,
       type: 'info',
-      text: 'Espere por favor'
+      text: 'Espere por favor',
+      showConfirmButton: false
     });
 
     Swal.showLoading();
@@ -155,6 +166,7 @@ export class UsuarioService {
         });
         this.usuario.img = resp.img;
         localStorage.setItem(USUARIO_STORAGE, JSON.stringify(this.usuario));
+        Swal.close();
       });
   }
 
@@ -172,7 +184,8 @@ export class UsuarioService {
     Swal.fire({
       allowOutsideClick: false,
       type: 'info',
-      text: 'Espere por favor'
+      text: 'Espere por favor',
+      showConfirmButton: false
     });
 
     Swal.showLoading();
@@ -187,6 +200,7 @@ export class UsuarioService {
           title: 'Datos actualizados exitosamente',
           text: 'Datos personales guardados exitosamente'
         });
+        Swal.close();
         return usuarioResponse;
       }),
       catchError( error => {
@@ -195,6 +209,162 @@ export class UsuarioService {
           title: 'En estos momentos no ha sido posible actualizar tus datos',
           text: 'Por favor intenta nuevamente mas tarde'
         });
+        Swal.close();
+        return of([error]);
+      })
+    );
+  }
+
+  public obtenerUsuarios(pagina: string) {
+
+    const url = URL_SERVICIOS + '/user/retrieveUsers';
+
+    const request: UsuarioRequest = {
+      usuario: this.usuario.username,
+      idUsuario: this.usuario.idUsuario,
+      pagina
+    };
+
+    Swal.fire({
+      allowOutsideClick: false,
+      type: 'info',
+      text: 'Espere por favor',
+      showConfirmButton: false
+    });
+
+    Swal.showLoading();
+
+    return this.http.post(url, request, {
+      headers: new HttpHeaders()
+        .set('Authorization', 'Bearer ' + this.token)
+    }).pipe(
+      map( (usuarioResponse: UsuarioResponse) => {
+        Swal.close();
+        return usuarioResponse;
+      }),
+      catchError( error => {
+        Swal.close();
+        return of([error]);
+      })
+    );
+  }
+
+  public cambiarEstado(usuario: Usuario, pagina: string) {
+
+    const url = URL_SERVICIOS + '/user/changeStatus';
+
+    const request: UsuarioRequest = {
+      usuario: this.usuario.username,
+      idUsuario: this.usuario.idUsuario,
+      pagina,
+      datos: usuario
+    };
+
+    Swal.fire({
+      allowOutsideClick: false,
+      type: 'info',
+      text: 'Espere por favor',
+      showConfirmButton: false
+    });
+
+    Swal.showLoading();
+
+    return this.http.post(url, request, {
+      headers: new HttpHeaders()
+        .set('Authorization', 'Bearer ' + this.token)
+    }).pipe(
+      map( (usuarioResponse: UsuarioResponse) => {
+        Swal.fire({
+          type: 'success',
+          title: 'Estado cambiado exitosamente',
+          text: 'Estado cambiado exitosamente'
+        });
+        Swal.close();
+        return usuarioResponse;
+      }),
+      catchError( error => {
+        Swal.fire({
+          type: 'error',
+          title: 'En estos momentos no ha sido posible actualizar los datos',
+          text: 'Por favor intenta nuevamente mas tarde'
+        });
+        Swal.close();
+        return of([error]);
+      })
+    );
+  }
+
+  public obtenerUsuariosPorNombre(termino: string, pagina: string) {
+
+    const url = URL_SERVICIOS + '/user/retrieveUsersByName';
+
+    const request: UsuarioRequest = {
+      usuario: this.usuario.username,
+      idUsuario: this.usuario.idUsuario,
+      pagina,
+      datos: new Usuario(null, termino)
+    };
+
+    return this.http.post(url, request, {
+      headers: new HttpHeaders()
+        .set('Authorization', 'Bearer ' + this.token)
+    }).pipe(
+      map( (usuarioResponse: UsuarioResponse) => {
+
+        return usuarioResponse;
+      }),
+      catchError( error => {
+        Swal.fire({
+          type: 'error',
+          title: 'En estos momentos no ha sido posible consultar el usuario',
+          text: 'Por favor intenta nuevamente mas tarde'
+        });
+        return of([error]);
+      })
+    );
+  }
+
+  public obtenerUsuariosPorFecha(fechaInicio: Date, fechaFin: Date, pagina: string) {
+
+    const url = URL_SERVICIOS + '/user/retrieveUsersByDate';
+
+    const request: UsuarioRequest = {
+      usuario: this.usuario.username,
+      idUsuario: this.usuario.idUsuario,
+      pagina,
+      fechaInicio,
+      fechaFin
+    };
+
+    Swal.fire({
+      allowOutsideClick: false,
+      type: 'info',
+      text: 'Espere por favor',
+      showConfirmButton: false
+    });
+
+    Swal.showLoading();
+
+    return this.http.post(url, request, {
+      headers: new HttpHeaders()
+        .set('Authorization', 'Bearer ' + this.token)
+    }).pipe(
+      map( (usuarioResponse: UsuarioResponse) => {
+        Swal.fire({
+          type: 'success',
+          title: 'Usuarios obtenidos exitosamente',
+          text: 'Usuarios obtenidos exitosamente'
+        });
+        Swal.close();
+        return usuarioResponse;
+      }),
+      catchError( error => {
+        Swal.fire({
+          type: 'error',
+          title: 'En estos momentos no ha sido posible obtener los datos de los usuarios',
+          text: 'Por favor intenta nuevamente mas tarde'
+        });
+        Swal.close();
         return of([error]);
       })
     );

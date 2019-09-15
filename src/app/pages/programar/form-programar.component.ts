@@ -5,6 +5,12 @@ import { ContactoResponse } from '../../interfaces/response/contactoResponse.int
 import { NgForm } from '@angular/forms';
 import { Notificacion } from '../../models/notificacion.model';
 import { Canal } from '../../models/canal.model';
+import { ModalPlantillaService } from '../../components/modal-plantillas/modal-plantilla.service';
+import { Plantilla } from '../../models/plantilla.model';
+import { NotificacionesService } from '../../services/notificaciones/notificaciones.service';
+import { NotificacionResponse } from '../../interfaces/response/notificacionResponse.interface';
+import { Router, ActivatedRoute } from '@angular/router';
+import { EstadoNotificacion } from '../../models/estadoNotificacion.model';
 
 declare var $: any;
 
@@ -20,14 +26,30 @@ export class FormProgramarComponent implements OnInit {
   public notificacion: Notificacion;
 
   constructor(
-    private contactoService: ContactoService
-  ) {
-  }
+    private contactoService: ContactoService,
+    public modalPlantillaService: ModalPlantillaService,
+    public notificacionService: NotificacionesService,
+    public router: Router,
+    public activatedRoute: ActivatedRoute
+  ) { }
 
   ngOnInit() {
     $('select').selectpicker();
     this.contactos = [];
     this.notificacion = new Notificacion(null, null, null, null, null, null, null, new Contacto(null, '', ''), new Canal(null, ''));
+
+    this.activatedRoute.params.subscribe( params => {
+      // tslint:disable-next-line: no-string-literal
+      const fecha = new Date(params['date']);
+      this.notificacion.fechaEnvio = fecha;
+
+    });
+
+    this.modalPlantillaService.notificacion
+      .subscribe( (item: Plantilla) => {
+          this.notificacion.titulo = item.titulo;
+          this.notificacion.notificacion = item.plantilla;
+      });
   }
 
   public showAutoComplete(status: boolean) {
@@ -55,7 +77,34 @@ export class FormProgramarComponent implements OnInit {
   }
 
   public guardarNotificacion(form: NgForm) {
-    console.log(this.notificacion);
+
+    if (form.invalid) {
+      return;
+    }
+
+    this.notificacion.estado = new EstadoNotificacion(2, 'Programada');
+
+    this.notificacionService.guardarNotificacion(this.notificacion, 'scheduleForm')
+      .subscribe( (response: Notificacion) => {
+          if (response) {
+            this.router.navigate(['/notifications']);
+          }
+      });
+  }
+
+  public guardarBorrador() {
+
+
+
+    this.notificacion.estado = new EstadoNotificacion(1, 'Creada');
+
+    this.notificacionService.guardarNotificacion(this.notificacion, 'scheduleForm')
+      .subscribe( (response: Notificacion) => {
+        console.log(response);
+        if (response) {
+          this.router.navigate(['/notifications']);
+        }
+      });
   }
 
 }

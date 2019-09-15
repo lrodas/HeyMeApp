@@ -1,0 +1,109 @@
+<div class='row'>
+    <div class='col-md-12'>
+        <div class='card '>
+            <div class='card-header card-header-rose card-header-icon'>
+                <div class='card-icon'>
+                    <i class='material-icons'>search</i>
+                </div>
+                <h4 class='card-title'></h4>
+            </div>
+            <div class='card-body '>
+                <div class="row">
+                    <div class="col-sm-12 checkbox-radios">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="radio" name="filtro" (change)="changeFiltro('fecha')" checked> Fecha de Ingreso
+                                <span class="circle">
+                                    <span class="check"></span>
+                                </span>
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="radio" name="filtro" (change)="changeFiltro('usuario')"> Usuario
+                                <span class="circle">
+                                    <span class="check"></span>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <form *ngIf="filtro == 'fecha'" #f="ngForm" ngNativeValidate (submit)="obtenerUsuarioPorFecha(f)" class="form-horizontal">
+                    <div class="row">
+                        <label class="col-md-2 col-form-label">Fecha Inicial</label>
+                        <div class="col-md-3">
+                            <div class="form-group has-default">
+                                <input type="date" [(ngModel)]="fechaInicio" [max]="fechaFin | date: 'yyyy-MM-dd'" name="fechaInicio" class="form-control" required>
+                            </div>
+                        </div>
+                        <label class="col-md-2 col-form-label">Fecha Final</label>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <input type="date" [(ngModel)]="fechaFin" [min]="fechaInicio | date: 'yyyy-MM-dd'" name="fechaFin" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-md-2 text-right">
+                            <button type='submit' class='btn btn-fill btn-rose'>
+                                    <i class='material-icons'>search</i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <div *ngIf="filtro == 'usuario'" class="form-horizontal">
+                    <input class="form-control" #input placeholder="Ingrese el nombre del usuario" (keyup)="obtenerUsuariosPorNombre(input.value)" type="text" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class='row'>
+    <div class='col-md-12'>
+        <div class='card '>
+            <div class='card-header card-header-rose card-header-icon'>
+                <div class='card-icon'>
+                    <i class='material-icons'>perm_identity</i>
+                </div>
+                <h4 class='card-title'></h4>
+            </div>
+            <div class='card-body '>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Telefono</th>
+                                <th scope="col">Correo</th>
+                                <th scope="col">Estado</th>
+                                <th scope="col">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let usuario of usuarios | paginate: { itemsPerPage: 5, currentPage: page }">
+                                <td>
+                                    <img class="img-circle" [src]="usuario.img | imagen">
+                                </td>
+                                <td data-label="Nombre">{{ usuario.nombres + ' ' + usuario.apellidos }}</td>
+                                <td data-label="Telefono">{{ usuario.telefono }}</td>
+                                <td data-label="Correo">{{ usuario.username }}</td>
+                                <td *ngIf="usuario.enabled" data-label="Estado">Activo</td>
+                                <td *ngIf="!usuario.enabled" data-label="Estado">Inactivo</td>
+                                <td class="td-actions text-center" data-label="Acciones" class="text-right">
+                                    <button *ngIf="usuario.enabled" (click)="eliminarUsuario(usuario.idUsuario, false)" type="button" rel="tooltip" title="Eliminar" class="btn btn-danger btn-link">
+                                      <i class="material-icons">close</i>
+                                    </button>
+                                    <button *ngIf="!usuario.enabled" (click)="eliminarUsuario(usuario.idUsuario, true)" type="button" rel="tooltip" title="Eliminar" class="btn btn-success btn-link">
+                                        <i class="material-icons">check</i>
+                                      </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <pagination-controls (pageChange)="page = $event"></pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+,

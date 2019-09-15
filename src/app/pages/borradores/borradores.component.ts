@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Notificacion } from '../../models/notificacion.model';
+import { NotificacionesService } from '../../services/notificaciones/notificaciones.service';
+import { NotificacionResponse } from '../../interfaces/response/notificacionResponse.interface';
 
 @Component({
   selector: 'app-borradores',
@@ -12,7 +14,9 @@ export class BorradoresComponent implements OnInit {
   public errorFechas: boolean;
   public notificaciones: Notificacion[];
 
-  constructor() {
+  constructor(
+    private notificacionesService: NotificacionesService
+  ) {
     this.notificaciones = [];
   }
 
@@ -23,6 +27,13 @@ export class BorradoresComponent implements OnInit {
 
   public changeFiltro(filtro: string) {
     this.filtro = filtro;
+  }
+
+  public obtenerBorradores() {
+    this.notificacionesService.obtenerNotificacionesPorEstado(1, 'borradores')
+      .subscribe( (response: NotificacionResponse) => {
+        this.notificaciones = response.notificaciones;
+      });
   }
 
 }

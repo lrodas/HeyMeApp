@@ -21,6 +21,23 @@ export class PlantillasService {
     private usuarioService: UsuarioService
   ) { }
 
+  public obtenerPlantillasPorEstado(estado: boolean, pagina: string) {
+
+    const url = URL_SERVICIOS + '/template/findByStatus';
+
+    const plantillaRequest: PlantillaRequest = {
+      usuario: this.usuarioService.usuario.username,
+      idUsuario: this.usuarioService.usuario.idUsuario,
+      pagina,
+      plantilla: new Plantilla(null, '', '', estado)
+    };
+
+    return this.http.post(url, plantillaRequest, {
+      headers: new HttpHeaders()
+        .set('Authorization', 'Bearer ' + this.usuarioService.token)
+    });
+  }
+
   public obtenerPlantillas() {
 
     const url = URL_SERVICIOS + '/template/findAll';

@@ -20,7 +20,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { PlantillasComponent } from './plantillas/plantillas.component';
 import { PlantillaComponent } from './plantillas/plantilla.component';
-import { BorradoresComponent } from './borradores/borradores.component'; // <-- import the module
+import { BorradoresComponent } from './borradores/borradores.component';
+import { UsuariosComponent } from './usuarios/usuarios.component'; // <-- import the module
 
 @NgModule({
     declarations: [
@@ -34,7 +35,8 @@ import { BorradoresComponent } from './borradores/borradores.component'; // <-- 
         ContactosComponent,
         PlantillasComponent,
         PlantillaComponent,
-        BorradoresComponent
+        BorradoresComponent,
+        UsuariosComponent
     ],
     exports: [
         DashboardComponent,

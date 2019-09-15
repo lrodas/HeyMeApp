@@ -11,26 +11,78 @@ import { ContactosComponent } from './contactos/contactos.component';
 import { PlantillasComponent } from './plantillas/plantillas.component';
 import { PlantillaComponent } from './plantillas/plantilla.component';
 import { BorradoresComponent } from './borradores/borradores.component';
+import { LoginGuard } from '../services/guards/login.guard';
+import { UsuariosComponent } from './usuarios/usuarios.component';
 
 const pagesRoutes: Routes = [
-    { path: 'dashboard', canActivate: [ SesionGuard ], component: DashboardComponent, data: { titulo: 'Dashboard' } },
-    { path: 'profile', canActivate: [ SesionGuard ], component: PerfilComponent, data: { titulo: 'Perfil' } },
-    { path: 'settings', canActivate: [ SesionGuard ], component: PreferenciasComponent, data: { titulo: 'Preferencias' } },
-    { path: 'notifications', canActivate: [ SesionGuard ], component: NotificacionComponent, data: { titulo: 'Notificaciones' } },
-    { path: 'contact/:id', canActivate: [ SesionGuard ], component: ContactoComponent, data: { titulo: 'Administrar Contacto' } },
-    { path: 'schedule', canActivate: [ SesionGuard ], component: ProgramarComponent, data: { titulo: 'Notificaciones' } },
-    { path: 'contacts', canActivate: [ SesionGuard ], component: ContactosComponent, data: { titulo: 'Contactos' } },
+    {
+        path: 'dashboard',
+        canActivate: [ LoginGuard, SesionGuard ],
+        component: DashboardComponent,
+        data: { titulo: 'Dashboard' }
+    },
+    { path: 'profile', canActivate: [ LoginGuard, SesionGuard ], component: PerfilComponent, data: { titulo: 'Perfil' } },
+    { path: 'settings', canActivate: [ LoginGuard, SesionGuard ], component: PreferenciasComponent, data: { titulo: 'Preferencias' } },
+    {
+        path: 'notifications',
+        canActivate: [ LoginGuard, SesionGuard ],
+        component: NotificacionComponent,
+        data: { titulo: 'Notificaciones' }
+    },
+    {
+        path: 'contact/:id',
+        canActivate: [ LoginGuard, SesionGuard ],
+        component: ContactoComponent,
+        data: { titulo: 'Administrar Contacto' }
+    },
+    {
+        path: 'schedule',
+        canActivate: [ LoginGuard, SesionGuard ],
+        component: ProgramarComponent,
+        data: {
+            titulo: 'Notificaciones'
+        }
+    },
+    {
+        path: 'contacts',
+        canActivate: [ LoginGuard, SesionGuard ],
+        component: ContactosComponent,
+        data: {
+            titulo: 'Contactos'
+        }
+    },
     {
         path: 'scheduleForm/:date',
-        canActivate: [ SesionGuard ],
+        canActivate: [ LoginGuard, SesionGuard ],
         component: FormProgramarComponent,
         data: {
             titulo: 'Formulario de Notificaciones'
         }
     },
-    { path: 'templates', canActivate: [ SesionGuard ], component: PlantillasComponent, data: { titulo: 'Plantillas de notificaciones' }},
-    { path: 'template/:id', canActivate: [ SesionGuard ], component: PlantillaComponent, data: { titulo: 'Plantilla de notificacion' }},
-    { path: 'drafts', canActivate: [ SesionGuard ], component: BorradoresComponent, data: { titulo: 'Borradores de notificaciones' }},
+    {
+        path: 'templates',
+        canActivate: [ LoginGuard, SesionGuard ],
+        component: PlantillasComponent,
+        data: { titulo: 'Plantillas de notificaciones' }
+    },
+    {
+        path: 'template/:id',
+        canActivate: [ LoginGuard, SesionGuard ],
+        component: PlantillaComponent,
+        data: { titulo: 'Plantilla de notificacion' }
+    },
+    {
+        path: 'drafts',
+        canActivate: [ LoginGuard, SesionGuard ],
+        component: BorradoresComponent,
+        data: { titulo: 'Borradores de notificaciones' }
+    },
+    {
+        path: 'users',
+        canActivate: [ LoginGuard, SesionGuard ],
+        component: UsuariosComponent,
+        data: { titulo: 'Administracion de usuarios' }
+    },
     { path: '', redirectTo: '/dashboard', pathMatch: 'full' }
 ];
 
