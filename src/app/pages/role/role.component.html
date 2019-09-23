@@ -1,0 +1,108 @@
+<div class='row'>
+    <div class='col-md-6'>
+        <div class='card '>
+            <div class='card-header card-header-rose card-header-icon'>
+                <div class='card-icon'>
+                    <i class='material-icons'>assignment_ind</i>
+                </div>
+                <h4 class='card-title'></h4>
+            </div>
+            <form ngNativeValidate #form="ngForm" (submit)="guardarRole(form)" class="form-horizontal">
+                <div class='card-body '>
+                    <div class="row">
+                        <label class="col-md-3 col-form-label">Nombre </label>
+                        <div class="col-md-9">
+                            <div class="form-group has-default">
+                                <input type="text" [(ngModel)]="role.descripcion" name="descripcion" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-md-3 col-form-label">Codigo</label>
+                        <div class="col-md-9">
+                            <div class="form-group">
+                                <input type="text" [(ngModel)]="role.nombre" name="nombre" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-md-3 col-form-label">Estado </label>
+                        <div class="col-md-9">
+                            <div class="togglebutton">
+                                <label>
+                                    <input type="checkbox" [(ngModel)]="role.estado" name="estado" checked="">
+                                    <span class="toggle"></span>
+                                    <label *ngIf="role.estado">Activo</label>
+                                <label *ngIf="!role.estado">Inactivo</label>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class='card-footer text-right'>
+                    <a [routerLink]="['/roles']" class='btn btn-fill btn-secondary'>
+                        <i class="fa fa-arrow-left"></i> Regresar
+                    </a>
+                    <button type='submit' class='btn btn-fill btn-rose'>
+                        <i class="fa fa-save"></i>
+                        Guardar
+
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class='col-md-6'>
+        <div class='card '>
+            <div class='card-header card-header-rose card-header-icon'>
+                <div class='card-icon'>
+                    <i class='material-icons'>mail_outline</i>
+                </div>
+                <h4 class='card-title'></h4>
+            </div>
+            <div class='card-body '>
+                <div *ngFor="let permiso of permisos">
+                    <p class="acdn">
+                        <a class="btn btn-primary btn-link title-acdn" data-toggle="collapse" [href]="'#opcion_' + permiso.opcion.idOpcion" role="button" aria-expanded="false" aria-controls="collapseExample">
+                            {{ permiso.opcion.descripcion }}
+                        </a>
+                    </p>
+                    <div class="collapse show" [id]="'opcion_' + permiso.opcion.idOpcion">
+                        <div class="card card-body card-spacius">
+                            <div class="row">
+                                <div class="col-sm-12 checkbox-radios">
+                                    <div class="form-check">
+                                        <label class="form-check-label pb-3">
+                                            <input class="form-check-input" [(ngModel)]="permiso.alta" type="checkbox" value=""> Altas
+                                            <span class="form-check-sign">
+                                                <span class="check"></span>
+                                            </span>
+                                        </label>
+                                        <label class="form-check-label pb-3">
+                                            <input class="form-check-input" [(ngModel)]="permiso.baja" type="checkbox" value=""> Bajas
+                                            <span class="form-check-sign">
+                                                <span class="check"></span>
+                                            </span>
+                                        </label>
+                                        <label class="form-check-label pb-3">
+                                            <input class="form-check-input" [(ngModel)]="permiso.cambio" type="checkbox" value=""> Cambios
+                                            <span class="form-check-sign">
+                                                <span class="check"></span>
+                                            </span>
+                                        </label>
+                                        <label class="form-check-label pb-3">
+                                            <input class="form-check-input" [(ngModel)]="permiso.imprimir" type="checkbox" value=""> Imprimir
+                                            <span class="form-check-sign">
+                                                <span class="check"></span>
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

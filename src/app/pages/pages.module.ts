@@ -21,7 +21,9 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { PlantillasComponent } from './plantillas/plantillas.component';
 import { PlantillaComponent } from './plantillas/plantilla.component';
 import { BorradoresComponent } from './borradores/borradores.component';
-import { UsuariosComponent } from './usuarios/usuarios.component'; // <-- import the module
+import { UsuariosComponent } from './usuarios/usuarios.component';
+import { RolesComponent } from './roles/roles.component';
+import { RoleComponent } from './role/role.component'; // <-- import the module
 
 @NgModule({
     declarations: [
@@ -36,7 +38,9 @@ import { UsuariosComponent } from './usuarios/usuarios.component'; // <-- import
         PlantillasComponent,
         PlantillaComponent,
         BorradoresComponent,
-        UsuariosComponent
+        UsuariosComponent,
+        RolesComponent,
+        RoleComponent
     ],
     exports: [
         DashboardComponent,

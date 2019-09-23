@@ -13,6 +13,8 @@ import { PlantillaComponent } from './plantillas/plantilla.component';
 import { BorradoresComponent } from './borradores/borradores.component';
 import { LoginGuard } from '../services/guards/login.guard';
 import { UsuariosComponent } from './usuarios/usuarios.component';
+import { RolesComponent } from './roles/roles.component';
+import { RoleComponent } from './role/role.component';
 
 const pagesRoutes: Routes = [
     {
@@ -82,6 +84,18 @@ const pagesRoutes: Routes = [
         canActivate: [ LoginGuard, SesionGuard ],
         component: UsuariosComponent,
         data: { titulo: 'Administracion de usuarios' }
+    },
+    {
+        path: 'roles',
+        canActivate: [ LoginGuard, SesionGuard ],
+        component: RolesComponent,
+        data: { titulo: 'Administracion de roles' }
+    },
+    {
+        path: 'role/:id',
+        canActivate: [ LoginGuard, SesionGuard ],
+        component: RoleComponent,
+        data: { titulo: 'Mantenimiento de roles' }
     },
     { path: '', redirectTo: '/dashboard', pathMatch: 'full' }
 ];
