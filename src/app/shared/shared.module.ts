@@ -6,6 +6,7 @@ import { FooterComponent } from './footer/footer.component';
 import { RouterModule } from '@angular/router';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { PipesModule } from '../pipes/pipes.module';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
     declarations: [
@@ -24,6 +25,7 @@ import { PipesModule } from '../pipes/pipes.module';
         RouterModule,
         SweetAlert2Module,
         PipesModule,
+        CommonModule
     ]
 })
 export class SharedModule { }

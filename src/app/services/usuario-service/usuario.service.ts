@@ -79,13 +79,11 @@ export class UsuarioService {
     })
     .pipe(  map( (resp: any) => {
       const user = resp.user;
-      console.log(user);
       if (user) {
         this.obtenerUsuario(user.username, resp.token, 'login')
           .subscribe( (usuario: any) => {
             Swal.close();
             this.router.navigate(['/dashboard']);
-            console.log(usuario.usuario);
             this.guardarStorage(usuario.usuario.idUsuario, resp.token, usuario.usuario);
           });
         return true;

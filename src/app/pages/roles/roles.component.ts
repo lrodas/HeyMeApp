@@ -23,7 +23,6 @@ export class RolesComponent implements OnInit {
   public obtenerRoles() {
     this.roleService.obtenerRoles('roles')
       .subscribe( (response: RoleResponse) => {
-        console.log(response);
         this.roles = response.roles;
       });
   }

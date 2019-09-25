@@ -62,12 +62,12 @@
             </div>
             <div class='card-body '>
                 <div *ngFor="let permiso of permisos">
-                    <p class="acdn">
+                    <p *ngIf="permiso.opcion.evento" class="acdn">
                         <a class="btn btn-primary btn-link title-acdn" data-toggle="collapse" [href]="'#opcion_' + permiso.opcion.idOpcion" role="button" aria-expanded="false" aria-controls="collapseExample">
                             {{ permiso.opcion.descripcion }}
                         </a>
                     </p>
-                    <div class="collapse show" [id]="'opcion_' + permiso.opcion.idOpcion">
+                    <div *ngIf="permiso.opcion.evento" class="collapse show" [id]="'opcion_' + permiso.opcion.idOpcion">
                         <div class="card card-body card-spacius">
                             <div class="row">
                                 <div class="col-sm-12 checkbox-radios">

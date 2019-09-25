@@ -49,65 +49,32 @@
             </div>
         </div>
         <ul class="nav">
-            <li class="nav-item " routerLinkActive='active'>
-                <a class="nav-link" routerLink="/dashboard">
-                    <i class="material-icons">dashboard</i>
-                    <p> Dashboard </p>
-                </a>
-            </li>
-            <li class="nav-item " routerLinkActive='active'>
-                <a class="nav-link" routerLink="/notifications">
-                    <i class="material-icons">notifications</i>
-                    <p> Notificaciones </p>
-                </a>
-            </li>
-            <li class="nav-item " routerLinkActive='active'>
-                <a class="nav-link" routerLink="/schedule">
-                    <i class="material-icons">assignment_turned_in</i>
-                    <p> Programar notificacion </p>
-                </a>
-            </li>
-            <li class="nav-item " routerLinkActive='active'>
-                <a class="nav-link" routerLink="/contacts">
-                    <i class="material-icons">contacts</i>
-                    <p> Lista de Contactos </p>
-                </a>
-            </li>
-            <li class="nav-item " routerLinkActive='active'>
-                <a class="nav-link" routerLink="/templates">
-                    <i class="material-icons">web_asset</i>
-                    <p> Plantillas de notificaciones </p>
-                </a>
-            </li>
-            <div class="collapse" id="componentCollapse">
-                <ul class="nav">
-
-                </ul>
+            <div *ngFor="let menu of menus">
+                <li *ngIf="menu.evento" class="nav-item " routerLinkActive='active'>
+                    <a class="nav-link" [routerLink]="[menu.url]">
+                        <i class="material-icons">{{ menu.icono }}</i>
+                        <p> {{ menu.nombre }} </p>
+                    </a>
+                </li>
+                <li *ngIf="!menu.evento" class="nav-item ">
+                    <a class="nav-link" data-toggle="collapse" href="#componentsCollapse">
+                        <span class="sidebar-mini"> {{ menu.icono }} </span>
+                        <span class="sidebar-normal"> {{ menu.nombre }}
+                                <b class="caret"></b>
+                              </span>
+                    </a>
+                    <div class="collapse" id="componentsCollapse">
+                        <ul class="nav">
+                            <li *ngFor="let subMenu of menu.subMenu" class="nav-item " routerLinkActive='active'>
+                                <a class="nav-link" [routerLink]="[subMenu.url]">
+                                    <span class="sidebar-mini"> {{ subMenu.icono }} </span>
+                                    <span class="sidebar-normal"> {{ subMenu.nombre }} </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
             </div>
-            <li class="nav-item ">
-                <a class="nav-link" data-toggle="collapse" href="#componentsCollapse">
-                    <span class="sidebar-mini"> ADM </span>
-                    <span class="sidebar-normal"> Administración
-                        <b class="caret"></b>
-                      </span>
-                </a>
-                <div class="collapse" id="componentsCollapse">
-                    <ul class="nav">
-                        <li class="nav-item ">
-                            <a class="nav-link" [routerLink]="['/users']">
-                                <span class="sidebar-mini"> U </span>
-                                <span class="sidebar-normal"> Usuarios </span>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link" [routerLink]="['/roles']">
-                                <span class="sidebar-mini"> R </span>
-                                <span class="sidebar-normal"> Roles </span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
         </ul>
     </div>
 </div>
