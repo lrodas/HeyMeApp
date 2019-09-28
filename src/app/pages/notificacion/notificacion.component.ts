@@ -4,6 +4,8 @@ import { NotificacionesService } from '../../services/notificaciones/notificacio
 import { NotificacionResponse } from '../../interfaces/response/notificacionResponse.interface';
 import { NotificacionRequest } from '../../interfaces/request/notificacionRequest.interface';
 import { NgForm } from '@angular/forms';
+import { PERMISOS } from '../../config/config';
+import { Permiso } from '../../models/permiso.model';
 
 @Component({
   selector: 'app-notificacion',
@@ -14,26 +16,38 @@ export class NotificacionComponent implements OnInit {
 
   public filtro: string;
   public notificaciones: Notificacion[];
-  public fechaInicio: Date;
-  public fechaFin: Date;
+  public fechaInicioProgracion: Date;
+  public fechaFinProgracion: Date;
+  public fechaInicioEnvio: Date;
+  public fechaFinEnvio: Date;
+  public imprimir: boolean;
 
   constructor(
     public notificacionService: NotificacionesService
   ) { }
 
   ngOnInit() {
-    this.filtro = 'fecha';
-    this.fechaInicio = new Date();
-    this.obtenerNotificacionesSemana();
+    this.filtro = 'fechaProgramacion';
+    this.fechaInicioProgracion = new Date();
+    this.fechaInicioEnvio = new Date();
+    this.obtenerNotificacionesUltimaSemana();
+    this.cargarPermisos();
   }
 
-  public obtenerNotificacionesSemana() {
+  public cargarPermisos() {
+    const permisos: Permiso[] = JSON.parse(localStorage.getItem(PERMISOS));
+    this.imprimir = permisos.filter( (permiso: Permiso) => {
+      return permiso.opcion.descripcion === 'Notificaciones';
+    })[0].imprimir;
+  }
+
+  public obtenerNotificacionesUltimaSemana() {
 
     const fechaFin = new Date();
     const fechaInicio = new Date() ;
     fechaInicio.setDate(fechaFin.getDate() - 7);
 
-    this.notificacionService.obtenerNotificacionesPorFecha(fechaInicio, fechaFin, 'notificaciones')
+    this.notificacionService.obtenerNotificacionesPorFechaProgramacion(fechaInicio, fechaFin, 'notificaciones')
       .subscribe( (response: NotificacionResponse) => {
         this.notificaciones = response.notificaciones;
       });
@@ -43,10 +57,10 @@ export class NotificacionComponent implements OnInit {
     this.filtro = filtro;
   }
 
-  public filtrarNotificaciones(termino: string) {
+  public filtrarNotificacionesPorUsuario(termino: string) {
 
     if (!termino) {
-      this.obtenerNotificacionesSemana();
+      this.obtenerNotificacionesUltimaSemana();
       return;
     }
 
@@ -56,18 +70,35 @@ export class NotificacionComponent implements OnInit {
       });
   }
 
-  public obtenerNotificacionesPorFecha(form: NgForm) {
+  public obtenerNotificacionPorFechaProgramacion(form: NgForm) {
 
-    this.notificacionService.obtenerNotificacionesPorFecha(this.fechaInicio, this.fechaFin, 'notificaciones')
-      .subscribe( (response: NotificacionResponse) => {
+    this.notificacionService.obtenerNotificacionesPorFechaProgramacion(
+      this.fechaInicioProgracion, this.fechaFinProgracion, 'notificaciones'
+      ).subscribe( (response: NotificacionResponse) => {
         this.notificaciones = response.notificaciones;
       });
   }
 
-  public filtrarNotificacionesPorTitulo(termino: string) {
+  public obtenerNotificacionPorFechaEnvio(form: NgForm) {
+    this.notificacionService.obtenerNotificacionesPorFechaEnvio(
+      this.fechaInicioEnvio, this.fechaFinEnvio, 'notificaciones'
+    ).subscribe( (response: NotificacionResponse) => {
+      this.notificaciones = response.notificaciones;
+    });
+  }
+
+  public obtenerNotificacionesPorEstado(estado: number) {
+    this.notificacionService.obtenerNotificacionesPorEstado(
+      estado, 'notificaciones'
+    ).subscribe( (response: NotificacionResponse) => {
+      this.notificaciones = response.notificaciones;
+    });
+  }
+
+  public obtenerNotificacionPorTitulo(termino: string) {
 
     if (!termino) {
-      this.obtenerNotificacionesSemana();
+      this.obtenerNotificacionesUltimaSemana();
       return;
     }
 

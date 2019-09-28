@@ -1,17 +1,18 @@
-<div class='row'>
-    <div class='col-md-6'>
+<div class='row animated fadeIn'>
+    <div class='col-md-12'>
         <div class='card '>
-            <div class="card-header card-header-rose card-header-text">
-                <div class="card-text">
-                    <h4 class="card-title">Opciones para filtrar</h4>
+            <div class='card-header card-header-rose card-header-icon'>
+                <div class='card-icon'>
+                    <i class='material-icons'>search</i>
                 </div>
+                <h4 class='card-title'></h4>
             </div>
             <div class='card-body '>
                 <div class="row">
                     <div class="col-sm-12 checkbox-radios">
                         <div class="form-check form-check-inline">
                             <label class="form-check-label">
-                                <input class="form-check-input" type="radio" name="filtro" (change)="changeFiltro('fecha')" checked> Fecha de Programacion
+                                <input class="form-check-input" type="radio" name="filtro" (change)="changeFiltro('fechaProgramacion')" checked> Fecha de Programacion
                                 <span class="circle">
                                     <span class="check"></span>
                                 </span>
@@ -19,7 +20,15 @@
                         </div>
                         <div class="form-check form-check-inline">
                             <label class="form-check-label">
-                                <input class="form-check-input" type="radio" name="filtro" (change)="changeFiltro('usuario')"> Usuario
+                                <input class="form-check-input" type="radio" name="filtro" (change)="changeFiltro('fechaEnvio')"> Fecha de Env&iacute;o
+                                <span class="circle">
+                                    <span class="check"></span>
+                                </span>
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="radio" name="filtro" (change)="changeFiltro('estado')"> Estado
                                 <span class="circle">
                                     <span class="check"></span>
                                 </span>
@@ -34,90 +43,96 @@
                             </label>
                         </div>
                     </div>
-
                 </div>
-            </div>
-        </div>
-    </div>
-    <div class='col-md-6'>
-        <div *ngIf="filtro == 'fecha'" class='card '>
-            <div class="card-header card-header-rose card-header-text">
-                <div class="card-text">
-                    <h4 class="card-title">Busqueda por Fecha</h4>
-                </div>
-            </div>
-            <div class='card-body '>
-                <form #f="ngForm" ngNativeValidate (submit)="obtenerNotificacionesPorFecha(f)" class="form-horizontal">
+                <hr>
+                <form *ngIf="filtro === 'fechaProgramacion'" #f="ngForm" ngNativeValidate (submit)="obtenerNotificacionPorFechaProgramacion(f)" class="form-horizontal animated fadeInDown">
                     <div class="row">
-                        <label class="col-sm-2 col-form-label">Inicio</label>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <input type="date" [(ngModel)]="fechaInicio" name="fechaInicio" [max]="fechaFin | date: 'yyyy-MM-dd'" class="form-control" value="10/06/2018">
+                        <label class="col-md-2 col-form-label">Fecha Inicial</label>
+                        <div class="col-md-3">
+                            <div class="form-group has-default">
+                                <input type="date" [(ngModel)]="fechaInicioProgracion" [max]="fechaFinProgracion | date: 'yyyy-MM-dd'" name="fechaInicioProgracion" class="form-control" required>
                             </div>
                         </div>
-                        <label class="col-sm-1 col-form-label">Fin</label>
-                        <div class="col-md-5">
+                        <label class="col-md-2 col-form-label">Fecha Final</label>
+                        <div class="col-md-3">
                             <div class="form-group">
-                                <input type="date" [(ngModel)]="fechaFin" name="fechaFin" class="form-control" [min]="fechaInicio | date: 'yyyy-MM-dd'" value="10/06/2018">
+                                <input type="date" [(ngModel)]="fechaFinProgracion" [min]="fechaInicioProgracion | date: 'yyyy-MM-dd'" name="fechaFinProgracion" class="form-control" required>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12 text-right">
-                            <button type="submit" class="btn btn-primary btn-sm"><i class="material-icons">search</i></button>
+                        <div class="col-md-2 text-right">
+                            <button type='submit' class='btn btn-fill btn-rose'>
+                                    <i class='material-icons'>search</i>
+                            </button>
                         </div>
                     </div>
                 </form>
-            </div>
-        </div>
-        <div *ngIf="filtro == 'usuario'" class='card '>
-            <div class="card-header card-header-rose card-header-text">
-                <div class="card-text">
-                    <h4 class="card-title">Busqueda por Usuario</h4>
-                </div>
-            </div>
-            <div class='card-body '>
-                <div class="row">
-                    <label class="col-md-3 col-form-label">Nombre </label>
-                    <div class="col-md-9">
-                        <div class="form-group has-default bmd-form-group">
-                            <input #usuario (keyup)="filtrarNotificaciones(usuario.value)" type="text" class="form-control">
+                <form *ngIf="filtro === 'fechaEnvio'" #f="ngForm" ngNativeValidate (submit)="obtenerNotificacionPorFechaEnvio(f)" class="form-horizontal animated fadeInDown">
+                    <div class="row">
+                        <label class="col-md-2 col-form-label">Fecha Inicial</label>
+                        <div class="col-md-3">
+                            <div class="form-group has-default">
+                                <input type="date" [(ngModel)]="fechaInicioEnvio" [max]="fechaFinEnvio | date: 'yyyy-MM-dd'" name="fechaInicioEnvio" class="form-control" required>
+                            </div>
+                        </div>
+                        <label class="col-md-2 col-form-label">Fecha Final</label>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <input type="date" [(ngModel)]="fechaFinEnvio" [min]="fechaInicioEnvio | date: 'yyyy-MM-dd'" name="fechaFinEnvio" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-md-2 text-right">
+                            <button type='submit' class='btn btn-fill btn-rose'>
+                                    <i class='material-icons'>search</i>
+                            </button>
                         </div>
                     </div>
+                </form>
+                <div *ngIf="filtro === 'titulo'" class="form-horizontal animated fadeInDown">
+                    <input class="form-control" #input placeholder="Ingrese el titulo de la notificacion" (keyup)="obtenerNotificacionPorTitulo(input.value)" type="text" />
                 </div>
-            </div>
-        </div>
-        <div *ngIf="filtro == 'titulo'" class='card '>
-            <div class="card-header card-header-rose card-header-text">
-                <div class="card-text">
-                    <h4 class="card-title">Busqueda por Titulo</h4>
-                </div>
-            </div>
-            <div class='card-body '>
-                <div class="row">
-                    <label class="col-md-3 col-form-label">Titulo</label>
-                    <div class="col-md-9">
-                        <div class="form-group has-default bmd-form-group">
-                            <input #titulo (keyup)="filtrarNotificacionesPorTitulo(titulo.value)" type="text" class="form-control">
-                        </div>
+                <div *ngIf="filtro === 'estado'" class="col-sm-12 checkbox-radios animated fadeInDown">
+                    <div class="form-check form-check-inline">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="radio" name="filtroEstado" (change)="obtenerNotificacionesPorEstado(1)"> Notificaciones creadas
+                            <span class="circle">
+                                <span class="check"></span>
+                            </span>
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="radio" name="filtroEstado" (change)="obtenerNotificacionesPorEstado(2)"> Notificaciones programadas
+                            <span class="circle">
+                                <span class="check"></span>
+                            </span>
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="radio" name="filtroEstado" (change)="obtenerNotificacionesPorEstado(3)"> Notificaciones Enviadas
+                            <span class="circle">
+                                <span class="check"></span>
+                            </span>
+                        </label>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<div class='row'>
+<div *ngIf="imprimir" class='row animated fadeIn'>
     <div class='col-md-12'>
         <div class='card '>
             <div class='row'>
                 <div class='col-md-6'>
                     <div class="card-header card-header-rose card-header-text">
                         <div class="card-text">
-                            <h4 class="card-title">Notificaciones Registradas (10)</h4>
+                            <h4 *ngIf="notificaciones" class="card-title">Notificaciones ({{ notificaciones.length }})</h4>
+                            <h4 *ngIf="!notificaciones" class="card-title">Notificaciones (0)</h4>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 text-right">
+                <div *ngIf="notificaciones && notificaciones.length > 0" class="col-md-6 text-right">
                     <div class="card-header-rose card-header-text">
                         <div class="card-text">
                             <button class="btn btn-danger btn-just-icon" (click)="exportarNotificaciones('pdf')">
@@ -133,41 +148,31 @@
             <div class='card-body '>
                 <div class="row">
                     <div class="col-md-12">
-                        <table class="table table-shopping">
-                            <thead>
-                                <tr>
-                                    <th class="text-center">#</th>
-                                    <th>Titulo</th>
-                                    <th>Fecha de Envio</th>
-                                    <th>Fecha de Programacion</th>
-                                    <th>Estado</th>
-                                    <th>Usuario</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let notificacion of notificaciones  | paginate: { itemsPerPage: 5, currentPage: page }">
-                                    <td>{{ notificacion.idNotificaciones }}</td>
-                                    <td>{{ notificacion.titulo }}</td>
-                                    <td>{{ notificacion.fechaEnvio | date: 'dd-MM-yyyy' }}</td>
-                                    <td>{{ notificacion.fechaProgramacion| date: 'dd-MM-yyyy' }}</td>
-                                    <td>{{ notificacion.estado.descripcion }}</td>
-                                    <td>{{ notificacion.usuario.nombres + ' ' + notificacion.usuario.apellidos }}</td>
-                                </tr>
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th class="text-center">#</th>
-                                    <th>Color</th>
-                                    <th>Fecha de Envio</th>
-                                    <th>Fecha de Programacion</th>
-                                    <th>Estado</th>
-                                    <th>Usuario</th>
-                                    <th></th>
-                                </tr>
-                            </tfoot>
-                        </table>
-                        <pagination-controls (pageChange)="page = $event"></pagination-controls>
+                        <div *ngIf="notificaciones && notificaciones.length > 0" class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="text-center">#</th>
+                                        <th scope="col">Titulo</th>
+                                        <th scope="col">Fecha de Envio</th>
+                                        <th scope="col">Fecha de Programacion</th>
+                                        <th scope="col">Estado</th>
+                                        <th scope="col">Usuario</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let notificacion of notificaciones  | paginate: { itemsPerPage: 3, currentPage: page }">
+                                        <td data-label="Codigo">{{ notificacion.idNotificaciones }}</td>
+                                        <td data-label="Titulo">{{ notificacion.titulo }}</td>
+                                        <td data-label="Fecha de Envío">{{ notificacion.fechaEnvio | date: 'dd-MM-yyyy' }}</td>
+                                        <td data-label="Feca de programacion">{{ notificacion.fechaProgramacion| date: 'dd-MM-yyyy' }}</td>
+                                        <td data-label="Estado">{{ notificacion.estado.descripcion }}</td>
+                                        <td data-label="Usuario">{{ notificacion.usuario.nombres + ' ' + notificacion.usuario.apellidos }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <pagination-controls (pageChange)="page = $event"></pagination-controls>
+                        </div>
                     </div>
                 </div>
             </div>

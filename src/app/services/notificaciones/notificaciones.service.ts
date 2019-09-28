@@ -105,9 +105,34 @@ export class NotificacionesService {
     });
   }
 
-  public obtenerNotificacionesPorFecha(fechaInicio: Date, fechaFin: Date, pagina: string) {
+  public obtenerNotificacionesPorFechaProgramacion(fechaInicio: Date, fechaFin: Date, pagina: string) {
 
-    const url = URL_SERVICIOS + '/notification/findByDate';
+    const url = URL_SERVICIOS + '/notification/findByProgrammingDate';
+
+    this.estado = null;
+    this.pagina = pagina;
+    this.usuario = '';
+    this.titulo = '';
+    this.fechaInicio = fechaInicio;
+    this.fechaFin = fechaFin;
+
+    const request: NotificacionRequest = {
+      usuario: this.usuarioService.usuario.username,
+      idUsuario: this.usuarioService.usuario.idUsuario,
+      pagina,
+      fechaInicio,
+      fechaFin
+    };
+
+    return this.http.post(url, request, {
+      headers: new HttpHeaders()
+        .set('Authorization', 'Bearer ' + this.usuarioService.token)
+    });
+  }
+
+  public obtenerNotificacionesPorFechaEnvio(fechaInicio: Date, fechaFin: Date, pagina: string) {
+
+    const url = URL_SERVICIOS + '/notification/findByShippingDate';
 
     this.estado = null;
     this.pagina = pagina;
