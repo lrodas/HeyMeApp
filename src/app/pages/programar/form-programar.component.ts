@@ -11,6 +11,7 @@ import { NotificacionesService } from '../../services/notificaciones/notificacio
 import { NotificacionResponse } from '../../interfaces/response/notificacionResponse.interface';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EstadoNotificacion } from '../../models/estadoNotificacion.model';
+import { SPECIAL_KEYS } from '../../config/config';
 
 declare var $: any;
 
@@ -22,8 +23,10 @@ declare var $: any;
 export class FormProgramarComponent implements OnInit {
 
   @ViewChild('selectMedio', {static: false}) calendarComponent; // the #calendar in the template
+  @ViewChild('inputCliente', {static: false}) inputContacto;
   public contactos: Contacto[];
   public notificacion: Notificacion;
+  public termino: string;
 
   constructor(
     private contactoService: ContactoService,
@@ -31,12 +34,42 @@ export class FormProgramarComponent implements OnInit {
     public notificacionService: NotificacionesService,
     public router: Router,
     public activatedRoute: ActivatedRoute
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
-    $('select').selectpicker();
+    // Inicializando variables
+    this.termino = '';
     this.contactos = [];
-    this.notificacion = new Notificacion(null, null, null, null, null, null, null, new Contacto(null, '', ''), new Canal(null, ''));
+    this.notificacion = new Notificacion(null, null, null, null, null, null, null, [], new Canal(null, ''));
+
+
+    // Jquery manipulacion del dom
+    $('select').selectpicker();
+    ($('.tagsinput') as any).tagsinput({itemValue: 'id', itemText: 'text'});
+    $('.bootstrap-tagsinput').addClass('info-badge');
+    $('.bootstrap-tagsinput').addClass('form-input-text');
+    $('.bootstrap-tagsinput input').focus(event => {
+      document.getElementById('myDropdown').classList.toggle('show');
+    });
+    $('.bootstrap-tagsinput input').keyup(event => {
+      this.buscarContacto($('.bootstrap-tagsinput input').val());
+    });
+    $('#inputCliente').on('beforeItemAdd', event => {
+      if (!event.item.id) {
+        event.cancel = true;
+      }
+      $('.bootstrap-tagsinput input').val('');
+    });
+    $('#inputCliente').on('beforeItemRemove', event => {
+      const tag = event.item;
+      if (tag.id) {
+        const index = this.notificacion.destinatarios.findIndex( contacto => {
+          return contacto.idContacto === tag.id;
+        });
+        this.notificacion.destinatarios.splice(index, 1);
+      }
+   });
 
     this.activatedRoute.params.subscribe( params => {
       // tslint:disable-next-line: no-string-literal
@@ -52,14 +85,6 @@ export class FormProgramarComponent implements OnInit {
       });
   }
 
-  public showAutoComplete(status: boolean) {
-    if (status) {
-      document.getElementById('myDropdown').classList.toggle('show');
-    } else {
-      document.getElementById('myDropdown').classList.remove('show');
-    }
-  }
-
   public buscarContacto(nombre: string) {
 
     if (nombre.trim().length <= 0) {
@@ -71,8 +96,13 @@ export class FormProgramarComponent implements OnInit {
   }
 
   public seleccionarContacto(contacto: Contacto) {
-    this.notificacion.destinatario = contacto;
 
+    if (!this.notificacion.destinatarios) {
+      this.notificacion.destinatarios = [];
+    }
+    this.notificacion.destinatarios.push(contacto);
+
+    $('#inputCliente').tagsinput('add', { id: contacto.idContacto, text: contacto.nombre });
     document.getElementById('myDropdown').classList.remove('show');
   }
 
@@ -94,13 +124,10 @@ export class FormProgramarComponent implements OnInit {
 
   public guardarBorrador() {
 
-
-
     this.notificacion.estado = new EstadoNotificacion(1, 'Creada');
 
     this.notificacionService.guardarNotificacion(this.notificacion, 'scheduleForm')
       .subscribe( (response: Notificacion) => {
-        console.log(response);
         if (response) {
           this.router.navigate(['/notifications']);
         }

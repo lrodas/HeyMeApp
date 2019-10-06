@@ -38,7 +38,6 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit() {
     init_plugin();
-
     this.usuario = JSON.parse(localStorage.getItem(USUARIO_STORAGE));
     this.obtenerPermisos();
   }
@@ -54,33 +53,41 @@ export class SidebarComponent implements OnInit {
         if (response.indicador === 'SUCCESS') {
 
           for (const permiso of response.permisos) {
-            if (permiso.opcion.orden.length === 1) {
-              this.menus.push(
-                {
-                  icono: permiso.opcion.icono,
-                  nombre: permiso.opcion.descripcion,
-                  evento: permiso.opcion.evento,
-                  orden: permiso.opcion.orden,
-                  url: permiso.opcion.url
-                }
-              );
-            } else {
-              const idMenu = permiso.opcion.orden.substr(0, 1);
-              const menuList = this.menus.find((menu) => {
-                return menu.orden === idMenu;
-              });
-              if (!menuList.subMenu) {
-                menuList.subMenu = new Array();
-              }
 
-              menuList.subMenu.push(
-                {
-                  icono: permiso.opcion.icono,
-                  url: permiso.opcion.url,
-                  evento: permiso.opcion.evento,
-                  nombre: permiso.opcion.descripcion
+            const crearNotificacion = permiso.opcion.descripcion;
+
+            if (crearNotificacion === 'Programar notificacion' && !permiso.alta) {
+              continue;
+            } else {
+              if (permiso.opcion.orden.length === 1) {
+
+                this.menus.push(
+                  {
+                    icono: permiso.opcion.icono,
+                    nombre: permiso.opcion.descripcion,
+                    evento: permiso.opcion.evento,
+                    orden: permiso.opcion.orden,
+                    url: permiso.opcion.url
+                  }
+                );
+              } else {
+                const idMenu = permiso.opcion.orden.substr(0, 1);
+                const menuList = this.menus.find((menu) => {
+                  return menu.orden === idMenu;
+                });
+                if (!menuList.subMenu) {
+                  menuList.subMenu = new Array();
                 }
-              );
+
+                menuList.subMenu.push(
+                  {
+                    icono: permiso.opcion.icono,
+                    url: permiso.opcion.url,
+                    evento: permiso.opcion.evento,
+                    nombre: permiso.opcion.descripcion
+                  }
+                );
+              }
             }
           }
           localStorage.setItem(PERMISOS, JSON.stringify(response.permisos));

@@ -12,7 +12,7 @@ export class Notificacion {
         public estado?: EstadoNotificacion,
         public usuario?: Usuario,
         public notificacion?: string,
-        public destinatario?: Contacto,
+        public destinatarios?: Contacto[],
         public canal?: Canal
     ) {}
 }
