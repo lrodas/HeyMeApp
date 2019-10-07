@@ -37,7 +37,7 @@ export class ContactoComponent implements OnInit {
 
     this.activatedRoute.params.subscribe( params => {
       const id = params['id'];
-      if (id !== 'nuevo') {
+      if (id !== 'new') {
         this.obtenerContacto(id);
       }
     });

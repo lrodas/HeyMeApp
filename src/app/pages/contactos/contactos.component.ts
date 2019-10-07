@@ -3,6 +3,8 @@ import { Contacto } from '../../models/contacto.model';
 import { ContactoService } from '../../services/contacto/contacto.service';
 import { ContactoResponse } from '../../interfaces/response/contactoResponse.interface';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Permiso } from '../../models/permiso.model';
+import { PERMISOS } from '../../config/config';
 
 @Component({
   selector: 'app-contactos',
@@ -16,6 +18,7 @@ export class ContactosComponent implements OnInit {
   public parametros: FormGroup;
   public errorFechas: boolean;
   public page: number;
+  public permisos: Permiso;
 
   constructor(
     private contactoService: ContactoService
@@ -30,10 +33,18 @@ export class ContactosComponent implements OnInit {
       fechaInicio: new FormControl(null, Validators.required),
       fechaFin: new FormControl(null, Validators.required)
     });
+    this.cargarPermisos();
   }
 
   public changeFiltro(filtro: string) {
     this.filtro = filtro;
+  }
+
+  public cargarPermisos() {
+    const permisos: Permiso[] = JSON.parse(localStorage.getItem(PERMISOS));
+    this.permisos = permisos.filter( (permiso: Permiso) => {
+      return permiso.opcion.descripcion === 'Lista de Contactos';
+    })[0];
   }
 
   private obtenerContactos() {
@@ -46,6 +57,7 @@ export class ContactosComponent implements OnInit {
   public buscarContato(nombre: string) {
 
     if (nombre.trim().length <= 0) {
+      this.obtenerContactos();
       return;
     }
 
