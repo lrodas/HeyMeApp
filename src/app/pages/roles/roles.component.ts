@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { RoleService } from '../../services/role/role.service';
 import { Role } from '../../models/role.model';
 import { RoleResponse } from '../../interfaces/response/roleResponse.interface';
+import { Permiso } from '../../models/permiso.model';
+import { PERMISOS } from '../../config/config';
 
 @Component({
   selector: 'app-roles',
@@ -11,6 +13,7 @@ import { RoleResponse } from '../../interfaces/response/roleResponse.interface';
 export class RolesComponent implements OnInit {
 
   public roles: Role[];
+  public permisos: Permiso;
 
   constructor(
     private roleService: RoleService
@@ -18,6 +21,24 @@ export class RolesComponent implements OnInit {
 
   ngOnInit() {
     this.obtenerRoles();
+    this.cargarPermisos();
+  }
+
+  public cambiarEstado(id: number, estado: boolean) {
+    this.roleService.cambiarEstado('roles', id, estado)
+      .subscribe( (response: Role) => {
+        if (response) {
+          const index: number = this.roles.findIndex(item => item.idRole == response.idRole);
+          this.roles[index] = response;
+        }
+      });
+  }
+
+  public cargarPermisos() {
+    const permisos: Permiso[] = JSON.parse(localStorage.getItem(PERMISOS));
+    this.permisos = permisos.filter( (permiso: Permiso) => {
+      return permiso.opcion.descripcion === 'Roles';
+    })[0];
   }
 
   public obtenerRoles() {

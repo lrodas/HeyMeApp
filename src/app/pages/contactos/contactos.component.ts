@@ -73,7 +73,6 @@ export class ContactosComponent implements OnInit {
     const fechaFin: Date = new Date(this.parametros.value.fechaFin);
 
     if (fechaInicio.getTime() > fechaFin.getTime()) {
-      console.log(this.parametros);
       this.errorFechas = true;
       return;
     } else {

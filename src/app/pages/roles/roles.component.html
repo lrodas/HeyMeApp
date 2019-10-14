@@ -18,42 +18,50 @@
 <div class='row'>
     <div class='col-md-12'>
         <div class='card '>
-            <div class='card-header card-header-rose card-header-icon'>
-                <div class='card-icon'>
-                    <i class='material-icons'>assignment_ind</i>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class='card-header card-header-rose card-header-icon'>
+                        <div class='card-icon'>
+                            <i class='material-icons'>assignment_ind</i>
+                        </div>
+                    </div>
                 </div>
-                <h4 class='card-title'></h4>
+                <div *ngIf="permisos.alta" class="col-md-6 text-right">
+                    <div class='card-header card-header-rose card-header-icon'>
+                        <div class='card-text'>
+                            <i [routerLink]="['/role', 'new']" class='material-icons pointer'>add</i>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class='card-body '>
-                <div class="text-right">
-                    <button class="btn btn-just-icon btn-round btn-success" [routerLink]="['/role', 'nuevo']">
-                        <i class="fa fa-plus"> </i>
-                    </button>
-                </div>
-                <div class="table-responsive">
+                <div *ngIf="permisos.imprimir" class="table-responsive">
                     <table class="table">
                         <thead>
                             <tr>
-                                <th class="text-center">#</th>
-                                <th>Nombre</th>
-                                <th>Codigo</th>
-                                <th>Estado</th>
-                                <th class="text-center">Actions</th>
+                                <th scope="col">#</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Codigo</th>
+                                <th scope="col">Estado</th>
+                                <th scope="col">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let role of roles | paginate: { itemsPerPage: 5, currentPage: page }">
-                                <td class="text-center">{{ role.idRole }}</td>
-                                <td>{{ role.descripcion }}</td>
-                                <td>{{ role.nombre }}</td>
-                                <td *ngIf="role.estado">Activo</td>
-                                <td *ngIf="!role.estado">Inactivo</td>
-                                <td class="td-actions text-center">
-                                    <button type="button" rel="tooltip" title="editar" [routerLink]="['/role', role.idRole]" class="btn btn-success btn-link">
+                                <td data-label="#">{{ role.idRole }}</td>
+                                <td data-label="Nombre">{{ role.descripcion }}</td>
+                                <td data-label="Codigo">{{ role.nombre }}</td>
+                                <td data-label="Estado" *ngIf="role.estado">Activo</td>
+                                <td data-label="Estado" *ngIf="!role.estado">Inactivo</td>
+                                <td data-label="Acciones" class="td-actions">
+                                    <button *ngIf="permisos.cambio" type="button" rel="tooltip" title="editar" [routerLink]="['/role', role.idRole]" class="btn btn-success btn-link">
                                         <i class="material-icons">edit</i>
                                     </button>
-                                    <button type="button" rel="tooltip" title="Eliminar" class="btn btn-danger btn-link">
+                                    <button *ngIf="permisos.baja && role.estado" (click)="cambiarEstado(role.idRole, false)" type="button" rel="tooltip" title="Desactivar" class="btn btn-danger btn-link">
                                         <i class="material-icons">close</i>
+                                    </button>
+                                    <button *ngIf="permisos.baja && !role.estado" (click)="cambiarEstado(role.idRole, true)" type="button" rel="tooltip" title="Activar" class="btn btn-success btn-link">
+                                        <i class="material-icons">check</i>
                                     </button>
                                 </td>
                             </tr>

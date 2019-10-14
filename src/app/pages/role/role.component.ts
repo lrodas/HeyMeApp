@@ -8,6 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RoleService } from '../../services/role/role.service';
 import { RoleResponse } from '../../interfaces/response/roleResponse.interface';
 import { NgForm } from '@angular/forms';
+import { PERMISOS } from '../../config/config';
 
 @Component({
   selector: 'app-role',
@@ -34,10 +35,21 @@ export class RoleComponent implements OnInit {
     this.activatedRoute.params.subscribe( params => {
       const id = params['id'];
 
-      if (id !== 'nuevo') {
+      if (id !== 'new' && this.cargarPermisos().cambio) {
         this.obtenerRolePorId(id);
+      } else if (id === 'new' && !this.cargarPermisos().alta) {
+        this.router.navigate(['/roles']);
+      } else if (id !== 'new' && !this.cargarPermisos().cambio) {
+        this.router.navigate(['/roles']);
       }
     });
+  }
+
+  public cargarPermisos() {
+    const permisos: Permiso[] = JSON.parse(localStorage.getItem(PERMISOS));
+    return permisos.filter( (permiso: Permiso) => {
+      return permiso.opcion.descripcion === 'Roles';
+    })[0];
   }
 
   public guardarRole(form: NgForm) {
@@ -73,7 +85,6 @@ export class RoleComponent implements OnInit {
     this.roleService.obtenerRolePorId(idRole, 'Role')
       .subscribe( (response: RoleResponse) => {
         if (response.indicador === 'SUCCESS') {
-
           if (this.permisos) {
             this.permisos.forEach( permiso => {
               const idOpcion = permiso.opcion.idOpcion;
@@ -89,10 +100,14 @@ export class RoleComponent implements OnInit {
                 permiso.idPermiso = permisoFiltrado.idPermiso;
               }
             });
-
             this.role = response.role;
           }
+        } else {
+          this.router.navigate(['/roles']);  
         }
+      }, error => {
+        console.log(error);
+        this.router.navigate(['/roles']);
       });
   }
 

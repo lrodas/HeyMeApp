@@ -3,11 +3,11 @@ import { UsuarioService } from '../usuario-service/usuario.service';
 import { URL_SERVICIOS } from '../../config/config';
 import { RoleRequest } from '../../interfaces/request/roleRequest.interface';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import Swal from 'sweetalert2';
 import { map, catchError } from 'rxjs/operators';
 import { RoleResponse } from '../../interfaces/response/roleResponse.interface';
 import { of } from 'rxjs';
 import { Role } from '../../models/role.model';
+import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +18,52 @@ export class RoleService {
     public usuarioService: UsuarioService,
     public http: HttpClient
   ) { }
+
+  public cambiarEstado(pagina: string, id: number, estado: boolean) {
+
+    Swal.fire({
+      allowOutsideClick: false,
+      type: 'info',
+      text: 'Espere por favor',
+      showConfirmButton: false
+    });
+
+    Swal.showLoading();
+
+    const url = URL_SERVICIOS + '/role/changeStatus';
+
+    const request: RoleRequest = {
+      usuario: this.usuarioService.usuario.username,
+      idUsuario: this.usuarioService.usuario.idUsuario,
+      pagina,
+      role: new Role(id, '', '', estado, null)
+    };
+
+    return this.http.post(url, request, {
+      headers: new HttpHeaders()
+        .set('Authorization', 'Bearer ' + this.usuarioService.token)
+    }).pipe(
+      map( (roleResponse: RoleResponse) => {
+        if (roleResponse.indicador === 'SUCCESS') {
+          
+          Swal.fire({
+            type: 'success',
+            title: 'Role actualizado exitosamente',
+            text: `El role ${ roleResponse.role.descripcion } fue actualizado con exito`,
+            showConfirmButton: false,
+            timer: 3000
+          });
+
+          return roleResponse.role;
+        } else {
+          return false;
+        }
+      }),
+      catchError( error => {
+        return of([error]);
+      })
+    );
+  }
 
   public obtenerRoles(pagina: string) {
 
