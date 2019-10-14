@@ -3,7 +3,7 @@ import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { map, catchError } from 'rxjs/operators';
 
-import { URL_SERVICIOS, USUARIO_STORAGE, TOKEN_STORAGE, ID_USUARIO_STORAGE } from '../../config/config';
+import { URL_SERVICIOS, USUARIO_STORAGE, TOKEN_STORAGE, ID_USUARIO_STORAGE, PERMISOS } from '../../config/config';
 
 import { SubirArchivoService } from '../subirArchivo/subir-archivo.service';
 
@@ -47,6 +47,7 @@ export class UsuarioService {
     localStorage.removeItem(TOKEN_STORAGE);
     localStorage.removeItem(USUARIO_STORAGE);
     localStorage.removeItem(ID_USUARIO_STORAGE);
+    localStorage.removeItem(PERMISOS);
 
     this.router.navigate(['/login']);
   }

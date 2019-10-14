@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { PlantillasService } from '../../services/plantillas/plantillas.service';
 import { PlantillaResponse } from '../../interfaces/response/plantillaResponse.interface';
 import { Plantilla } from '../../models/plantilla.model';
+import { Permiso } from '../../models/permiso.model';
+import { PERMISOS } from '../../config/config';
 
 @Component({
   selector: 'app-plantillas',
@@ -11,6 +13,7 @@ import { Plantilla } from '../../models/plantilla.model';
 export class PlantillasComponent implements OnInit {
 
   public plantillas: Plantilla[];
+  public permisos: Permiso;
 
   constructor(
     private plantillasService: PlantillasService
@@ -18,6 +21,14 @@ export class PlantillasComponent implements OnInit {
 
   ngOnInit() {
     this.cargarPlantillas();
+    this.cargarPermisos();
+  }
+
+  public cargarPermisos() {
+    const permisos: Permiso[] = JSON.parse(localStorage.getItem(PERMISOS));
+    this.permisos = permisos.filter( (permiso: Permiso) => {
+      return permiso.opcion.descripcion === 'Plantillas de notificaciones';
+    })[0];
   }
 
   private cargarPlantillas() {
