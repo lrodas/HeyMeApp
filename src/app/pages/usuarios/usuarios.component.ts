@@ -4,6 +4,8 @@ import { UsuarioResponse } from '../../interfaces/response/usuarioResponse.inter
 import { Usuario } from '../../models/usuario.model';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { NgForm } from '@angular/forms';
+import { Permiso } from '../../models/permiso.model';
+import { PERMISOS } from '../../config/config';
 
 @Component({
   selector: 'app-usuarios',
@@ -17,6 +19,7 @@ export class UsuariosComponent implements OnInit {
   public fechaInicio: Date;
   public fechaFin: Date;
   public fechaActual: Date;
+  public permisos: Permiso;
 
   constructor(
     private usuarioService: UsuarioService
@@ -27,10 +30,18 @@ export class UsuariosComponent implements OnInit {
     this.obtenerUsuarios();
     this.fechaActual = new Date();
     this.fechaInicio = new Date();
+    this.cargarPermisos();
   }
 
   changeFiltro(filtro: string) {
     this.filtro = filtro;
+  }
+
+  public cargarPermisos() {
+    const permisos: Permiso[] = JSON.parse(localStorage.getItem(PERMISOS));
+    this.permisos = permisos.filter( (permiso: Permiso) => {
+      return permiso.opcion.descripcion === 'Usuarios';
+    })[0];
   }
 
   public obtenerUsuarios() {
@@ -73,9 +84,10 @@ export class UsuariosComponent implements OnInit {
     const usuario: Usuario = new Usuario(idUsuario, '', '', '', null, null, null, null, null, null, estado);
 
     this.usuarioService.cambiarEstado(usuario, 'Usuarios')
-      .subscribe( (response: UsuarioResponse) => {
-        if (response.indicador === 'SUCCESS') {
-          this.obtenerUsuarios();
+      .subscribe( (response: Usuario) => {
+        if (response) {
+          const index: number = this.usuarios.findIndex(item => item.idUsuario == response.idUsuario);
+          this.usuarios[index] = response;
         }
       });
   }

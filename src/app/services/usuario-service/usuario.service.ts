@@ -279,7 +279,7 @@ export class UsuarioService {
           text: 'Estado cambiado exitosamente'
         });
         Swal.close();
-        return usuarioResponse;
+        return usuarioResponse.usuario;
       }),
       catchError( error => {
         Swal.fire({
