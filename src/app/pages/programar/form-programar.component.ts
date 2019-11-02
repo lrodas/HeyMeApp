@@ -73,7 +73,7 @@ export class FormProgramarComponent implements OnInit {
 
     this.activatedRoute.params.subscribe( params => {
       // tslint:disable-next-line: no-string-literal
-      const fecha = new Date(params['date']);
+      const fecha = new Date(params['date'].split('-')[0], Number(params['date'].split('-')[1]) - 1, params['date'].split('-')[2]);
       this.notificacion.fechaEnvio = fecha;
 
     });
@@ -112,7 +112,7 @@ export class FormProgramarComponent implements OnInit {
       return;
     }
 
-    this.notificacion.estado = new EstadoNotificacion(2, 'Programada');
+    this.notificacion.estado = new EstadoNotificacion(1, 'Programada');
 
     this.notificacionService.guardarNotificacion(this.notificacion, 'scheduleForm')
       .subscribe( (response: Notificacion) => {

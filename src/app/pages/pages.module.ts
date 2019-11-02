@@ -24,6 +24,7 @@ import { BorradoresComponent } from './borradores/borradores.component';
 import { UsuariosComponent } from './usuarios/usuarios.component';
 import { RolesComponent } from './roles/roles.component';
 import { RoleComponent } from './role/role.component'; // <-- import the module
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 @NgModule({
     declarations: [
@@ -55,6 +56,7 @@ import { RoleComponent } from './role/role.component'; // <-- import the module
         PAGES_ROUTES,
         FullCalendarModule, // for FullCalendar!,
         ReactiveFormsModule,
+        NgxChartsModule,
         NgxPaginationModule // <-- include it in your app module
     ]
 })

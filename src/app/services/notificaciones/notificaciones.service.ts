@@ -28,6 +28,40 @@ export class NotificacionesService {
     private usuarioService: UsuarioService
   ) { }
 
+  public obtenerPrecioNotificacionesPorMes(pagina: string) {
+
+    const url = URL_SERVICIOS + '/notification/retrieveNotificationPricePerMonth';
+
+    const request: NotificacionRequest = {
+      usuario: this.usuarioService.usuario.username,
+      idUsuario: this.usuarioService.usuario.idUsuario,
+      pagina,
+      notificacion: new Notificacion()
+    };
+
+    return this.http.post(url, request, {
+      headers: new HttpHeaders()
+        .set('Authorization', 'Bearer ' + this.usuarioService.token)
+    });
+  }
+
+  public obtenerConteoNotificacionesPorMes(pagina: string) {
+
+    const url = URL_SERVICIOS + '/notification/retrieveNotificationCountPerMonth';
+
+    const request: NotificacionRequest = {
+      usuario: this.usuarioService.usuario.username,
+      idUsuario: this.usuarioService.usuario.idUsuario,
+      pagina,
+      notificacion: new Notificacion()
+    };
+
+    return this.http.post(url, request, {
+      headers: new HttpHeaders()
+        .set('Authorization', 'Bearer ' + this.usuarioService.token)
+    });
+  }
+
   public guardarNotificacion(notificacion: Notificacion, pagina: string) {
 
     const url = URL_SERVICIOS + '/notification/save';
@@ -105,7 +139,7 @@ export class NotificacionesService {
     });
   }
 
-  public obtenerNotificacionesPorFechaProgramacion(fechaInicio: Date, fechaFin: Date, pagina: string) {
+  public obtenerNotificacionesPorFechaProgramacion(fechaInicio: String, fechaFin: String, pagina: string) {
 
     const url = URL_SERVICIOS + '/notification/findByProgrammingDate';
 
@@ -113,15 +147,15 @@ export class NotificacionesService {
     this.pagina = pagina;
     this.usuario = '';
     this.titulo = '';
-    this.fechaInicio = fechaInicio;
-    this.fechaFin = fechaFin;
-
+    this.fechaInicio = new Date(Number(fechaInicio.split('-')[0]), Number(fechaInicio.split('-')[1]) - 1, Number(fechaInicio.split('-')[2]));
+    this.fechaFin = new Date(Number(fechaFin.split('-')[0]), Number(fechaFin.split('-')[1]) - 1, Number(fechaFin.split('-')[2]));
+    console.log('fechaInicio: ', this.fechaInicio, 'fechaFin: ', this.fechaFin);
     const request: NotificacionRequest = {
       usuario: this.usuarioService.usuario.username,
       idUsuario: this.usuarioService.usuario.idUsuario,
       pagina,
-      fechaInicio,
-      fechaFin
+      fechaInicio: this.fechaInicio,
+      fechaFin: this.fechaFin
     };
 
     return this.http.post(url, request, {
@@ -130,7 +164,7 @@ export class NotificacionesService {
     });
   }
 
-  public obtenerNotificacionesPorFechaEnvio(fechaInicio: Date, fechaFin: Date, pagina: string) {
+  public obtenerNotificacionesPorFechaEnvio(fechaInicio: String, fechaFin: String, pagina: string) {
 
     const url = URL_SERVICIOS + '/notification/findByShippingDate';
 
@@ -138,15 +172,15 @@ export class NotificacionesService {
     this.pagina = pagina;
     this.usuario = '';
     this.titulo = '';
-    this.fechaInicio = fechaInicio;
-    this.fechaFin = fechaFin;
+    this.fechaInicio = new Date(Number(fechaInicio.split('-')[0]), Number(fechaInicio.split('-')[1]) - 1, Number(fechaInicio.split('-')[2]));
+    this.fechaFin = new Date(Number(fechaFin.split('-')[0]), Number(fechaFin.split('-')[1]) - 1, Number(fechaFin.split('-')[2]));
 
     const request: NotificacionRequest = {
       usuario: this.usuarioService.usuario.username,
       idUsuario: this.usuarioService.usuario.idUsuario,
       pagina,
-      fechaInicio,
-      fechaFin
+      fechaInicio: this.fechaInicio,
+      fechaFin: this.fechaFin
     };
 
     return this.http.post(url, request, {

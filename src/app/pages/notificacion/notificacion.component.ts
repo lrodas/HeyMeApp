@@ -16,10 +16,10 @@ export class NotificacionComponent implements OnInit {
 
   public filtro: string;
   public notificaciones: Notificacion[];
-  public fechaInicioProgracion: Date;
-  public fechaFinProgracion: Date;
-  public fechaInicioEnvio: Date;
-  public fechaFinEnvio: Date;
+  public fechaInicioProgracion: String;
+  public fechaFinProgracion: String;
+  public fechaInicioEnvio: String;
+  public fechaFinEnvio: String;
   public imprimir: boolean;
 
   constructor(
@@ -28,8 +28,8 @@ export class NotificacionComponent implements OnInit {
 
   ngOnInit() {
     this.filtro = 'fechaProgramacion';
-    this.fechaInicioProgracion = new Date();
-    this.fechaInicioEnvio = new Date();
+    this.fechaInicioProgracion = new Date().getFullYear() + '-' + new Date().getMonth() + '-' + new Date().getDate();
+    this.fechaInicioEnvio = new Date().getFullYear() + '-' + new Date().getMonth() + '-' + new Date().getDate();
     this.obtenerNotificacionesUltimaSemana();
     this.cargarPermisos();
   }
@@ -47,7 +47,9 @@ export class NotificacionComponent implements OnInit {
     const fechaInicio = new Date() ;
     fechaInicio.setDate(fechaFin.getDate() - 7);
 
-    this.notificacionService.obtenerNotificacionesPorFechaProgramacion(fechaInicio, fechaFin, 'notificaciones')
+    this.notificacionService.obtenerNotificacionesPorFechaProgramacion(
+      fechaInicio.getFullYear() + '-' + (fechaInicio.getMonth() + 1) + '-' + fechaInicio.getDate(),
+      fechaFin.getFullYear() + '-' + (fechaFin.getMonth() + 1) + '-' + fechaFin.getDate(), 'notificaciones')
       .subscribe( (response: NotificacionResponse) => {
         this.notificaciones = response.notificaciones;
       });

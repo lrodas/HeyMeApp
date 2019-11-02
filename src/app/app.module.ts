@@ -14,6 +14,7 @@ import { PagesComponent } from './pages/pages.component';
 import { SharedModule } from './shared/shared.module';
 import { ModalPlantillasComponent } from './components/modal-plantillas/modal-plantillas.component';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     HttpClientModule,
     APP_ROUTES,
     RouterModule,
