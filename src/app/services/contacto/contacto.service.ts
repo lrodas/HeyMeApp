@@ -133,9 +133,7 @@ export class ContactoService {
       fechaInicio,
       fechaFin
     };
-
-    console.log(contactoRequest);
-
+    
     return this.http.post(url, contactoRequest, {
       headers: new HttpHeaders()
         .set('Authorization', 'Bearer ' + this.usuarioService.token)
