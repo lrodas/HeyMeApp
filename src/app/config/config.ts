@@ -1,4 +1,5 @@
-export const URL_SERVICIOS = 'http://localhost:8080/api/v1';
+import { environment } from '../../environments/environment';
+export const URL_SERVICIOS = environment.url;
 
 export const USUARIO_STORAGE = 'usuario';
 export const TOKEN_STORAGE = 'token';

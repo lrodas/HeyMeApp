@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NotificacionesService } from '../../services/notificaciones/notificaciones.service';
 import { GraficaBarrasResponse } from 'src/app/interfaces/response/graficaBarrasResponse.interface';
-import { DatosNotificacionPrecioResponse } from 'src/app/interfaces/response/DatosNotificacionPrecioResponse.interface';
+import { DatosNotificacionPrecioResponse } from 'src/app/interfaces/response/datosNotificacionPrecioResponse.interface';
+import { PaqueteConsumoResponse } from '../../interfaces/response/paqueteConsumoResponse.interface';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,9 +11,10 @@ import { DatosNotificacionPrecioResponse } from 'src/app/interfaces/response/Dat
 })
 export class DashboardComponent implements OnInit {
 
-  public precioSms: number;
-  public precioWhatsapp: number;
-  public precioMail: number;
+  public restanteSms: number;
+  public restanteWhatsapp: number;
+  public restanteMail: number;
+  public mailIlimitado: Boolean;
   single: any[] = [];
 
   // options
@@ -36,11 +38,12 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
 
-    this.precioWhatsapp = 0;
-    this.precioMail = 0;
-    this.precioSms = 0;
+    this.restanteWhatsapp = 0;
+    this.restanteMail = 0;
+    this.mailIlimitado = false;
+    this.restanteSms = 0;
     this.obtenerConteoNotificacionesPorMes();
-    this.obtenerPrecioNotificacionesPorMes();
+    this.obtenerNotificacionRestantes();
   }
 
   public obtenerConteoNotificacionesPorMes() {
@@ -56,14 +59,34 @@ export class DashboardComponent implements OnInit {
         for (const dato of response.datos) {
           switch(dato.canal) {
             case 'MAIL':
-              this.precioMail = dato.precio;
+              this.restanteMail = dato.precio;
               break;
             case 'SMS':
-              this.precioSms = dato.precio;
+              this.restanteSms = dato.precio;
               break;
             case 'WHATSAPP':
-              this.precioWhatsapp = dato.precio;
+              this.restanteWhatsapp = dato.precio;
               break;
+          }
+        }
+      });
+  }
+
+  public obtenerNotificacionRestantes() {
+
+    const fechaFin = new Date(new Date().getFullYear(), (new Date().getMonth() + 1), 0);
+    this.notificacionService.obtenerNotificacionesRestantes('Dashboard', fechaFin)
+      .subscribe( (response: PaqueteConsumoResponse) => {
+        if (response.indicador === 'SUCCESS') {
+          this.restanteSms = response.paqueteActivo.cantidadMensajes;
+          this.restanteWhatsapp = response.paqueteActivo.cantidadWhatsapp;
+
+          if (response.paqueteActivo.cantidadCorreo === -1) {
+            this.restanteMail = 0;
+            this.mailIlimitado = true;
+          } else {
+            this.mailIlimitado = false;
+            this.restanteMail = response.paqueteActivo.cantidadCorreo;
           }
         }
       });

@@ -5,7 +5,7 @@ import { Canal } from './canal.model';
 
 export class Notificacion {
     constructor(
-        public idNotificacion?: number,
+        public idNotificaciones?: number,
         public titulo?: string,
         public fechaEnvio?: Date,
         public fechaProgramacion?: Date,

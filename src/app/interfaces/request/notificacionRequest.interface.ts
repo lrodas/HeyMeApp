@@ -7,4 +7,5 @@ export interface NotificacionRequest {
     notificacion?: Notificacion;
     fechaInicio?: Date;
     fechaFin?: Date;
+    tipo?: number;
 }

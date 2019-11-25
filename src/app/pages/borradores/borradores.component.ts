@@ -13,6 +13,7 @@ export class BorradoresComponent implements OnInit {
   public filtro: string;
   public errorFechas: boolean;
   public notificaciones: Notificacion[];
+  public page: number;
 
   constructor(
     private notificacionesService: NotificacionesService
@@ -23,6 +24,7 @@ export class BorradoresComponent implements OnInit {
   ngOnInit() {
     this.filtro = 'fecha';
     this.errorFechas = false;
+    this.page = 1;
   }
 
   public changeFiltro(filtro: string) {

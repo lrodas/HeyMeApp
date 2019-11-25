@@ -21,6 +21,7 @@ export class ModalPlantillaService {
   }
 
   public mostrarModal() {
+    this.obtenerPlantillasActivas();
     this.oculto = '';
   }
 

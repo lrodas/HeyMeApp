@@ -28,6 +28,24 @@ export class NotificacionesService {
     private usuarioService: UsuarioService
   ) { }
 
+  public obtenerNotificacionesRestantes(pagina: string, fechaFin: Date) {
+
+    const url = URL_SERVICIOS + '/notification/retrieveRemainingNotifications';
+
+    const request: NotificacionRequest = {
+      usuario: this.usuarioService.usuario.username,
+      idUsuario: this.usuarioService.usuario.idUsuario,
+      pagina,
+      fechaFin,
+      tipo: 1
+    };
+    console.log(JSON.stringify(request));
+    return this.http.post(url, request, {
+      headers: new HttpHeaders()
+        .set('Authorization', 'Bearer ' + this.usuarioService.token)
+    });
+  }
+
   public obtenerPrecioNotificacionesPorMes(pagina: string) {
 
     const url = URL_SERVICIOS + '/notification/retrieveNotificationPricePerMonth';
@@ -136,7 +154,21 @@ export class NotificacionesService {
     return this.http.post(url, request, {
       headers: new HttpHeaders()
         .set('Authorization', 'Bearer ' + this.usuarioService.token)
-    });
+    }).pipe(
+      map( (response: NotificacionResponse) => {
+
+        response.notificaciones.sort((a: Notificacion, b: Notificacion) => {
+          if (a.idNotificaciones < b.idNotificaciones) {
+            return 1;
+          } else if (a.idNotificaciones > b.idNotificaciones) {
+            return -1;
+          } else {
+            return 0;
+          }
+        });
+        return response;
+      })
+    );
   }
 
   public obtenerNotificacionesPorFechaProgramacion(fechaInicio: String, fechaFin: String, pagina: string) {
@@ -149,7 +181,6 @@ export class NotificacionesService {
     this.titulo = '';
     this.fechaInicio = new Date(Number(fechaInicio.split('-')[0]), Number(fechaInicio.split('-')[1]) - 1, Number(fechaInicio.split('-')[2]));
     this.fechaFin = new Date(Number(fechaFin.split('-')[0]), Number(fechaFin.split('-')[1]) - 1, Number(fechaFin.split('-')[2]));
-    console.log('fechaInicio: ', this.fechaInicio, 'fechaFin: ', this.fechaFin);
     const request: NotificacionRequest = {
       usuario: this.usuarioService.usuario.username,
       idUsuario: this.usuarioService.usuario.idUsuario,
@@ -161,7 +192,21 @@ export class NotificacionesService {
     return this.http.post(url, request, {
       headers: new HttpHeaders()
         .set('Authorization', 'Bearer ' + this.usuarioService.token)
-    });
+    }).pipe(
+      map( (response: NotificacionResponse) => {
+
+        response.notificaciones.sort((a: Notificacion, b: Notificacion) => {
+          if (a.idNotificaciones < b.idNotificaciones) {
+            return 1;
+          } else if (a.idNotificaciones > b.idNotificaciones) {
+            return -1;
+          } else {
+            return 0;
+          }
+        });
+        return response;
+      })
+    );
   }
 
   public obtenerNotificacionesPorFechaEnvio(fechaInicio: String, fechaFin: String, pagina: string) {
@@ -186,7 +231,21 @@ export class NotificacionesService {
     return this.http.post(url, request, {
       headers: new HttpHeaders()
         .set('Authorization', 'Bearer ' + this.usuarioService.token)
-    });
+    }).pipe(
+      map( (response: NotificacionResponse) => {
+
+        response.notificaciones.sort((a: Notificacion, b: Notificacion) => {
+          if (a.idNotificaciones < b.idNotificaciones) {
+            return 1;
+          } else if (a.idNotificaciones > b.idNotificaciones) {
+            return -1;
+          } else {
+            return 0;
+          }
+        });
+        return response;
+      })
+    );
   }
 
   public obtenerNotificacionesPorUsuario(termino: string, pagina: string) {
@@ -210,7 +269,21 @@ export class NotificacionesService {
     return this.http.post(url, request, {
       headers: new HttpHeaders()
         .set('Authorization', 'Bearer ' + this.usuarioService.token)
-    });
+    }).pipe(
+      map( (response: NotificacionResponse) => {
+
+        response.notificaciones.sort((a: Notificacion, b: Notificacion) => {
+          if (a.idNotificaciones < b.idNotificaciones) {
+            return 1;
+          } else if (a.idNotificaciones > b.idNotificaciones) {
+            return -1;
+          } else {
+            return 0;
+          }
+        });
+        return response;
+      })
+    );
   }
 
   public obtenerNotificacionPorTitulo(termino: string, pagina: string) {
@@ -233,7 +306,21 @@ export class NotificacionesService {
     return this.http.post(url, request, {
       headers: new HttpHeaders()
         .set('Authorization', 'Bearer ' + this.usuarioService.token)
-    });
+    }).pipe(
+      map( (response: NotificacionResponse) => {
+
+        response.notificaciones.sort((a: Notificacion, b: Notificacion) => {
+          if (a.idNotificaciones < b.idNotificaciones) {
+            return 1;
+          } else if (a.idNotificaciones > b.idNotificaciones) {
+            return -1;
+          } else {
+            return 0;
+          }
+        });
+        return response;
+      })
+    );
   }
 
   public descargarReporte(tipo: string): Observable<Blob> {
@@ -287,7 +374,6 @@ export class NotificacionesService {
       };
     }
 
-    console.log(request);
     return this.http.post(url, request, {
       headers: new HttpHeaders()
         .set('Authorization', 'Bearer ' + this.usuarioService.token),

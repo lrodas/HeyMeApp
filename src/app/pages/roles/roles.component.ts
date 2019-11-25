@@ -14,6 +14,7 @@ export class RolesComponent implements OnInit {
 
   public roles: Role[];
   public permisos: Permiso;
+  public page: number;
 
   constructor(
     private roleService: RoleService
@@ -22,6 +23,7 @@ export class RolesComponent implements OnInit {
   ngOnInit() {
     this.obtenerRoles();
     this.cargarPermisos();
+    this.page = 1;
   }
 
   public cambiarEstado(id: number, estado: boolean) {

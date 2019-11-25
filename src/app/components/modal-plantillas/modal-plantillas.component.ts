@@ -9,11 +9,14 @@ import { Plantilla } from '../../models/plantilla.model';
 })
 export class ModalPlantillasComponent implements OnInit {
 
+  public page: number;
+
   constructor(
     public modalPlantillasService: ModalPlantillaService
   ) { }
 
   ngOnInit() {
+    this.page = 1;
   }
 
   public seleccionarPlantilla(plantilla: Plantilla) {

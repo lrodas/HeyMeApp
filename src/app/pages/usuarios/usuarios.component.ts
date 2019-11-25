@@ -20,6 +20,7 @@ export class UsuariosComponent implements OnInit {
   public fechaFin: Date;
   public fechaActual: Date;
   public permisos: Permiso;
+  public page: number;
 
   constructor(
     private usuarioService: UsuarioService
@@ -31,6 +32,7 @@ export class UsuariosComponent implements OnInit {
     this.fechaActual = new Date();
     this.fechaInicio = new Date();
     this.cargarPermisos();
+    this.page = 1;
   }
 
   changeFiltro(filtro: string) {

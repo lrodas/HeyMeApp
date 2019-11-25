@@ -49,11 +49,14 @@ export class FormProgramarComponent implements OnInit {
     ($('.tagsinput') as any).tagsinput({itemValue: 'id', itemText: 'text'});
     $('.bootstrap-tagsinput').addClass('info-badge');
     $('.bootstrap-tagsinput').addClass('form-input-text');
-    $('.bootstrap-tagsinput input').focus(event => {
+    $('.bootstrap-tagsinput input').focus(() => {
       document.getElementById('myDropdown').classList.toggle('show');
     });
-    $('.bootstrap-tagsinput input').keyup(event => {
+    $('.bootstrap-tagsinput input').keyup(() => {
       this.buscarContacto($('.bootstrap-tagsinput input').val());
+    });
+    $('.bootstrap-tagsinput input').click(() => {
+      document.getElementById('myDropdown').classList.toggle('show');
     });
     $('#inputCliente').on('beforeItemAdd', event => {
       if (!event.item.id) {

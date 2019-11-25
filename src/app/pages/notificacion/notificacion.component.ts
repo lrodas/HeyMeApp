@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Notificacion } from '../../models/notificacion.model';
 import { NotificacionesService } from '../../services/notificaciones/notificaciones.service';
 import { NotificacionResponse } from '../../interfaces/response/notificacionResponse.interface';
-import { NotificacionRequest } from '../../interfaces/request/notificacionRequest.interface';
 import { NgForm } from '@angular/forms';
 import { PERMISOS } from '../../config/config';
 import { Permiso } from '../../models/permiso.model';
@@ -21,6 +20,7 @@ export class NotificacionComponent implements OnInit {
   public fechaInicioEnvio: String;
   public fechaFinEnvio: String;
   public imprimir: boolean;
+  public page: number;
 
   constructor(
     public notificacionService: NotificacionesService
@@ -32,6 +32,7 @@ export class NotificacionComponent implements OnInit {
     this.fechaInicioEnvio = new Date().getFullYear() + '-' + new Date().getMonth() + '-' + new Date().getDate();
     this.obtenerNotificacionesUltimaSemana();
     this.cargarPermisos();
+    this.page = 1;
   }
 
   public cargarPermisos() {

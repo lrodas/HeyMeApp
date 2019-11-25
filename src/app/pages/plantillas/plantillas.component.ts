@@ -14,6 +14,7 @@ export class PlantillasComponent implements OnInit {
 
   public plantillas: Plantilla[];
   public permisos: Permiso;
+  public page: number;
 
   constructor(
     private plantillasService: PlantillasService
@@ -22,6 +23,7 @@ export class PlantillasComponent implements OnInit {
   ngOnInit() {
     this.cargarPlantillas();
     this.cargarPermisos();
+    this.page = 1;
   }
 
   public cargarPermisos() {
