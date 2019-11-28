@@ -28,6 +28,169 @@ export class NotificacionesService {
     private usuarioService: UsuarioService
   ) { }
 
+  public obtenerNotificacionPorId(pagina: string, idNotificacion: number) {
+
+    const url = URL_SERVICIOS + '/notification/retrieveNotificationPerId';
+
+    const request: NotificacionRequest = {
+      usuario: this.usuarioService.usuario.username,
+      idUsuario: this.usuarioService.usuario.idUsuario,
+      pagina,
+      notificacion: new Notificacion(idNotificacion)
+    };
+
+    Swal.fire({
+      allowOutsideClick: false,
+      type: 'info',
+      text: 'Espere por favor',
+      showConfirmButton: false
+    });
+
+    Swal.showLoading();
+
+    return this.http.post(url, request, {
+      headers: new HttpHeaders()
+        .set('Authorization', 'Bearer ' + this.usuarioService.token)
+    }).pipe(
+      map( (notificacionResponse: NotificacionResponse) => {
+        Swal.close();
+        
+        if (notificacionResponse.indicador !== 'SUCCESS') {
+          Swal.fire({
+            type: 'error',
+            title: 'En estos momentos no es posible obtener los datos de la notificacion',
+            text: notificacionResponse.descripcion
+          });
+          return false;
+        } else {
+          return notificacionResponse.notificacion;
+        }
+      }),
+      catchError( error => {
+        Swal.close();
+        Swal.fire({
+          type: 'error',
+          title: 'En estos momentos no es posible obtener los datos de la notificacion',
+          text: 'Por favor intenta nuevamente mas tarde'
+        });
+        
+        return of([error]);
+      })
+    );
+  }
+
+  public cancelarNotificacion(pagina: string, idNotificacion: number) {
+
+    const url = URL_SERVICIOS + '/notification/cancelNotificationDelivery';
+
+    const request: NotificacionRequest = {
+      usuario: this.usuarioService.usuario.username,
+      idUsuario: this.usuarioService.usuario.idUsuario,
+      pagina,
+      notificacion: new Notificacion(idNotificacion)
+    };
+    
+    Swal.fire({
+      allowOutsideClick: false,
+      type: 'info',
+      text: 'Espere por favor',
+      showConfirmButton: false
+    });
+
+    Swal.showLoading();
+
+    return this.http.post(url, request, {
+      headers: new HttpHeaders()
+        .set('Authorization', 'Bearer ' + this.usuarioService.token)
+    }).pipe(
+      map( (notificacionResponse: NotificacionResponse) => {
+        Swal.close();
+        
+        if (notificacionResponse.indicador === 'SUCCESS') {
+          Swal.fire({
+            type: 'success',
+            title: 'Notificacion cancelada exitosamente',
+            text: notificacionResponse.descripcion
+          });
+          return true;
+        } else {
+          Swal.fire({
+            type: 'error',
+            title: 'En estos momentos no es posible cancelar la notificacion',
+            text: notificacionResponse.descripcion
+          });
+          return false;
+        }
+      }),
+      catchError( error => {
+        Swal.close();
+        Swal.fire({
+          type: 'error',
+          title: 'En estos momentos no es posible cancelar la notificacion',
+          text: 'Por favor intenta nuevamente mas tarde'
+        });
+        
+        return of([error]);
+      })
+    );
+  }
+
+  public enviarNotificacion(pagina: string, idNotificacion: number) {
+
+    const url = URL_SERVICIOS + '/notification/cancelNotificationDelivery';
+
+    const request: NotificacionRequest = {
+      usuario: this.usuarioService.usuario.username,
+      idUsuario: this.usuarioService.usuario.idUsuario,
+      pagina,
+      notificacion: new Notificacion(idNotificacion)
+    };
+
+    Swal.fire({
+      allowOutsideClick: false,
+      type: 'info',
+      text: 'Espere por favor',
+      showConfirmButton: false
+    });
+
+    Swal.showLoading();
+
+    return this.http.post(url, request, {
+      headers: new HttpHeaders()
+        .set('Authorization', 'Bearer ' + this.usuarioService.token)
+    }).pipe(
+      map( (notificacionResponse: NotificacionResponse) => {
+        Swal.close();
+        
+        if (notificacionResponse.indicador === 'SUCCESS') {
+          Swal.fire({
+            type: 'success',
+            title: 'Notificacion enviada',
+            text: notificacionResponse.descripcion
+          });
+          return true;
+        } else {
+          Swal.fire({
+            type: 'error',
+            title: 'En estos momentos no es posible enviar la notificacion',
+            text: notificacionResponse.descripcion
+          });
+          return false;
+        }
+      }),
+      catchError( error => {
+        Swal.close();
+        Swal.fire({
+          type: 'error',
+          title: 'En estos momentos no es posible enviar la notificacion',
+          text: 'Por favor intenta nuevamente mas tarde'
+        });
+        
+        return of([error]);
+      })
+    );
+  }
+
   public obtenerNotificacionesRestantes(pagina: string, fechaFin: Date) {
 
     const url = URL_SERVICIOS + '/notification/retrieveRemainingNotifications';
@@ -39,7 +202,7 @@ export class NotificacionesService {
       fechaFin,
       tipo: 1
     };
-    console.log(JSON.stringify(request));
+
     return this.http.post(url, request, {
       headers: new HttpHeaders()
         .set('Authorization', 'Bearer ' + this.usuarioService.token)
@@ -188,7 +351,7 @@ export class NotificacionesService {
       fechaInicio: this.fechaInicio,
       fechaFin: this.fechaFin
     };
-
+    
     return this.http.post(url, request, {
       headers: new HttpHeaders()
         .set('Authorization', 'Bearer ' + this.usuarioService.token)

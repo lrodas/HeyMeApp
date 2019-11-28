@@ -5,6 +5,7 @@ import { NotificacionResponse } from '../../interfaces/response/notificacionResp
 import { NgForm } from '@angular/forms';
 import { PERMISOS } from '../../config/config';
 import { Permiso } from '../../models/permiso.model';
+import { ModalNotificacionService } from '../../components/modal-notificacion/modal-notificacion.service';
 
 @Component({
   selector: 'app-notificacion',
@@ -23,7 +24,8 @@ export class NotificacionComponent implements OnInit {
   public page: number;
 
   constructor(
-    public notificacionService: NotificacionesService
+    public notificacionService: NotificacionesService,
+    public modalNotificacionService: ModalNotificacionService
   ) { }
 
   ngOnInit() {
@@ -35,11 +37,34 @@ export class NotificacionComponent implements OnInit {
     this.page = 1;
   }
 
+  public mostrarNotificacion(idNotificacion: number) {
+    this.modalNotificacionService.mostrarModal(idNotificacion);
+  }
+
   public cargarPermisos() {
     const permisos: Permiso[] = JSON.parse(localStorage.getItem(PERMISOS));
     this.imprimir = permisos.filter( (permiso: Permiso) => {
       return permiso.opcion.descripcion === 'Notificaciones';
     })[0].imprimir;
+  }
+
+  public enviarNotificacion(idNotificacion: number) {
+
+    this.notificacionService.enviarNotificacion('Notificacion', idNotificacion)
+      .subscribe( (response: boolean) => {
+        if (response) {
+          this.obtenerNotificacionesUltimaSemana();
+        }
+      });
+  }
+
+  public cancelarNotificacion(idNotificacion: number) {
+    this.notificacionService.cancelarNotificacion('Notificacion', idNotificacion)
+      .subscribe( (response: boolean) => {
+        if (response) {
+          this.obtenerNotificacionesUltimaSemana();
+        }
+      });
   }
 
   public obtenerNotificacionesUltimaSemana() {

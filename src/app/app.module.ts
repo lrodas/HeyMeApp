@@ -15,13 +15,15 @@ import { SharedModule } from './shared/shared.module';
 import { ModalPlantillasComponent } from './components/modal-plantillas/modal-plantillas.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ModalNotificacionComponent } from './components/modal-notificacion/modal-notificacion.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     PagesComponent,
-    ModalPlantillasComponent
+    ModalPlantillasComponent,
+    ModalNotificacionComponent
   ],
   imports: [
     BrowserModule,

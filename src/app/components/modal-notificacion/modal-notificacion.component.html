@@ -1,0 +1,82 @@
+<div [class]="'fondo-negro animated fadeIn ' + modalNotificacionService.oculto">
+    <!-- Classic Modal -->
+    <div class="modal" style="display: block" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Detalle de la notificacion</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <label class="col-sm-2 col-form-label">Canal</label>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <input type="text" [(ngModel)]="modalNotificacionService.notificacion.canal.nombre" name="nombre" class="form-control" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-2 col-form-label">Fecha de programacion</label>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <input type="text" [(ngModel)]="modalNotificacionService.fechaProgramacion" name="fechaProgramacion" class="form-control" disabled>
+                            </div>
+                        </div>
+                        <label class="col-sm-2 col-form-label">Fecha de envio</label>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <input type="text" [(ngModel)]="modalNotificacionService.fechaEnvio" name="fechaEnvio" class="form-control" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-2 col-form-label">Destinatarios</label>
+                        <div class="col-sm-10">
+                            <table class="table table-hover">
+                                <thead class="text-warning">
+                                    <th>Nombre</th>
+                                    <th>Telefono/e-mail</th>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let destinatario of modalNotificacionService.notificacion.destinatarios">
+                                        <td>{{ destinatario.nombre + ' ' + destinatario.apellido }}</td>
+                                        <td *ngIf="modalNotificacionService.notificacion.canal.idCanal === canalEmail">{{ destinatario.email }}</td>
+                                        <td *ngIf="modalNotificacionService.notificacion.canal.idCanal !== canalEmail">{{ destinatario.telefono }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-2 col-form-label">Titulo</label>
+                        <div class="col-sm-10">
+                            <div class="form-group">
+                                <input [(ngModel)]="modalNotificacionService.notificacion.titulo" name="titutlo" type="text" class="form-control" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-2 col-form-label">Descripcion</label>
+                        <div class="col-sm-10">
+                            <div class="form-group">
+                                <input type="text" class="form-control" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-2 col-form-label">Contenido</label>
+                        <div class="col-sm-10">
+                            <div class="form-group">
+                                <textarea [(ngModel)]="modalNotificacionService.notificacion.notificacion" name="contenido" class="form-control" name="notificacion" disabled></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-link" (click)="modalNotificacionService.ocultarModal()">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--  End Modal -->
+</div>
