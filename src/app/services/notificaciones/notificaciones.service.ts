@@ -137,7 +137,7 @@ export class NotificacionesService {
 
   public enviarNotificacion(pagina: string, idNotificacion: number) {
 
-    const url = URL_SERVICIOS + '/notification/cancelNotificationDelivery';
+    const url = URL_SERVICIOS + '/notification/sendNotification';
 
     const request: NotificacionRequest = {
       usuario: this.usuarioService.usuario.username,
