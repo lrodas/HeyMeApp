@@ -8,10 +8,8 @@ import { Canal } from '../../models/canal.model';
 import { ModalPlantillaService } from '../../components/modal-plantillas/modal-plantilla.service';
 import { Plantilla } from '../../models/plantilla.model';
 import { NotificacionesService } from '../../services/notificaciones/notificaciones.service';
-import { NotificacionResponse } from '../../interfaces/response/notificacionResponse.interface';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EstadoNotificacion } from '../../models/estadoNotificacion.model';
-import { SPECIAL_KEYS } from '../../config/config';
 
 declare var $: any;
 

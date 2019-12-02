@@ -8,6 +8,8 @@ import { Permiso } from '../../models/permiso.model';
 import { PERMISOS } from '../../config/config';
 import { Canal } from 'src/app/models/canal.model';
 
+declare var $: any;
+
 @Component({
   selector: 'app-plantilla',
   templateUrl: './plantilla.component.html',
@@ -25,7 +27,7 @@ export class PlantillaComponent implements OnInit {
     private router: Router
   ) {
     this.activatedRoute.params.subscribe( params => {
-      const id = params['id'];
+      const id = params.id;
       if (id !== 'new' && this.cargarPermisos().cambio) {
         this.obtenerPlantilla(id);
       } else if (id === 'new' && !this.cargarPermisos().alta) {
@@ -35,6 +37,7 @@ export class PlantillaComponent implements OnInit {
   }
 
   ngOnInit() {
+    $('select').selectpicker();
     this.plantilla = new Plantilla(null, '', '', true, new Canal());
     this.limiteCaracteres = 150;
   }
@@ -66,6 +69,7 @@ export class PlantillaComponent implements OnInit {
     this.plantillasService.obtenerPlantilla(idPlantilla, 'plantilla')
       .subscribe( (response: PlantillaResponse) => {
         this.plantilla = response.plantilla;
+        $('select').selectpicker('val', response.plantilla.canal.idCanal);
       }, error => {
         this.router.navigate(['/templates']);
       });
