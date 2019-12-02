@@ -10,8 +10,21 @@
             <div class='card-body '>
                 <form #f="ngForm" ngNativeValidate (submit)="guardarPlantilla(f)" class="form-horizontal">
                     <div class="row">
-                        <label class="col-md-3 col-form-label">Titulo de la plantilla</label>
-                        <div class="col-md-9">
+                        <label class="col-md-2 col-form-label">Canal</label>
+                        <div class="col-md-10">
+                            <div class="form-group">
+                                <select [(ngModel)]="plantilla.canal.idCanal" (change)="cambiarLimite(plantilla.canal.idCanal)" name="canal" class="selectpicker" data-style="select-with-transition" title="Seleccione Medio" data-size="7" required>
+                                    <option disabled> Seleccione un Medio</option>
+                                    <option value="1">Mensaje de texto </option>
+                                    <option value="2">Correo electronico </option>
+                                    <option value="3">Whatsapp </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-md-2 col-form-label">Titulo de la plantilla</label>
+                        <div class="col-md-10">
                             <div class="form-group has-default">
                                 <input type="text" [(ngModel)]="plantilla.titulo" name="titulo" class="form-control">
                             </div>
@@ -20,7 +33,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <textarea [(ngModel)]="plantilla.plantilla" name="plantilla" cols="30" rows="10" class="form-control"></textarea>
+                                <textarea [(ngModel)]="plantilla.plantilla" name="plantilla" cols="30" rows="10" [maxlength]="limiteCaracteres" class="form-control"></textarea>
                             </div>
                         </div>
                     </div>

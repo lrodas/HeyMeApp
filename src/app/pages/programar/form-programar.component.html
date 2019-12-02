@@ -13,7 +13,7 @@
                         <label class="col-md-2 col-form-label ">Medio</label>
                         <div class="col-md-5">
                             <div class="form-group">
-                                <select [(ngModel)]="notificacion.canal.idCanal" name="canal" class="selectpicker" data-style="select-with-transition" title="Seleccione Medio" data-size="7" required>
+                                <select [(ngModel)]="notificacion.canal.idCanal" (change)="cambiarLimite(notificacion.canal.idCanal)" name="canal" class="selectpicker" data-style="select-with-transition" title="Seleccione Medio" data-size="7" required>
                                     <option disabled> Seleccione un Medio</option>
                                     <option value="1">Mensaje de texto </option>
                                     <option value="2">Correo electronico </option>
@@ -48,7 +48,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <textarea class="form-control" [(ngModel)]="notificacion.notificacion" name="notificacion" placeholder="Contenido de la notificacion" required></textarea>
+                                <textarea class="form-control" [(ngModel)]="notificacion.notificacion" name="notificacion" [maxlength]="limiteCaracteres" placeholder="Contenido de la notificacion" required></textarea>
                             </div>
                         </div>
                     </div>

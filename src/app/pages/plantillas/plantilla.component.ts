@@ -6,6 +6,7 @@ import { PlantillaResponse } from '../../interfaces/response/plantillaResponse.i
 import { NgForm } from '@angular/forms';
 import { Permiso } from '../../models/permiso.model';
 import { PERMISOS } from '../../config/config';
+import { Canal } from 'src/app/models/canal.model';
 
 @Component({
   selector: 'app-plantilla',
@@ -16,6 +17,7 @@ export class PlantillaComponent implements OnInit {
 
   public plantilla: Plantilla;
   public permisos: Permiso;
+  public limiteCaracteres: number;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -33,7 +35,24 @@ export class PlantillaComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.plantilla = new Plantilla(null, '', '', true);
+    this.plantilla = new Plantilla(null, '', '', true, new Canal());
+    this.limiteCaracteres = 150;
+  }
+
+  public cambiarLimite(canal: string) {
+    if (canal === '1') {
+      if (this.plantilla.plantilla && this.plantilla.plantilla.length > 150) {
+        this.plantilla.plantilla = this.plantilla.plantilla.substring(0, 150);
+      }
+      this.limiteCaracteres = 150;
+    } else if (canal === '2') {
+      this.limiteCaracteres = 2500;
+    } else if (canal === '3') {
+      if (this.plantilla.plantilla && this.plantilla.plantilla.length > 150) {
+        this.plantilla.plantilla = this.plantilla.plantilla.substring(0, 150);
+      }
+      this.limiteCaracteres = 150;
+    }
   }
 
   public cargarPermisos() {

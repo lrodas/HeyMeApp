@@ -27,6 +27,7 @@ export class FormProgramarComponent implements OnInit {
   public contactos: Contacto[];
   public notificacion: Notificacion;
   public termino: string;
+  public limiteCaracteres: number;
 
   constructor(
     private contactoService: ContactoService,
@@ -86,6 +87,24 @@ export class FormProgramarComponent implements OnInit {
           this.notificacion.titulo = item.titulo;
           this.notificacion.notificacion = item.plantilla;
       });
+
+    this.limiteCaracteres = 150;
+  }
+
+  public cambiarLimite(canal: string) {
+    if (canal === '1') {
+      if (this.notificacion.notificacion && this.notificacion.notificacion.length > 150) {
+        this.notificacion.notificacion = this.notificacion.notificacion.substring(0, 150);
+      }
+      this.limiteCaracteres = 150;
+    } else if (canal === '2') {
+      this.limiteCaracteres = 2500;
+    } else if (canal === '3') {
+      if (this.notificacion.notificacion && this.notificacion.notificacion.length > 150) {
+        this.notificacion.notificacion = this.notificacion.notificacion.substring(0, 150);
+      }
+      this.limiteCaracteres = 150;
+    }
   }
 
   public buscarContacto(nombre: string) {
