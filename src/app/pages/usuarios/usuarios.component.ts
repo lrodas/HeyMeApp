@@ -1,11 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges } from '@angular/core';
 import { UsuarioService } from '../../services/usuario-service/usuario.service';
 import { UsuarioResponse } from '../../interfaces/response/usuarioResponse.interface';
 import { Usuario } from '../../models/usuario.model';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { NgForm } from '@angular/forms';
 import { Permiso } from '../../models/permiso.model';
 import { PERMISOS } from '../../config/config';
+import { RoleService } from '../../services/role/role.service';
+import { RoleResponse } from '../../interfaces/response/roleResponse.interface';
+import { Role } from '../../models/role.model';
+
+declare var $: any;
 
 @Component({
   selector: 'app-usuarios',
@@ -23,16 +27,45 @@ export class UsuariosComponent implements OnInit {
   public page: number;
 
   constructor(
-    private usuarioService: UsuarioService
+    public usuarioService: UsuarioService,
+    private roleService: RoleService
   ) { }
 
   ngOnInit() {
-    this.filtro = 'fecha';
-    this.obtenerUsuarios();
-    this.fechaActual = new Date();
-    this.fechaInicio = new Date();
-    this.cargarPermisos();
-    this.page = 1;
+      this.filtro = 'fecha';
+      this.obtenerUsuarios();
+      this.fechaActual = new Date();
+      this.fechaInicio = new Date();
+      this.cargarPermisos();
+      this.page = 1;
+      $('select').selectpicker();
+  }
+
+  public guardarUsuario(usuario: Usuario) {
+    usuario.role.descripcion = '';
+    usuario.role.nombre = '';
+
+    this.usuarioService.actualizarUsuario(usuario, 'Usuario')
+      .subscribe( (response: UsuarioResponse) => {
+        if (response.indicador === 'SUCCESS') {
+          this.obtenerUsuarios();
+        }
+      });
+  }
+
+  public obtenerRoles(idUsuario: number): Promise<boolean> {
+    return new Promise( (resolve, reject) => {
+      this.roleService.obtenerRolesActivos('usuarios')
+      .subscribe( (response: RoleResponse) => {
+        response.roles.forEach((role: Role) => {
+          $('#role-' + idUsuario).append('<option value="' + role.idRole + '">' + role.descripcion + '</option>');
+          $('#role-' + idUsuario).selectpicker('refresh');
+        });
+        resolve(true);
+      }, error => {
+        reject(false);
+      });
+    });
   }
 
   changeFiltro(filtro: string) {
@@ -50,6 +83,10 @@ export class UsuariosComponent implements OnInit {
     this.usuarioService.obtenerUsuarios('usuarios')
       .subscribe( (usuarioResponse: UsuarioResponse) => {
         this.usuarios = usuarioResponse.usuarios;
+        this.usuarios.forEach( (usuario: Usuario) => {
+          this.obtenerRoles(usuario.idUsuario)
+            .then( response => $('#role-' + usuario.idUsuario).selectpicker('val', usuario.role.idRole));
+        });
       });
   }
 
@@ -88,8 +125,7 @@ export class UsuariosComponent implements OnInit {
     this.usuarioService.cambiarEstado(usuario, 'Usuarios')
       .subscribe( (response: Usuario) => {
         if (response) {
-          const index: number = this.usuarios.findIndex(item => item.idUsuario == response.idUsuario);
-          this.usuarios[index] = response;
+          this.obtenerUsuarios();
         }
       });
   }

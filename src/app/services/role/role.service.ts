@@ -45,7 +45,7 @@ export class RoleService {
     }).pipe(
       map( (roleResponse: RoleResponse) => {
         if (roleResponse.indicador === 'SUCCESS') {
-          
+
           Swal.fire({
             type: 'success',
             title: 'Role actualizado exitosamente',
@@ -60,6 +60,41 @@ export class RoleService {
         }
       }),
       catchError( error => {
+        return of([error]);
+      })
+    );
+  }
+
+  public obtenerRolesActivos(pagina: string) {
+
+    Swal.fire({
+      allowOutsideClick: false,
+      type: 'info',
+      text: 'Espere por favor',
+      showConfirmButton: false
+    });
+
+    Swal.showLoading();
+
+    const url = URL_SERVICIOS + '/role/findAll';
+
+    const request: RoleRequest = {
+      usuario: this.usuarioService.usuario.username,
+      idUsuario: this.usuarioService.usuario.idUsuario,
+      pagina,
+      role: new Role(null, null, null, true)
+    };
+
+    return this.http.post(url, request, {
+      headers: new HttpHeaders()
+        .set('Authorization', 'Bearer ' + this.usuarioService.token)
+    }).pipe(
+      map( (roleResponse: RoleResponse) => {
+        Swal.close();
+        return roleResponse;
+      }),
+      catchError( error => {
+        Swal.close();
         return of([error]);
       })
     );

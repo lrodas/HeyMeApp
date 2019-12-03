@@ -75,6 +75,7 @@
                                 <th scope="col">Nombre</th>
                                 <th scope="col">Telefono</th>
                                 <th scope="col">Correo</th>
+                                <th scope="col">Role</th>
                                 <th scope="col">Estado</th>
                                 <th scope="col">Acciones</th>
                             </tr>
@@ -87,13 +88,22 @@
                                 <td data-label="Nombre">{{ usuario.nombres + ' ' + usuario.apellidos }}</td>
                                 <td data-label="Telefono">{{ usuario.telefono }}</td>
                                 <td data-label="Correo">{{ usuario.username }}</td>
+                                <td data-label="Role">
+                                    <div class="form-group">
+                                        <select [(ngModel)]="usuario.role.idRole" name="role" [id]="'role-' + usuario.idUsuario" class="selectpicker" data-style="select-with-transition" title="Seleccione Role" required>
+                                        </select>
+                                    </div>
+                                </td>
                                 <td *ngIf="usuario.enabled" data-label="Estado">Activo</td>
                                 <td *ngIf="!usuario.enabled" data-label="Estado">Inactivo</td>
-                                <td class="td-actions text-center" data-label="Acciones" class="text-right">
-                                    <button *ngIf="permisos.baja && usuario.enabled" (click)="eliminarUsuario(usuario.idUsuario, false)" type="button" rel="tooltip" title="Eliminar" class="btn btn-danger btn-link">
+                                <td class="td-actions text-center" data-label="Acciones">
+                                    <button *ngIf="usuarioService.usuario.idUsuario !== usuario.idUsuario" (click)="guardarUsuario(usuario)" type="button" rel="tooltip" title="Guardar" class="btn btn-primary btn-link">
+                                        <i class="material-icons">save</i>
+                                    </button>
+                                    <button *ngIf="usuarioService.usuario.idUsuario !== usuario.idUsuario && permisos.baja && usuario.enabled" (click)="eliminarUsuario(usuario.idUsuario, false)" type="button" rel="tooltip" title="Deshabilitar" class="btn btn-danger btn-link">
                                       <i class="material-icons">close</i>
                                     </button>
-                                    <button *ngIf="permisos.cambio && !usuario.enabled" (click)="eliminarUsuario(usuario.idUsuario, true)" type="button" rel="tooltip" title="Eliminar" class="btn btn-success btn-link">
+                                    <button *ngIf="usuarioService.usuario.idUsuario !== usuario.idUsuario && permisos.cambio && !usuario.enabled" (click)="eliminarUsuario(usuario.idUsuario, true)" type="button" rel="tooltip" title="Habilitar" class="btn btn-success btn-link">
                                         <i class="material-icons">check</i>
                                       </button>
                                 </td>
