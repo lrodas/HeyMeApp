@@ -23,6 +23,14 @@ export class PlantillasService {
 
   public obtenerPlantillasPorEstado(estado: boolean, pagina: string) {
 
+    Swal.fire({
+      allowOutsideClick: false,
+      type: 'info',
+      text: 'Espere por favor',
+      showConfirmButton: false
+    });
+
+    Swal.showLoading();
     const url = URL_SERVICIOS + '/template/findByStatus';
 
     const plantillaRequest: PlantillaRequest = {
@@ -35,21 +43,62 @@ export class PlantillasService {
     return this.http.post(url, plantillaRequest, {
       headers: new HttpHeaders()
         .set('Authorization', 'Bearer ' + this.usuarioService.token)
-    });
+    }).pipe(
+      map( (response: PlantillaResponse) => {
+        Swal.close();
+        return response;
+      }),
+      catchError( error => {
+        Swal.close();
+        return of([error]);
+      })
+    );
   }
 
-  public obtenerPlantillas() {
+  public obtenerPlantillas(pagina: string) {
+
+    Swal.fire({
+      allowOutsideClick: false,
+      type: 'info',
+      text: 'Espere por favor',
+      showConfirmButton: false
+    });
+
+    Swal.showLoading();
 
     const url = URL_SERVICIOS + '/template/findAll';
 
-    return this.http.post(url, {}, {
+    const plantillaRequest: PlantillaRequest = {
+      usuario: this.usuarioService.usuario.username,
+      idUsuario: this.usuarioService.usuario.idUsuario,
+      pagina
+    };
+
+    return this.http.post(url, plantillaRequest, {
       headers: new HttpHeaders()
         .set('Authorization', 'Bearer ' + this.usuarioService.token)
-    });
+    }).pipe(
+      map( (response: PlantillaResponse) => {
+        Swal.close();
+        return response;
+      }),
+      catchError( error => {
+        Swal.close();
+        return of([error]);
+      })
+    );
   }
 
   public obtenerPlantilla(idPlantilla: number, pagina: string) {
 
+    Swal.fire({
+      allowOutsideClick: false,
+      type: 'info',
+      text: 'Espere por favor',
+      showConfirmButton: false
+    });
+
+    Swal.showLoading();
     const url = URL_SERVICIOS + '/template/findById';
 
     const plantillaRequest: PlantillaRequest = {
@@ -62,7 +111,16 @@ export class PlantillasService {
     return this.http.post(url, plantillaRequest, {
       headers: new HttpHeaders()
         .set('Authorization', 'Bearer ' + this.usuarioService.token)
-    });
+    }).pipe(
+      map( (response: PlantillaResponse) => {
+        Swal.close();
+        return response;
+      }),
+      catchError( error => {
+        Swal.close();
+        return of([error]);
+      })
+    );
   }
 
   public obtenerPlantillaPorTitulo(termino: string, pagina: string) {
@@ -84,6 +142,14 @@ export class PlantillasService {
 
   public guardarPlantilla(plantilla: Plantilla, pagina: string) {
 
+    Swal.fire({
+      allowOutsideClick: false,
+      type: 'info',
+      text: 'Espere por favor',
+      showConfirmButton: false
+    });
+
+    Swal.showLoading();
     const url = URL_SERVICIOS + '/template/save';
 
     const plantillaRequest: PlantillaRequest = {
@@ -98,7 +164,7 @@ export class PlantillasService {
         .set('Authorization', 'Bearer ' + this.usuarioService.token)
     }).pipe(
       map((response: PlantillaResponse) => {
-
+        Swal.close();
         if (response.indicador === 'SUCCESS') {
             Swal.fire({
               type: 'success',
@@ -121,6 +187,7 @@ export class PlantillasService {
 
       }),
       catchError( error => {
+        Swal.close();
         Swal.fire({
           type: 'error',
           title: 'No pudimos guardar la plantilla',

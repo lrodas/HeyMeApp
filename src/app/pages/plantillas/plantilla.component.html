@@ -13,7 +13,7 @@
                         <label class="col-md-2 col-form-label">Canal</label>
                         <div class="col-md-10">
                             <div class="form-group">
-                                <select [(ngModel)]="plantilla.canal.idCanal" (change)="cambiarLimite(plantilla.canal.idCanal)" name="canal" class="selectpicker" data-style="select-with-transition" title="Seleccione Medio" data-size="7" required>
+                                <select [(ngModel)]="plantilla.canal.idCanal" (change)="cambiarLimite(plantilla.canal.idCanal+'')" name="canal" class="selectpicker" data-style="select-with-transition" title="Seleccione Medio" data-size="7" required>
                                     <option disabled> Seleccione un Medio</option>
                                     <option [value]="1">Mensaje de texto </option>
                                     <option [value]="2">Correo electronico </option>
