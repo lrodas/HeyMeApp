@@ -215,8 +215,8 @@ export class RoleService {
 
         Swal.fire({
           type: 'success',
-          title: 'Contacto guardado exitosamente',
-          text: `El contacto ${role.descripcion} fue guardado con exito`,
+          title: 'Role guardado exitosamente',
+          text: `El role ${role.descripcion} fue guardado con exito`,
           showConfirmButton: false,
           timer: 3000
         });

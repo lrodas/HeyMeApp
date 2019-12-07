@@ -34,7 +34,7 @@ export class PlantillasComponent implements OnInit {
   }
 
   private cargarPlantillas() {
-    this.plantillasService.obtenerPlantillas()
+    this.plantillasService.obtenerPlantillas('plantillas')
       .subscribe( (response: PlantillaResponse) => {
         this.plantillas = response.plantillas;
       });
