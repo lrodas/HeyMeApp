@@ -13,6 +13,8 @@ import { UsuarioResponse } from '../../interfaces/response/usuarioResponse.inter
 
 import Swal from 'sweetalert2';
 import { of } from 'rxjs';
+import { CambioContrasenaRequest } from '../../interfaces/request/cambioContrasenaRequest.interface';
+import { CambioContrasenaResponse } from '../../interfaces/response/cambioContrasenaResponse.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -369,4 +371,58 @@ export class UsuarioService {
     );
   }
 
+  public cambiarPassword(currentPassword: string, newPassword: string, pagina: string) {
+    const url = URL_SERVICIOS + '/user/changePassword';
+
+    const request: CambioContrasenaRequest = {
+      usuario: this.usuario.username,
+      idUsuario: this.usuario.idUsuario,
+      pagina,
+      contrasenaActual: currentPassword,
+      nuevaContrasena: newPassword
+    }
+
+    Swal.fire({
+      allowOutsideClick: false,
+      type: 'info',
+      text: 'Espere por favor',
+      showConfirmButton: false
+    });
+
+    Swal.showLoading();
+
+    return this.http.post(url, request, {
+      headers: new HttpHeaders()
+        .set('Authorization', 'Bearer ' + this.token)
+    }).pipe(
+      map( (response: CambioContrasenaResponse) => {
+        console.log(response);
+        Swal.close();
+        if (response.indicador === 'SUCCESS') {
+          Swal.fire({
+            type: 'success',
+            title: 'Contraseña actualizada exitosamente',
+            text: 'Contraseña actualizada exitosamente'
+          });
+        } else {
+          Swal.fire({
+            type: 'error',
+            title: response.descripcion,
+            text: 'No ha sido posible realizar el cambio de la contraseña, Por favor intenta nuevamente'
+          });
+        }
+
+        return response;
+      }),
+      catchError( error => {
+        Swal.fire({
+          type: 'error',
+          title: 'En estos momentos no ha sido posible realizar el cambio de la contraseña',
+          text: 'Por favor intenta nuevamente mas tarde'
+        });
+        Swal.close();
+        return of([error]);
+      })
+    );
+  }
 }

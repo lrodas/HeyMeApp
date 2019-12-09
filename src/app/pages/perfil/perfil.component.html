@@ -81,5 +81,58 @@
                 </button>
             </div>
         </div>
+        <div class="card card-profile">
+            <div class="card-header card-header-rose card-header-icon">
+                <div class="card-icon">
+                    <i class="material-icons">lock_open</i>
+                </div>
+                <h4 class="card-title">Cambiar contrase&ntilde;a</h4>
+            </div>
+            <form ngNativeValidate #change="ngForm" (submit)="cambiarPassword()" class="form-horizontal">
+                <div class="card-body ">
+                    <div class="row">
+                        <label class="col-md-3 col-form-label">Contrase&ntilde;a Actual</label>
+                        <div class="col-md-9">
+                            <div class="form-group has-default">
+                                    <input type="password" [(ngModel)]="contrasena" name="contrasena" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-md-3 col-form-label">Nueva Contrase&ntilde;a</label>
+                        <div class="col-md-9">
+                            <div class="form-group">
+                                <input type="password" [(ngModel)]="nuevaContrasena" name="nuevaContrasena" class="form-control" required>
+                                <div class="text-left">
+                                    <label id="newPassword" #lblErrorPassword [class]="'error ' + strClassErrorPass">Es necesario ingresa una nueva contrase&ntilde;a.</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-md-3 col-form-label">Confirma Contrase&ntilde;a</label>
+                        <div class="col-md-9">
+                            <div class="form-group">
+                                <input type="password" #inputValidatePassword (keyup)="validatePassword($event)" class="form-control" required>
+                                <div class="text-left">
+                                    <label id="validatePassword" [class]="'error ' + strClassErrorPassVerification">Las contrase&ntilde;as no son iguales.</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row ">
+                        <div class="form-group "></div>
+                        
+                    </div>
+                </div>
+                <div class="card-footer ">
+                    <div class="row w-100">
+                        <div class="col-md-12 text-right">
+                            <button type="submit" class="btn btn-fill btn-rose">Actualizar</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
