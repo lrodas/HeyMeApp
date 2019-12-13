@@ -4,11 +4,7 @@
     cursor: pointer;
 }
 
-// you must include each plugins' css
-// paths prefixed with ~ signify node_modules
-@import '~@fullcalendar/core/main.css';
-@import '~@fullcalendar/daygrid/main.css';
-@import '~@fullcalendar/timegrid/main.css';
+@import "../node_modules/angular-calendar/css/angular-calendar.css";
 
 /* Estilo para tablas responsive */
 
@@ -109,6 +105,7 @@
 
 .bootstrap-tagsinput {
     background-image: linear-gradient(to top, #d2d2d2 1px, rgba(156, 39, 176, 0) 1px), linear-gradient(to top, #d2d2d2 1px, rgba(210, 210, 210, 0) 1px);
+    width: 100% !important;
 }
 
 text {

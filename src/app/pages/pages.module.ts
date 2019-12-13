@@ -3,6 +3,12 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../shared/shared.module';
 import { RouterModule } from '@angular/router';
 
+// angular-calendar
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { registerLocaleData } from '@angular/common';
+import localeEs from '@angular/common/locales/es';
+
 // Paginas
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { PerfilComponent } from './perfil/perfil.component';
@@ -12,7 +18,6 @@ import { PipesModule } from '../pipes/pipes.module';
 import { PreferenciasComponent } from './preferencias/preferencias.component';
 import { NotificacionComponent } from './notificacion/notificacion.component';
 import { ProgramarComponent } from './programar/programar.component';
-import { FullCalendarModule } from '@fullcalendar/angular';
 import { FormProgramarComponent } from './programar/form-programar.component';
 import { ContactoComponent } from './contactos/contacto.component';
 import { ContactosComponent } from './contactos/contactos.component'; // for FullCalendar!
@@ -25,6 +30,8 @@ import { UsuariosComponent } from './usuarios/usuarios.component';
 import { RolesComponent } from './roles/roles.component';
 import { RoleComponent } from './role/role.component'; // <-- import the module
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+
+registerLocaleData(localeEs);
 
 @NgModule({
     declarations: [
@@ -54,10 +61,13 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
         CommonModule,
         PipesModule,
         PAGES_ROUTES,
-        FullCalendarModule, // for FullCalendar!,
         ReactiveFormsModule,
         NgxChartsModule,
-        NgxPaginationModule // <-- include it in your app module
+        NgxPaginationModule,
+        CalendarModule.forRoot({
+          provide: DateAdapter,
+          useFactory: adapterFactory
+        })
     ]
 })
 export class PagesModule {

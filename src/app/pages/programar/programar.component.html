@@ -1,13 +1,37 @@
 <div class="row animated fadeIn">
     <div class="col-md-10 ml-auto mr-auto">
-        <div class="card card-calendar">
+        <div class="card">
+            <div class='card-header card-header-rose card-header-icon'>
+                <div class='card-icon'>
+                    <i class='material-icons'>calendar_today</i>
+                </div>
+                <h4 class='card-title'></h4>
+            </div>
             <div class="card-body ">
-                <full-calendar #calendar defaultView="dayGridMonth" [header]="{
-                        left: 'prev,next today',
-                        center: 'title',
-                        right: 'dayGridMonth'
-                    }" [plugins]="calendarPlugins" [weekends]="calendarWeekends" [events]="calendarEvents" (dateClick)="handleDateClick($event)">
-                </full-calendar>
+                <div class="row">
+                    <div class="col-md-4 text-left">
+                        <div class="btn-group">
+                            <button class="btn btn-primary" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate">
+                                <i class="material-icons">chevron_left</i>Anterior
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <h3 style="margin: 0 0 10px;">{{ viewDate | calendarDate:(view + 'ViewTitle'):locale }}</h3>
+                    </div>
+                    <div class="col-md-4 text-right">
+                        <div class="btn-group">
+                            <button class="btn btn-primary" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate">
+                                Siguiente<i class="material-icons">chevron_right</i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div [ngSwitch]="view">
+                    <mwl-calendar-month-view *ngSwitchCase="CalendarView.Month" [viewDate]="viewDate" [locale]="locale" [refresh]="refresh" [activeDayIsOpen]="activeDayIsOpen" (dayClicked)="dayClicked($event.day)">
+                    </mwl-calendar-month-view>
+                </div>
             </div>
         </div>
     </div>

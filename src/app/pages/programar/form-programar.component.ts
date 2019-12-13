@@ -71,7 +71,25 @@ export class FormProgramarComponent implements OnInit {
         });
         this.notificacion.destinatarios.splice(index, 1);
       }
-   });
+    });
+
+    $('.timepicker').datetimepicker({
+      //          format: 'H:mm',
+      // use this format if you want the 24hours timepicker
+      format: 'H:mm', //use this format if you want the 12hours timpiecker with AM/PM toggle
+      icons: {
+        time: "fa fa-clock-o",
+        date: "fa fa-calendar",
+        up: "fa fa-chevron-up",
+        down: "fa fa-chevron-down",
+        previous: 'fa fa-chevron-left',
+        next: 'fa fa-chevron-right',
+        today: 'fa fa-screenshot',
+        clear: 'fa fa-trash',
+        close: 'fa fa-remove'
+
+      }
+    });
 
     this.activatedRoute.params.subscribe( params => {
       // tslint:disable-next-line: no-string-literal
@@ -133,7 +151,7 @@ export class FormProgramarComponent implements OnInit {
     }
 
     this.notificacion.estado = new EstadoNotificacion(1, 'Programada');
-
+    this.notificacion.fechaEnvio.setHours($('#horaNotificacion')[0].value.split(':')[0], $('#horaNotificacion')[0].value.split(':')[1]);
     this.notificacionService.guardarNotificacion(this.notificacion, 'scheduleForm')
       .subscribe( (response: Notificacion) => {
           if (response) {

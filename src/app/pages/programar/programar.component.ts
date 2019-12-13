@@ -1,14 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FullCalendarComponent } from '@fullcalendar/angular';
-import { EventInput } from '@fullcalendar/core';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGrigPlugin from '@fullcalendar/timegrid';
-import interactionPlugin from '@fullcalendar/interaction'; // for dateClick
-
-import Swal from 'sweetalert2';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { CalendarEvent, CalendarEventAction, CalendarView } from 'angular-calendar';
 import { Router } from '@angular/router';
 import { Permiso } from '../../models/permiso.model';
 import { PERMISOS } from '../../config/config';
+import { Subject } from 'rxjs';
+
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-programar',
@@ -17,12 +14,28 @@ import { PERMISOS } from '../../config/config';
 })
 export class ProgramarComponent implements OnInit {
 
-  @ViewChild('calendar', {static: false}) calendarComponent: FullCalendarComponent; // the #calendar in the template
-  calendarVisible = true;
-  calendarPlugins = [dayGridPlugin, timeGrigPlugin, interactionPlugin];
-  calendarWeekends = true;
-  calendarEvents: EventInput[] = [];
+  @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
   permiso: Permiso;
+  locale: string = 'es';
+  view: CalendarView = CalendarView.Month;
+  CalendarView = CalendarView;
+  viewDate: Date = new Date();
+  refresh: Subject<any> = new Subject();
+  modalData: {
+    action: string;
+    event: CalendarEvent;
+  };
+  actions: CalendarEventAction[] = [
+    {
+      label: '<i class="fa fa-fw fa-times"></i>',
+      a11yLabel: 'Delete',
+      onClick: ({ event }: { event: CalendarEvent }): void => {
+        
+      }
+    }
+  ];
+
+  activeDayIsOpen: boolean = false;
 
   constructor(
     public router: Router
@@ -43,13 +56,12 @@ export class ProgramarComponent implements OnInit {
     })[0];
   }
 
-  public handleDateClick(datos: any) {
+  dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-
-    if (today < datos.date || today.getTime() === datos.date.getTime() ) {
-      this.router.navigate(['/scheduleForm', datos.dateStr]);
-    } else if (today > datos.date) {
+    if (today < date || today.getTime() === date.getTime() ) {
+      this.router.navigate(['/scheduleForm', date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()]);
+    } else if (today > date) {
       Swal.fire({
         type: 'warning',
         title: 'Fecha no valida',
@@ -58,6 +70,10 @@ export class ProgramarComponent implements OnInit {
         timer: 3000
       });
     }
+  }
+
+  setView(view: CalendarView) {
+    this.view = view;
   }
 }
 
