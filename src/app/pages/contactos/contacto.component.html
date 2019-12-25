@@ -25,9 +25,15 @@
                     </div>
                     <div class="row">
                         <label class="col-md-2 col-form-label">Telefono</label>
-                        <div class="col-md-4">
+                        <div class="col-md-2">
                             <div class="form-group">
-                                <input [(ngModel)]="contacto.telefono" name="telefono" type="tel" pattern="[0-9]{4}-[0-9]{4}" placeholder="5555-5555" class="form-control" required>
+                                <select id="idPais" [(ngModel)]="contacto.pais.idPais" name="idPais" class="selectpicker" data-style="select-with-transition" title="Seleccione Pais" data-size="7" required>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <input [(ngModel)]="contacto.telefono" name="telefono" type="number" placeholder="55555555" class="form-control" required>
                             </div>
                         </div>
                         <label class="col-md-2 col-form-label">Email</label>
@@ -37,46 +43,26 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div id="ubicacion" class="row">
                         <label class="col-md-2 col-form-label">Departamento</label>
                         <div class="col-md-4">
-                            <div class="form-group">
-                                <select
-                                    name="idRegion"
-                                    class="form-control"
-                                    data-style="select-with-transition"
-                                    title="Seleccione departamento"
-                                    data-size=""
-                                    [(ngModel)]="contacto.provincia.region.idRegion"
-                                    (change)="obtenerProvincia($event.target.value)"
-                                    required>
-                                    <option disabled> Seleccione un departamento</option>
-                                    <option *ngFor="let region of regiones" [value]="region.idRegion">{{ region.nombre }} </option>
-                                </select>
-                            </div>
+                            <select id="idRegion" name="idRegion" class="selectpicker" data-style="select-with-transition" title="Seleccione departamento" data-size="" [(ngModel)]="contacto.provincia.region.idRegion">
+                                <option disabled> Seleccione un departamento</option>
+                            </select>
                         </div>
                         <label class="col-md-2 col-form-label">Municipio</label>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <select
-                                    name="idProvincia"
-                                    class="form-control"
-                                    data-style="select-with-transition"
-                                    title="Seleccione municipio"
-                                    data-size="7"
-                                    [(ngModel)]="contacto.provincia.idProvincia"
-                                    required>
-                                    <option disabled> Seleccione un municipio</option>
-                                    <option *ngFor="let provincia of provincias" [value]="provincia.idProvincia"> {{ provincia.nombre }} </option>
+                                <select id="idProvincia" name="idProvincia" class="selectpicker" data-style="select-with-transition" title="Seleccione municipio" data-size="7" [(ngModel)]="contacto.provincia.idProvincia">
                                 </select>
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <label class="col-md-2 col-form-label" style="padding-top: 35px">Direccion</label>
+                        <label class="col-md-2 col-form-label">Direccion</label>
                         <div class="col-md-10">
                             <div class="form-group">
-                                <input [(ngModel)]="contacto.direccion" placeholder="Ingresa tu direccion completa" name="direccion" type="text" class="form-control" style="height: 50px" required>
+                                <input [(ngModel)]="contacto.direccion" placeholder="Ingresa tu direccion completa" name="direccion" type="text" class="form-control" required>
                             </div>
                         </div>
                     </div>

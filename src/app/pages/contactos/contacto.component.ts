@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, AfterViewChecked } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
 import { RegionResponse } from '../../interfaces/response/RegionResponse.interface';
@@ -13,6 +13,10 @@ import { Provincia } from '../../models/provincia.model';
 import { Region } from '../../models/region.model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ContactoResponse } from '../../interfaces/response/contactoResponse.interface';
+import { PaisService } from '../../services/pais/pais.service';
+import { PaisResponse } from '../../interfaces/response/paisResponse.interface';
+import { Pais } from '../../models/pais.model';
+import { ID_PAIS_GT } from '../../config/config';
 
 declare var $: any;
 
@@ -26,63 +30,160 @@ export class ContactoComponent implements OnInit {
   public regiones: Region[];
   public provincias: Provincia[];
   public contacto: Contacto;
+  public isLocal: boolean;
 
   constructor(
     public regionService: RegionService,
     public provinciaService: ProvinciaService,
     public contactoService: ContactoService,
     public router: Router,
-    public activatedRoute: ActivatedRoute
-  ) {
-
-    this.activatedRoute.params.subscribe( params => {
-      const id = params['id'];
-      if (id !== 'new') {
-        this.obtenerContacto(id);
-      }
-    });
-
-  }
+    public activatedRoute: ActivatedRoute,
+    private paisService: PaisService
+  ) { }
 
   ngOnInit() {
+    this.contacto = new Contacto(null, null, null, null, null, new Pais(null, null, null, null), new Provincia(null, null, new Region(null, null, null)), null, null);
     this.obtenerRegiones();
     this.obtenerProvincias();
+
+    Promise.all([
+      this.obtenerPaises(),
+      this.obtenerRegiones(),
+      this.obtenerProvincias()
+    ]).then( respuesta => {
+      this.activatedRoute.params.subscribe( params => {
+        const id = params['id'];
+        if (id !== 'new') {
+          this.obtenerContacto(id);
+        }
+      });
+    });
+    this.obtenerProvinciaPorRegion();
+    this.obtenerRegionPorPais();
     this.provincias = [];
-    this.contacto = new Contacto(null, null, null, null, null, new Provincia(null, null, new Region(null, null, null)), null, null);
+    $('#ubicacion').hide();
+    this.isLocal = false;
+
+    
+  }
+
+  public obtenerRegionPorPais() {
+    const self = this;
+
+    $('#idPais').on('change', function () {
+      const idPais = Number($('#idPais').val());
+
+      if (idPais === ID_PAIS_GT) {
+        $('#ubicacion').show();
+        $("#idRegion").attr('required',true);
+        $("#idProvincia").attr('required',true);
+      } else {
+        $('#ubicacion').hide();
+        $("#idRegion").removeAttr('required',true);
+        $("#idProvincia").removeAttr('required',true);
+      }
+    });
+  }
+
+  public obtenerProvinciaPorRegion() {
+    const self = this;
+
+    $('#idRegion').on('change', function(){
+      $("#idProvincia").children('option').remove();
+      $("#idProvincia").selectpicker('destroy');
+      
+      const region = $('#idRegion').val();
+      if (!Number(region)) {
+        return;
+      }
+  
+      self.provinciaService.obtenerProvinciaPorRegion(region, 'contacto')
+        .subscribe((response: ProvinciaResponse) => {
+          response.provincias.forEach( (provincia: Provincia) => {
+            $('#idProvincia').append('<option value="' + provincia.idProvincia + '">' + provincia.nombre + '</option>')
+          });
+          $('#idProvincia').selectpicker('refresh');
+        });
+    });
+  }
+
+  public obtenerPaises(): Promise<boolean> {
+
+    return new Promise( (resolve, reject) => {
+      this.paisService.obtenerPaises('contacto')
+      .subscribe( (response: PaisResponse) => {
+        if (response.indicador === 'SUCCESS') {
+          response.paises.forEach( (pais: Pais) => {
+            $('#idPais').append('<option value="' + pais.idPais + '">' + pais.nombre + '</option>');
+          });
+          $('#idPais').selectpicker('refresh');
+        }
+        resolve(true);
+      }, error => {
+        reject(false);
+      });
+    });
+    
   }
 
   public obtenerContacto(idContacto: number) {
 
     this.contactoService.obtenerContacto(idContacto, 'Contacto')
       .subscribe( (response: ContactoResponse) => {
+        if (response.contacto.provincia === null || response.contacto.provincia === undefined) {
+          response.contacto.provincia = new Provincia(0, '', new Region(0, '', new Pais(0, '', '', false)));
+        } else { 
+          $('#idRegion').val(response.contacto.provincia.region.idRegion);
+          $('#idRegion').selectpicker('refresh')
+          $('#idProvincia').val(response.contacto.provincia.idProvincia); 
+          $('#idProvincia').selectpicker('refresh')
+        }
         this.contacto = response.contacto;
+
+        $('#idPais').val(this.contacto.pais.idPais);
+        $('#idPais').selectpicker('refresh')
+
+        if (this.contacto.pais.idPais === ID_PAIS_GT) {
+          $('#ubicacion').show();
+          $("#idRegion").attr('required',true);
+          $("#idProvincia").attr('required',true);
+        } else {
+          $('#ubicacion').hide();
+          $("#idRegion").removeAttr('required',true);
+          $("#idProvincia").removeAttr('required',true);
+        }
+        
       });
   }
 
-  public obtenerProvincias(){
-    this.provinciaService.obtenerProvincias('Contacto')
+  public obtenerProvincias(): Promise<Boolean> {
+    return new Promise( (resolve, reject) => {
+      this.provinciaService.obtenerProvincias('Contacto')
       .subscribe( (provincias: ProvinciaResponse) => {
-        this.provincias = provincias.provincias;
+        provincias.provincias.forEach( (provincia: Provincia) => {
+          $('#idProvincia').append('<option value="' + provincia.idProvincia + '">' + provincia.nombre + '</option>')
+        });
+        $('#idProvincia').selectpicker('refresh');
+        resolve(true);
+      }, error => {
+        reject(false);
       });
+    });
   }
 
-  public obtenerRegiones() {
-    this.regionService.obtenerRegiones('contacto')
+  public obtenerRegiones(): Promise<Boolean> {
+    return new Promise( (resolve, reject) => {
+      this.regionService.obtenerRegiones('contacto')
       .subscribe( (regiones: RegionResponse) => {
-        this.regiones = regiones.regiones;
+        regiones.regiones.forEach( (region: Region) => {
+          $('#idRegion').append('<option value="' + region.idRegion + '">' + region.nombre + '</option>');
+        });
+        $('#idRegion').selectpicker('refresh');
+        resolve(true);
+      }, error => {
+        reject(false);
       });
-  }
-
-  public obtenerProvincia(idRegion: number) {
-
-    if (!Number(idRegion)) {
-      return;
-    }
-
-    this.provinciaService.obtenerProvinciaPorRegion(idRegion, 'contacto')
-      .subscribe((response: ProvinciaResponse) => {
-        this.provincias = response.provincias;
-      });
+    });
   }
 
   public guardarContacto(form: NgForm) {
@@ -91,11 +192,13 @@ export class ContactoComponent implements OnInit {
     }
 
     this.contactoService.guardarContacto(this.contacto, 'contacto')
-      .subscribe( respuesta => {
+      .subscribe( (respuesta: Contacto) => {
         if (respuesta) {
+          this.contacto = respuesta;
           this.router.navigate(['contact', respuesta.idContacto]);
         }
       });
+    this.contacto = new Contacto(null, null, null, null, null, new Pais(null, null, null, null), new Provincia(null, null, new Region(null, null, null)), null, null);
   }
 
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { URL_SERVICIOS } from '../../config/config';
+import { URL_SERVICIOS, ID_PAIS_GT } from '../../config/config';
 import { map, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 
@@ -10,6 +10,9 @@ import { UsuarioService } from '../usuario-service/usuario.service';
 import { Contacto } from '../../models/contacto.model';
 
 import Swal from 'sweetalert2';
+import { Provincia } from 'src/app/models/provincia.model';
+import { Region } from 'src/app/models/region.model';
+import { Pais } from 'src/app/models/pais.model';
 @Injectable({
   providedIn: 'root'
 })
@@ -36,12 +39,25 @@ export class ContactoService {
     return this.http.post(url, request, {
       headers: new HttpHeaders()
         .set('Authorization', 'Bearer ' + this.usuarioService.token)
-    });
+    }).pipe(
+      map( (response: ContactoResponse) => {
+        response.contactos.forEach( (contacto) => {
+          if (contacto.provincia === null || contacto.provincia === undefined) {
+            contacto.provincia = new Provincia(0, '', new Region(0, '', new Pais(0, '', '', false)));
+          }
+        });
+        return response;
+      })
+    );
   }
 
   public guardarContacto(contacto: Contacto, pagina: string) {
 
     const url = URL_SERVICIOS + '/contact/save';
+
+    if (contacto.pais.idPais !== ID_PAIS_GT) {
+      contacto.provincia = null;
+    }
 
     const contactoRequest: ContactoRequest = {
       usuario: this.usuarioService.usuario.username,
@@ -49,7 +65,7 @@ export class ContactoService {
       pagina,
       contacto
     };
-
+    
     return this.http.post(url, contactoRequest, {
       headers: new HttpHeaders()
         .set('Authorization', 'Bearer ' + this.usuarioService.token)
@@ -64,6 +80,9 @@ export class ContactoService {
               showConfirmButton: false,
               timer: 3000
             });
+            if (response.contacto.provincia === null || response.contacto.provincia === undefined) {
+              response.contacto.provincia = new Provincia(0, '', new Region(0, '', new Pais(0, '', '', false)));
+            }
             return response.contacto;
         } else {
           Swal.fire({
@@ -103,7 +122,15 @@ export class ContactoService {
     return this.http.post(url, contactoRequest, {
       headers: new HttpHeaders()
         .set('Authorization', 'Bearer ' + this.usuarioService.token)
-    });
+    }).pipe(
+      map( (response: ContactoResponse) => {
+        if (response.contacto.provincia === null || response.contacto.provincia === undefined) {
+          response.contacto.provincia = new Provincia(0, '', new Region(0, '', new Pais(0, '', '', false)));
+        }
+
+        return response;
+      })
+    );
   }
 
   public obtenerTodosContactos(pagina: string) {
@@ -119,7 +146,16 @@ export class ContactoService {
     return this.http.post(url, contactoRequest, {
       headers: new HttpHeaders()
         .set('Authorization', 'Bearer ' + this.usuarioService.token)
-    });
+    }).pipe(
+      map( (response: ContactoResponse) => {
+        response.contactos.forEach( (contacto) => {
+          if (contacto.provincia === null || contacto.provincia === undefined) {
+            contacto.provincia = new Provincia(0, '', new Region(0, '', new Pais(0, '', '', false)));
+          }
+        });
+        return response;
+      })
+    );
   }
 
   public buscarContactosPorFecha(fechaInicio: Date, fechaFin: Date, pagina: string) {
@@ -137,6 +173,15 @@ export class ContactoService {
     return this.http.post(url, contactoRequest, {
       headers: new HttpHeaders()
         .set('Authorization', 'Bearer ' + this.usuarioService.token)
-    });
+    }).pipe(
+      map( (response: ContactoResponse) => {
+        response.contactos.forEach( (contacto) => {
+          if (contacto.provincia === null || contacto.provincia === undefined) {
+            contacto.provincia = new Provincia(0, '', new Region(0, '', new Pais(0, '', '', false)));
+          }
+        });
+        return response;
+      })
+    );
   }
 }

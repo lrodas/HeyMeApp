@@ -34,14 +34,14 @@
                         <div class="col-sm-10">
                             <table class="table table-hover">
                                 <thead class="text-warning">
-                                    <th>Nombre</th>
-                                    <th>Telefono/e-mail</th>
+                                    <th scope="col">Nombre</th>
+                                    <th scope="col">Telefono/e-mail</th>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let destinatario of modalNotificacionService.notificacion.destinatarios">
-                                        <td>{{ destinatario.nombre + ' ' + destinatario.apellido }}</td>
-                                        <td *ngIf="modalNotificacionService.notificacion.canal.idCanal === canalEmail">{{ destinatario.email }}</td>
-                                        <td *ngIf="modalNotificacionService.notificacion.canal.idCanal !== canalEmail">{{ destinatario.telefono }}</td>
+                                        <td data-label="Nombre">{{ destinatario.nombre + ' ' + destinatario.apellido }}</td>
+                                        <td *ngIf="modalNotificacionService.notificacion.canal.idCanal === canalEmail" data-label="Email">{{ destinatario.email }}</td>
+                                        <td *ngIf="modalNotificacionService.notificacion.canal.idCanal !== canalEmail" data-label="Telefono">{{ destinatario.telefono }}</td>
                                     </tr>
                                 </tbody>
                             </table>

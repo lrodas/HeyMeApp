@@ -1,6 +1,8 @@
 export class Pais {
     constructor(
-        private idPais?: number,
-        private nombre?: string
+        public idPais?: number,
+        public nombre?: string,
+        public codigo?: string,
+        public estado?: boolean
     ) {}
 }

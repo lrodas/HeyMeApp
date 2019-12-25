@@ -11,3 +11,5 @@ export const CANAL_EMAIL = 2;
 export const CANAL_WHATSAPP = 3;
 
 export const SPECIAL_KEYS = ['Shift', 'Meta', 'Backspace', 'CapsLock', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Tab'];
+
+export const ID_PAIS_GT = 1;
