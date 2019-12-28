@@ -92,15 +92,15 @@
                             <th scope="col">Acciones</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody *ngIf="screenWidth > 600">
                         <tr *ngFor="let contacto of contactos | paginate: { itemsPerPage: 5, currentPage: page }">
                             <td data-label="Codigo">{{ contacto.idContacto }}</td>
                             <td data-label="Nombre">{{ contacto.nombre }}</td>
                             <td data-label="Apellido">{{ contacto.apellido }}</td>
                             <td data-label="Correo">{{ contacto.email }}</td>
                             <td data-label="Telefono">{{ contacto.telefono }}</td>
-                            <td data-label="Estado" *ngIf="contacto.estado">Activo</td>
-                            <td data-label="Estado" *ngIf="!contacto.estado">Inactivo</td>
+                            <td *ngIf="contacto.estado" data-label="Estado">Activo</td>
+                            <td *ngIf="!contacto.estado" data-label="Estado">Inactivo</td>
                             <td data-label="Acciones" class="td-actions">
                                 <button *ngIf="permisos.cambio" type="button" [routerLink]="['/contact', contacto.idContacto]" rel="tooltip" class="btn btn-success btn-link">
                                     <i class="material-icons">edit</i>
@@ -114,8 +114,13 @@
                             </td>
                         </tr>
                     </tbody>
+                    <tbody *ngIf="screenWidth < 600 || screenWidth === 600">
+                        <tr *ngFor="let contacto of contactos">
+                            <td [routerLink]="['/contact', contacto.idContacto]" class="text-left pointer"> {{ contacto.nombre + ' ' + contacto.apellido }} </td>
+                        </tr>
+                    </tbody>
                 </table>
-                <pagination-controls (pageChange)="page = $event"></pagination-controls>
+                <pagination-controls *ngIf="screenWidth > 600" (pageChange)="page = $event"></pagination-controls>
             </div>
         </div>
     </div>

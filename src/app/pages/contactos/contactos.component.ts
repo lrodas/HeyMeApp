@@ -5,11 +5,12 @@ import { ContactoResponse } from '../../interfaces/response/contactoResponse.int
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Permiso } from '../../models/permiso.model';
 import { PERMISOS } from '../../config/config';
+import { HostListener } from "@angular/core";
 
 @Component({
   selector: 'app-contactos',
   templateUrl: './contactos.component.html',
-  styles: []
+  styleUrls: ['./contactos.component.css']
 })
 export class ContactosComponent implements OnInit {
 
@@ -19,6 +20,14 @@ export class ContactosComponent implements OnInit {
   public errorFechas: boolean;
   public page: number;
   public permisos: Permiso;
+  public screenHeight: number;
+  public screenWidth: number;
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event?) {
+     this.screenHeight = window.innerHeight;
+     this.screenWidth = window.innerWidth;
+  }
 
   constructor(
     private contactoService: ContactoService
@@ -34,6 +43,7 @@ export class ContactosComponent implements OnInit {
       fechaFin: new FormControl(null, Validators.required)
     });
     this.cargarPermisos();
+    this.onResize();
   }
 
   public changeFiltro(filtro: string) {

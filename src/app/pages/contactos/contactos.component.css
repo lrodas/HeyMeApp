@@ -1,0 +1,10 @@
+table th,
+.table td {
+    border-top: none;
+}
+
+.td:hover,
+.td:active {
+    opacity: 0;
+    transition: all .6s ease-in-out;
+}
