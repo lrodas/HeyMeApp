@@ -165,8 +165,8 @@
                                     <tr *ngFor="let notificacion of notificaciones  | paginate: { itemsPerPage: 5, currentPage: page }">
                                         <td data-label="Codigo">{{ notificacion.idNotificaciones }}</td>
                                         <td data-label="Titulo">{{ notificacion.titulo }}</td>
-                                        <td data-label="Fecha de Envío">{{ notificacion.fechaEnvio | date: 'dd-MM-yyyy' }}</td>
-                                        <td data-label="Feca de programacion">{{ notificacion.fechaProgramacion| date: 'dd-MM-yyyy' }}</td>
+                                        <td data-label="Fecha de Envío">{{ notificacion.fechaEnvio | date: 'dd-MM-yyyy HH:mm' }}</td>
+                                        <td data-label="Feca de programacion">{{ notificacion.fechaProgramacion| date: 'dd-MM-yyyy HH:mm' }}</td>
                                         <td data-label="Estado">{{ notificacion.estado.descripcion }}</td>
                                         <td data-label="Usuario">{{ notificacion.usuario.nombres + ' ' + notificacion.usuario.apellidos }}</td>
                                         <td class="td-actions text-right">

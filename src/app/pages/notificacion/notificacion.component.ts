@@ -72,6 +72,7 @@ export class NotificacionComponent implements OnInit {
     const fechaFin = new Date();
     const fechaInicio = new Date() ;
     fechaInicio.setDate(fechaFin.getDate() - 7);
+    fechaFin.setDate(fechaFin.getDate() + 1);
 
     this.notificacionService.obtenerNotificacionesPorFechaProgramacion(
       fechaInicio.getFullYear() + '-' + (fechaInicio.getMonth() + 1) + '-' + fechaInicio.getDate(),
