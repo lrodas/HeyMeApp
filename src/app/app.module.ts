@@ -17,6 +17,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ModalNotificacionComponent } from './components/modal-notificacion/modal-notificacion.component';
 import { RegistroComponent } from './login/registro.component';
+import { ModalEmpresaComponent } from './components/modal-empresa/modal-empresa.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { RegistroComponent } from './login/registro.component';
     PagesComponent,
     ModalPlantillasComponent,
     ModalNotificacionComponent,
-    RegistroComponent
+    RegistroComponent,
+    ModalEmpresaComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,16 @@
+.radios-genero {
+    margin-left: 0 !important;
+    padding-left: 25px !important;
+}
+
+.dropdown .bootstrap-select {
+    width: 80% !important;
+}
+
+@media (max-width: 426px) {
+    .register-page .card-signup {
+        margin-top: 49vh;
+        overflow: scroll;
+        height: 43%;
+    }
+}

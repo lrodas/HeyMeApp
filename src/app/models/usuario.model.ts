@@ -1,5 +1,6 @@
 import { Role } from './role.model';
 import { Genero } from './genero.model';
+import { Empresa } from './empresa.model';
 export class Usuario {
     constructor(
         public idUsuario?: number,
@@ -12,6 +13,7 @@ export class Usuario {
         public password?: string,
         public img?: string,
         public genero?: Genero,
-        public enabled?: boolean
+        public enabled?: boolean,
+        public empresa?: Empresa
     ) { }
 }

@@ -1,5 +1,5 @@
 <div class="wrapper wrapper-full-page">
-    <div class="page-header register-page header-filter" filter-color="black" style="background-image: url('../../assets/img/register.jpg')">
+    <div class="page-header register-page header-filter" filter-color="black" style="background-image: url('../../assets/img/register.jpg');background-repeat:no-repeat;background-size:cover;">
         <div class="container">
             <div class="row">
                 <div class="col-md-10 ml-auto mr-auto">
@@ -42,113 +42,111 @@
                                         </div>
                                     </div>
                                 </div>
-                            <div class="col-md-5 mr-auto">
-                                <div class="social text-center">
-                                    <form class="form" method="" action="">
-                                        <div class="form-group has-default">
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">
-                                                        <i class="material-icons">face</i>
-                                                    </span>
+                                <div class="col-md-5 mr-auto">
+                                    <div class="social text-center">
+                                        <form class="form" #f="ngForm" ngNativeValidate (submit)="guardar(f)">
+                                            <div class="form-group has-default">
+                                                <div class="input-group">
+                                                    <input type="text" [(ngModel)]="usuario.nombres" name="nombres" class="form-control" placeholder="Nombres...">
                                                 </div>
-                                                <input type="text" class="form-control" placeholder="Nombres...">
                                             </div>
-                                        </div>
-                                        <div class="form-group has-default">
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">
-                                                        <i class="material-icons">face</i>
-                                                    </span>
+                                            <div class="form-group has-default">
+                                                <div class="input-group">
+                                                    <input type="text" [(ngModel)]="usuario.apellidos" name="apellidos" class="form-control" placeholder="Apellidos...">
                                                 </div>
-                                                <input type="text" class="form-control" placeholder="Apellidos...">
                                             </div>
-                                        </div>
-                                        <div class="form-group has-default">
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">
-                                                        <i class="material-icons">face</i>
-                                                    </span>
+                                            <div class="form-group has-default">
+                                                <div class="input-group">
+                                                    <input type="text" [(ngModel)]="usuario.direccion" name="direccion" class="form-control" placeholder="Direccion...">
                                                 </div>
-                                                <input type="text" class="form-control" placeholder="Direccion...">
                                             </div>
-                                        </div>
-                                        <div class="form-group has-default">
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">
-                                                        <i class="material-icons">face</i>
-                                                    </span>
+                                            <div class="form-group has-default">
+                                                <div class="input-group">
+                                                    <input type="text" [(ngModel)]="usuario.telefono" name="telefono" class="form-control" placeholder="Telefono...">
                                                 </div>
-                                                <input type="text" class="form-control" placeholder="Direccion...">
                                             </div>
-                                        </div>
-                                        <div class="form-group has-default">
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">
-                                                        <i class="material-icons">mail</i>
-                                                    </span>
+                                            <div class="form-group has-default">
+                                                <div class="input-group">
+                                                    <input type="text" [(ngModel)]="usuario.username" name="username" class="form-control" placeholder="Correo electronico...">
                                                 </div>
-                                                <input type="text" class="form-control" placeholder="Correo electronico...">
                                             </div>
-                                        </div>
-                                        <div class="form-group has-default">
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">
-                                                        <i class="material-icons">lock_outline</i>
-                                                    </span>
+                                            <div class="form-group has-default">
+                                                <div class="input-group">
+                                                    <input type="password" [(ngModel)]="usuario.password" name="password" class="form-control" placeholder="Contraseña...">
                                                 </div>
-                                                <input type="password" placeholder="Contraseña..." class="form-control">
                                             </div>
-                                        </div>
-                                        <div class="form-check">
-                                            <label class="form-check-label">
-                                                <input class="form-check-input" type="checkbox" value="" checked="">
-                                                <span class="form-check-sign">
-                                                    <span class="check"></span>
-                                                </span>
-                                                Estoy de acuerdo con los <a href="#something">términos y condiciones</a>.
-                                            </label>
-                                        </div>
-                                        <div class="text-center">
-                                            <a href="#pablo" class="btn btn-primary btn-round mt-4">Empezar</a>
-                                        </div>
-                                    </form>
+                                            <div class="row">
+                                                <div class="col-sm-12 checkbox-radios" style="margin-top: 0px;">
+                                                    <div class="form-check form-check-inline" style="margin-top: 0px;">
+                                                        <label class="form-check-label radios-genero">
+                                                            <input class="form-check-input" type="radio" [(ngModel)]="usuario.genero.idGenero" name="idGenero" value="1"> Soy Hombre
+                                                            <span class="circle">
+                                                                <span class="check"></span>
+                                                            </span>
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline" style="margin-top: 0px;">
+                                                        <label class=" form-check-label radios-genero">
+                                                            <input class="form-check-input" type="radio" [(ngModel)]="usuario.genero.idGenero" name="idGenero" value="2"> Soy Mujer
+                                                            <span class="circle">
+                                                                <span class="check"></span>
+                                                            </span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group has-default">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" [(ngModel)]="usuario.empresa.codigo" name="codigo" placeholder=" Codigo de tu empresa... ">
+                                                </div>
+                                            </div>
+                                            <div class="form-group has-default ">
+                                                <button type="button " class="btn btn-outline-info w-100 ">O Registra tu empresa</button>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <label class="form-check-label">
+                                                    <input class="form-check-input" type="checkbox" value="">
+                                                    Estoy de acuerdo con los términos y condiciones.
+                                                    <span class="form-check-sign">
+                                                        <span class="check"></span>
+                                                    </span>
+                                                </label>
+                                            </div>
+                                            <div class="text-center ">
+                                                <button type="submit " class="btn btn-primary btn-round mt-4 ">Empezar</button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div> 
+                    </div>
                 </div>
             </div>
-      </div>
-      <footer class="footer">
-        <div class="container">
-          <nav class="float-left">
-            <ul>
-              <li>
-                <a href="https://cycsystemsgt.com">
+            <footer class="footer ">
+                <div class="container ">
+                    <nav class="float-left ">
+                        <ul>
+                            <li>
+                                <a href="https://cycsystemsgt.com ">
                   C y C Systems Guatemala
                 </a>
-              </li>
-              <li>
-                <a href="https://cycsystemsgt.com/#about">
+                            </li>
+                            <li>
+                                <a href="https://cycsystemsgt.com/#about ">
                   Sobre nosotros
                 </a>
-              </li>
-            </ul>
-          </nav>
-          <div class="copyright float-right">
-            &copy;
-            <script>
-              document.write(new Date().getFullYear())
-            </script>, hecho con <i class="material-icons">favorite</i> por 
-            <a href="https://www.cycsystemsgt.com" target="_blank">C y C Systems Guatemala</a>.
-          </div>
+                            </li>
+                        </ul>
+                    </nav>
+                    <div class="copyright float-right ">
+                        &copy;
+                        <script>
+                            document.write(new Date().getFullYear())
+                        </script>, hecho con <i class="material-icons ">favorite</i> por
+                        <a href="https://www.cycsystemsgt.com " target="_blank ">C y C Systems Guatemala</a>.
+                    </div>
+                </div>
+            </footer>
         </div>
-      </footer>
     </div>
-  </div>
