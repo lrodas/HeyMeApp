@@ -1,5 +1,5 @@
 <div class="wrapper wrapper-full-page">
-    <div class="page-header register-page header-filter" filter-color="black" style="background-image: url('../../assets/img/register.jpg');background-repeat:no-repeat;background-size:cover;">
+    <div class="page-header register-page header-filter" filter-color="black" style="background-image: url('assets/img/register.jpg');background-repeat:no-repeat;background-size:cover;">
         <div class="container">
             <div class="row">
                 <div class="col-md-10 ml-auto mr-auto">
@@ -47,39 +47,45 @@
                                         <form class="form" #f="ngForm" ngNativeValidate (submit)="guardar(f)">
                                             <div class="form-group has-default">
                                                 <div class="input-group">
-                                                    <input type="text" [(ngModel)]="usuario.nombres" name="nombres" class="form-control" placeholder="Nombres...">
+                                                    <input type="text" [(ngModel)]="usuario.nombres" name="nombres" class="form-control" placeholder="Nombres..." required>
                                                 </div>
                                             </div>
                                             <div class="form-group has-default">
                                                 <div class="input-group">
-                                                    <input type="text" [(ngModel)]="usuario.apellidos" name="apellidos" class="form-control" placeholder="Apellidos...">
+                                                    <input type="text" [(ngModel)]="usuario.apellidos" name="apellidos" class="form-control" placeholder="Apellidos..." required>
                                                 </div>
                                             </div>
                                             <div class="form-group has-default">
                                                 <div class="input-group">
-                                                    <input type="text" [(ngModel)]="usuario.direccion" name="direccion" class="form-control" placeholder="Direccion...">
+                                                    <input type="text" [(ngModel)]="usuario.direccion" name="direccion" class="form-control" placeholder="Direccion..." required>
                                                 </div>
                                             </div>
                                             <div class="form-group has-default">
                                                 <div class="input-group">
-                                                    <input type="text" [(ngModel)]="usuario.telefono" name="telefono" class="form-control" placeholder="Telefono...">
+                                                    <input type="text" [(ngModel)]="usuario.telefono" name="telefono" class="form-control" placeholder="Telefono..." required>
                                                 </div>
                                             </div>
                                             <div class="form-group has-default">
                                                 <div class="input-group">
-                                                    <input type="text" [(ngModel)]="usuario.username" name="username" class="form-control" placeholder="Correo electronico...">
+                                                    <input type="email" [(ngModel)]="usuario.username" name="username" class="form-control" placeholder="Correo electronico..." required>
                                                 </div>
                                             </div>
                                             <div class="form-group has-default">
                                                 <div class="input-group">
-                                                    <input type="password" [(ngModel)]="usuario.password" name="password" class="form-control" placeholder="Contraseña...">
+                                                    <input type="password" [(ngModel)]="usuario.password" name="password" class="form-control" placeholder="Contraseña..." required>
                                                 </div>
                                             </div>
+                                            <div class="form-group has-default">
+                                                <div class="input-group">
+                                                    <input type="password" id="confirmPassword" class="form-control" placeholder="Confirme Contraseña..." required>
+                                                </div>
+                                            </div>
+                                            <label *ngIf="errorPasswordMatch" class="error" for="required">Las contraseñas proporcionadas no coinciden.</label>
                                             <div class="row">
                                                 <div class="col-sm-12 checkbox-radios" style="margin-top: 0px;">
                                                     <div class="form-check form-check-inline" style="margin-top: 0px;">
                                                         <label class="form-check-label radios-genero">
-                                                            <input class="form-check-input" type="radio" [(ngModel)]="usuario.genero.idGenero" name="idGenero" value="1"> Soy Hombre
+                                                            <input class="form-check-input" type="radio" [(ngModel)]="usuario.genero.idGenero" name="idGenero" value="1" > Soy Hombre
                                                             <span class="circle">
                                                                 <span class="check"></span>
                                                             </span>
@@ -87,7 +93,7 @@
                                                     </div>
                                                     <div class="form-check form-check-inline" style="margin-top: 0px;">
                                                         <label class=" form-check-label radios-genero">
-                                                            <input class="form-check-input" type="radio" [(ngModel)]="usuario.genero.idGenero" name="idGenero" value="2"> Soy Mujer
+                                                            <input class="form-check-input" type="radio" [(ngModel)]="usuario.genero.idGenero" name="idGenero" value="2" > Soy Mujer
                                                             <span class="circle">
                                                                 <span class="check"></span>
                                                             </span>
@@ -95,23 +101,26 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <label *ngIf="errorGenero" class="error" for="required">Debes especificar tu genero.</label>
                                             <div class="form-group has-default">
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control" [(ngModel)]="usuario.empresa.codigo" name="codigo" placeholder=" Codigo de tu empresa... ">
+                                                    <input type="text" class="form-control" [(ngModel)]="usuario.empresa.codigo" name="codigoEmpresa" id="codigoEmpresa" placeholder=" Codigo de tu empresa... ">
                                                 </div>
                                             </div>
                                             <div class="form-group has-default ">
-                                                <button type="button " class="btn btn-outline-info w-100 ">O Registra tu empresa</button>
+                                                <a (click)="mostrarModal()" class="btn btn-outline-info w-100 ">O Registra tu empresa</a>
                                             </div>
+                                            <label *ngIf="errorCodigoEmpresa" class="error" for="required">Debes especificar la empresa a la que perteneces.</label>
                                             <div class="form-check form-check-inline">
                                                 <label class="form-check-label">
-                                                    <input class="form-check-input" type="checkbox" value="">
+                                                    <input class="form-check-input" type="checkbox" id="terminos" value="">
                                                     Estoy de acuerdo con los términos y condiciones.
                                                     <span class="form-check-sign">
                                                         <span class="check"></span>
                                                     </span>
                                                 </label>
                                             </div>
+                                            <label *ngIf="errorTerminos" class="error" for="required">Debe aceptar los términos y condiciones del servicio.</label>
                                             <div class="text-center ">
                                                 <button type="submit " class="btn btn-primary btn-round mt-4 ">Empezar</button>
                                             </div>
@@ -125,7 +134,7 @@
             </div>
             <footer class="footer ">
                 <div class="container ">
-                    <nav class="float-left ">
+                    <nav class="footer-menu ">
                         <ul>
                             <li>
                                 <a href="https://cycsystemsgt.com ">
@@ -139,7 +148,7 @@
                             </li>
                         </ul>
                     </nav>
-                    <div class="copyright float-right ">
+                    <div class="copyright footer-copyright ">
                         &copy;
                         <script>
                             document.write(new Date().getFullYear())

@@ -32,6 +32,67 @@ export class UsuarioService {
     this.cargarStorage();
   }
 
+  public crearUsuario(usuario: Usuario, email: string, pagina: string) {
+    const url = URL_SERVICIOS + '/user/save';
+    const user: UsuarioRequest = {
+      usuario: email,
+      idUsuario: null,
+      pagina,
+      datos: usuario
+    };
+
+    Swal.fire({
+      allowOutsideClick: false,
+      type: 'info',
+      text: 'Espere por favor',
+      showConfirmButton: false
+    });
+
+    Swal.showLoading();
+
+    return this.http.post(url, user, {
+      headers: new HttpHeaders()
+        .set('Authorization', 'Bearer ' + this.token)
+    }).pipe(
+      map( (usuarioResponse: UsuarioResponse) => {
+        Swal.close();
+        console.log(usuarioResponse);
+        if (usuarioResponse.codigo === '0000') {
+          Swal.fire({
+            type: 'success',
+            title: 'Registro exitoso',
+            text: 'Tu usuario ha sido creado exitosamente, ahora podrás disfrutar de tus beneficios'
+          });
+          return true;
+        } else if (usuarioResponse.codigo === '0058') {
+          Swal.fire({
+            type: 'error',
+            title: 'Ups!',
+            text: 'El correo electrónico que especificaste ya se encuentra registrado.'
+          });
+          return false;
+        } else {
+          Swal.fire({
+            type: 'error',
+            title: 'Ups!',
+            text: 'Tenemos un problema con tu registro por favor intentalo mas tarde'
+          });
+          return false;
+        }
+        
+      }),
+      catchError( error => {
+        Swal.close();
+        Swal.fire({
+          type: 'error',
+          title: 'Ups!',
+          text: 'Tenemos un problema con tu registro por favor intentalo mas tarde'
+        });
+        return of([error]);
+      })
+    );
+  }
+
   private cargarStorage() {
     if (localStorage.getItem('token')) {
       this.token = localStorage.getItem('token');
@@ -108,7 +169,7 @@ export class UsuarioService {
     }));
   }
 
-  estaLogueado() {
+  public estaLogueado() {
     return (this.token && this.token.length > 1) ? true : false;
   }
 
@@ -275,21 +336,21 @@ export class UsuarioService {
         .set('Authorization', 'Bearer ' + this.token)
     }).pipe(
       map( (usuarioResponse: UsuarioResponse) => {
+        Swal.close();
         Swal.fire({
           type: 'success',
           title: 'Estado cambiado exitosamente',
           text: 'Estado cambiado exitosamente'
         });
-        Swal.close();
         return usuarioResponse.usuario;
       }),
       catchError( error => {
+        Swal.close();
         Swal.fire({
           type: 'error',
           title: 'En estos momentos no ha sido posible actualizar los datos',
           text: 'Por favor intenta nuevamente mas tarde'
         });
-        Swal.close();
         return of([error]);
       })
     );

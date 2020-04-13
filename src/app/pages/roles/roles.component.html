@@ -54,10 +54,10 @@
                                 <td data-label="Estado" *ngIf="role.estado">Activo</td>
                                 <td data-label="Estado" *ngIf="!role.estado">Inactivo</td>
                                 <td data-label="Acciones" class="td-actions">
-                                    <button *ngIf="permisos.cambio" type="button" rel="tooltip" title="editar" [routerLink]="['/role', role.idRole]" class="btn btn-success btn-link">
+                                    <button *ngIf="permisos.cambio && role.nombre !== 'ROLE_SIN_ROLE'" type="button" rel="tooltip" title="editar" [routerLink]="['/role', role.idRole]" class="btn btn-success btn-link">
                                         <i class="material-icons">edit</i>
                                     </button>
-                                    <button *ngIf="permisos.baja && role.estado" (click)="cambiarEstado(role.idRole, false)" type="button" rel="tooltip" title="Desactivar" class="btn btn-danger btn-link">
+                                    <button *ngIf="permisos.baja && role.estado && role.nombre !== 'ROLE_SIN_ROLE'" (click)="cambiarEstado(role.idRole, false)" type="button" rel="tooltip" title="Desactivar" class="btn btn-danger btn-link">
                                         <i class="material-icons">close</i>
                                     </button>
                                     <button *ngIf="permisos.baja && !role.estado" (click)="cambiarEstado(role.idRole, true)" type="button" rel="tooltip" title="Activar" class="btn btn-success btn-link">

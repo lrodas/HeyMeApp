@@ -8,22 +8,10 @@ import { ModalEmpresaService } from './modal-empresa.service';
 })
 export class ModalEmpresaComponent implements OnInit {
 
-  public oculto: string;
-
   constructor(
     public modalEmpresaService: ModalEmpresaService
   ) { }
 
-  ngOnInit() {
-    this.oculto = '';
-  }
-
-  public ocultarModal() {
-    this.oculto = 'd-none';
-  }
-
-  public mostrarModal() {
-    this.oculto = '';
-  }
+  ngOnInit() { }
 
 }

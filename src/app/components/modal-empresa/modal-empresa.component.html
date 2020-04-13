@@ -3,17 +3,43 @@
     <div class="modal" style="display: block" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Registrar empresa</h4>
-                </div>
-                <div class="modal-body">
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger btn-link" (click)="modalEmpresaService.ocultarModal()">Close</button>
-                </div>
+                <form action="" ngNativeValidate>
+                    <div class="modal-header">
+                        <h4 class="modal-title">Registrar empresa</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <label class="col-sm-2 col-form-label">Nombre </label>
+                            <div class="col-sm-10">
+                                <div class="form-group">
+                                    <input type="text" [(ngModel)]="modalEmpresaService.empresa.nombreEmpresa" name="nombre" class="form-control" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-2 col-form-label">Direccion</label>
+                            <div class="col-sm-10">
+                                <div class="form-group">
+                                    <input type="text" [(ngModel)]="modalEmpresaService.empresa.direccion" name="direccion" class="form-control" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-2 col-form-label">Telefono</label>
+                            <div class="col-sm-10">
+                                <div class="form-group">
+                                    <input type="tel" [(ngModel)]="modalEmpresaService.empresa.telefono" name="telefono" class="form-control" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger btn-link" (click)="modalEmpresaService.cancelarModal()">Cancelar</button>
+                        <button type="button" class="btn btn-success btn-link" (click)="modalEmpresaService.ocultarModal()">Aceptar</button>
+                    </div>
+                </form>
             </div>
         </div>
-    </div>
+    </div> 
     <!--  End Modal -->
 </div>

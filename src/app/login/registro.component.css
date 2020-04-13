@@ -7,10 +7,28 @@
     width: 80% !important;
 }
 
+.error {
+    font-size: 0.8rem;
+    color: #f44336;
+}
+
+@media (min-width: 426px) {
+    .page-header {
+        max-height: 1200px;
+    }
+
+    .footer-menu {
+        float: left;
+    }
+
+    .footer-copyright {
+        float: right;
+    }
+}
+
 @media (max-width: 426px) {
-    .register-page .card-signup {
-        margin-top: 49vh;
-        overflow: scroll;
-        height: 43%;
+
+    .page-header {
+        max-height: 2000px;
     }
 }

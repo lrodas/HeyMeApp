@@ -25,7 +25,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div *ngIf="role.nombre !== 'ROLE_SIN_ROLE'" class="row">
                         <label class="col-md-3 col-form-label">Estado </label>
                         <div class="col-md-9">
                             <div class="togglebutton">
