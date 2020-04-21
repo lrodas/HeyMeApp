@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  url: 'http://localhost:8080/api/v1'  
+  url: 'http://localhost:8080/api/v1' ,
+  dataSiteKey: '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI' 
 };
 
 /*

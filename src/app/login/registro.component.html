@@ -44,7 +44,7 @@
                                 </div>
                                 <div class="col-md-5 mr-auto">
                                     <div class="social text-center">
-                                        <form class="form" #f="ngForm" ngNativeValidate (submit)="guardar(f)">
+                                        <form class="form" #f="ngForm" name="register" ngNativeValidate (submit)="guardar(f)">
                                             <div class="form-group has-default">
                                                 <div class="input-group">
                                                     <input type="text" [(ngModel)]="usuario.nombres" name="nombres" class="form-control" placeholder="Nombres..." required>
@@ -121,6 +121,14 @@
                                                 </label>
                                             </div>
                                             <label *ngIf="errorTerminos" class="error" for="required">Debe aceptar los términos y condiciones del servicio.</label>
+
+                                            <div class="card mt-3">
+                                                <div class="card-body">
+                                                    <re-captcha (resolved)="resolved($event)" [siteKey]="dataKey">
+                                                    </re-captcha>
+                                                </div>
+                                            </div>
+                                            <label *ngIf="errorRecaptcha" class="error" for="required">Por favor completa el recaptcha.</label>
                                             <div class="text-center ">
                                                 <button type="submit " class="btn btn-primary btn-round mt-4 ">Empezar</button>
                                             </div>

@@ -32,13 +32,14 @@ export class UsuarioService {
     this.cargarStorage();
   }
 
-  public crearUsuario(usuario: Usuario, email: string, pagina: string) {
+  public crearUsuario(usuario: Usuario, recaptchaResponse: string, email: string, pagina: string) {
     const url = URL_SERVICIOS + '/user/save';
     const user: UsuarioRequest = {
       usuario: email,
       idUsuario: null,
       pagina,
-      datos: usuario
+      datos: usuario,
+      recaptchaResponse
     };
 
     Swal.fire({
@@ -56,7 +57,6 @@ export class UsuarioService {
     }).pipe(
       map( (usuarioResponse: UsuarioResponse) => {
         Swal.close();
-        console.log(usuarioResponse);
         if (usuarioResponse.codigo === '0000') {
           Swal.fire({
             type: 'success',

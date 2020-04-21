@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Usuario } from '../models/usuario.model';
 import { Role } from '../models/role.model';
 import { Genero } from '../models/genero.model';
@@ -9,6 +9,7 @@ import { LoginComponent } from './login.component';
 import { UsuarioService } from '../services/usuario-service/usuario.service';
 import { UsuarioResponse } from '../interfaces/response/usuarioResponse.interface';
 import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-registro',
@@ -21,7 +22,11 @@ export class RegistroComponent implements OnInit {
   public errorTerminos: boolean;
   public errorCodigoEmpresa: boolean;
   public errorPasswordMatch: boolean;
+  public errorRecaptcha: boolean;
+  public recaptchaResponse: string;
+  public dataKey: string;
   public errorGenero: boolean;
+  @ViewChild('recaptcha', {static: true }) recaptchaElement: ElementRef;
   
   constructor(
     private modalEmpresaService: ModalEmpresaService,
@@ -34,12 +39,20 @@ export class RegistroComponent implements OnInit {
     this.errorTerminos = false;
     this.errorCodigoEmpresa = false;
     this.errorGenero = false;
+    this.errorRecaptcha = false;
+    this.dataKey = environment.dataSiteKey;
   }
 
   public guardar(form: NgForm) {
 
     if (form.invalid) {
       console.log('error');
+    }
+
+    if (!this.recaptchaResponse) {
+      this.errorRecaptcha = true;
+    } else {
+      this.errorRecaptcha = false;
     }
 
     if (this.usuario.password !== (document.getElementById('confirmPassword') as HTMLInputElement).value) {
@@ -66,7 +79,7 @@ export class RegistroComponent implements OnInit {
       this.errorGenero = false;
     }
 
-    if (this.errorCodigoEmpresa || this.errorCodigoEmpresa || this.errorTerminos || form.invalid) {
+    if (this.errorCodigoEmpresa || this.errorCodigoEmpresa || this.errorTerminos || form.invalid || this.errorRecaptcha) {
       return;
     }
 
@@ -74,7 +87,7 @@ export class RegistroComponent implements OnInit {
       this.usuario.empresa = this.modalEmpresaService.empresa;
     }
 
-    this.usuarioService.crearUsuario(this.usuario, 'registro', 'registro')
+    this.usuarioService.crearUsuario(this.usuario, this.recaptchaResponse, 'registro', 'registro')
       .subscribe((response: boolean) => {
         if (response) {
           this.router.navigate(['/login']);
@@ -87,6 +100,10 @@ export class RegistroComponent implements OnInit {
     (document.getElementById('codigoEmpresa') as HTMLInputElement).disabled = true;
     (document.getElementById('codigoEmpresa') as HTMLInputElement).value = '';
     this.modalEmpresaService.mostrarModal();
+  }
+
+  public resolved(captchaResponse: string) {
+    this.recaptchaResponse = captchaResponse;
   }
 
 }

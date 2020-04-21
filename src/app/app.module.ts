@@ -18,6 +18,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ModalNotificacionComponent } from './components/modal-notificacion/modal-notificacion.component';
 import { RegistroComponent } from './login/registro.component';
 import { ModalEmpresaComponent } from './components/modal-empresa/modal-empresa.component';
+import { RecaptchaModule, RecaptchaFormsModule } from 'ng-recaptcha';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,9 @@ import { ModalEmpresaComponent } from './components/modal-empresa/modal-empresa.
     ReactiveFormsModule,
     FormsModule,
     SharedModule,
-    NgxPaginationModule // <-- include it in your app module
+    NgxPaginationModule,
+    RecaptchaModule,  //this is the recaptcha main module
+    RecaptchaFormsModule, //this is the module for form incase form validation
   ],
   providers: [HttpClientModule],
   bootstrap: [AppComponent]
