@@ -10,6 +10,9 @@ import { Plantilla } from '../../models/plantilla.model';
 import { NotificacionesService } from '../../services/notificaciones/notificaciones.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EstadoNotificacion } from '../../models/estadoNotificacion.model';
+import { CanalService } from '../../services/canal/canal.service';
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { CANAL_SMS, CANAL_EMAIL, CANAL_WHATSAPP } from '../../config/config';
 
 declare var $: any;
 
@@ -26,25 +29,27 @@ export class FormProgramarComponent implements OnInit {
   public notificacion: Notificacion;
   public termino: string;
   public limiteCaracteres: number;
+  public canales: Canal[];
+  public Editor = ClassicEditor;
+  public dataNotificacion: string;
 
   constructor(
     private contactoService: ContactoService,
     public modalPlantillaService: ModalPlantillaService,
     public notificacionService: NotificacionesService,
     public router: Router,
-    public activatedRoute: ActivatedRoute
-  ) {
-  }
+    public activatedRoute: ActivatedRoute,
+    public canalService: CanalService
+  ) { }
 
   ngOnInit() {
     // Inicializando variables
     this.termino = '';
     this.contactos = [];
     this.notificacion = new Notificacion(null, null, null, null, null, null, null, [], new Canal(null, ''));
-
+    this.dataNotificacion = '';
 
     // Jquery manipulacion del dom
-    $('select').selectpicker();
     ($('.tagsinput') as any).tagsinput({itemValue: 'id', itemText: 'text'});
     $('.bootstrap-tagsinput').addClass('info-badge');
     $('.bootstrap-tagsinput').addClass('form-input-text');
@@ -104,22 +109,41 @@ export class FormProgramarComponent implements OnInit {
           this.notificacion.notificacion = item.plantilla;
       });
 
+    this.canalService.obtenerCanalesActivos('Programar notificacion')
+      .subscribe((canales: Canal[]) => {
+        canales.forEach( (canal: Canal, i: number) => {
+          if (i === 0) {
+            $('#canal').append('<option selected value="' + canal.idCanal + '">' + canal.nombre + '</option>')
+            this.cambioCanal(canal.idCanal);
+          } else { 
+            $('#canal').append('<option value="' + canal.idCanal + '">' + canal.nombre + '</option>')
+          }
+        });
+        $('#canal').selectpicker('refresh');
+      });
+
     this.limiteCaracteres = 150;
   }
 
-  public cambiarLimite(canal: string) {
-    if (canal === '1') {
+  public cambioCanal(canal: Number) {
+    if (canal === CANAL_SMS) {
       if (this.notificacion.notificacion && this.notificacion.notificacion.length > 150) {
         this.notificacion.notificacion = this.notificacion.notificacion.substring(0, 150);
       }
       this.limiteCaracteres = 150;
-    } else if (canal === '2') {
+      document.getElementById('editor1').style.display = 'none';
+      document.getElementById('editor2').style.display = 'block';
+    } else if (canal === CANAL_EMAIL) {
       this.limiteCaracteres = 2500;
-    } else if (canal === '3') {
+      document.getElementById('editor1').style.display = 'block';
+      document.getElementById('editor2').style.display = 'none';
+    } else if (canal === CANAL_WHATSAPP) {
       if (this.notificacion.notificacion && this.notificacion.notificacion.length > 150) {
         this.notificacion.notificacion = this.notificacion.notificacion.substring(0, 150);
       }
       this.limiteCaracteres = 150;
+      document.getElementById('editor1').style.display = 'none';
+      document.getElementById('editor2').style.display = 'block';
     }
   }
 

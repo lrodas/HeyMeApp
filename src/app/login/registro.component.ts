@@ -25,7 +25,6 @@ export class RegistroComponent implements OnInit {
   public errorRecaptcha: boolean;
   public recaptchaResponse: string;
   public dataKey: string;
-  public errorGenero: boolean;
   @ViewChild('recaptcha', {static: true }) recaptchaElement: ElementRef;
   
   constructor(
@@ -38,7 +37,6 @@ export class RegistroComponent implements OnInit {
     this.usuario = new Usuario(null, '', '', '', null, new Role(), '', '', '', new Genero(), null, new Empresa());
     this.errorTerminos = false;
     this.errorCodigoEmpresa = false;
-    this.errorGenero = false;
     this.errorRecaptcha = false;
     this.dataKey = environment.dataSiteKey;
   }
@@ -71,12 +69,6 @@ export class RegistroComponent implements OnInit {
       this.errorTerminos = true;
     } else {
       this.errorTerminos = false;
-    }
-
-    if (this.usuario.genero.idGenero === undefined) {
-      this.errorGenero = true;
-    } else {
-      this.errorGenero = false;
     }
 
     if (this.errorCodigoEmpresa || this.errorCodigoEmpresa || this.errorTerminos || form.invalid || this.errorRecaptcha) {

@@ -30,6 +30,7 @@ import { UsuariosComponent } from './usuarios/usuarios.component';
 import { RolesComponent } from './roles/roles.component';
 import { RoleComponent } from './role/role.component'; // <-- import the module
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 registerLocaleData(localeEs);
 
@@ -67,7 +68,8 @@ registerLocaleData(localeEs);
         CalendarModule.forRoot({
           provide: DateAdapter,
           useFactory: adapterFactory
-        })
+        }),
+        CKEditorModule
     ]
 })
 export class PagesModule {

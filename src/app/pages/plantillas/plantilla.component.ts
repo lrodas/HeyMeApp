@@ -5,8 +5,10 @@ import { PlantillasService } from '../../services/plantillas/plantillas.service'
 import { PlantillaResponse } from '../../interfaces/response/plantillaResponse.interface';
 import { NgForm } from '@angular/forms';
 import { Permiso } from '../../models/permiso.model';
-import { PERMISOS } from '../../config/config';
+import { PERMISOS, CANAL_SMS, CANAL_EMAIL, CANAL_WHATSAPP } from '../../config/config';
 import { Canal } from 'src/app/models/canal.model';
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { CanalService } from '../../services/canal/canal.service';
 
 declare var $: any;
 
@@ -20,11 +22,13 @@ export class PlantillaComponent implements OnInit {
   public plantilla: Plantilla;
   public permisos: Permiso;
   public limiteCaracteres: number;
+  public Editor = ClassicEditor;
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private plantillasService: PlantillasService,
-    private router: Router
+    private router: Router,
+    private canalService: CanalService
   ) {
     this.activatedRoute.params.subscribe( params => {
       const id = params.id;
@@ -37,24 +41,49 @@ export class PlantillaComponent implements OnInit {
   }
 
   ngOnInit() {
-    $('select').selectpicker();
     this.plantilla = new Plantilla(null, '', '', true, new Canal());
     this.limiteCaracteres = 150;
+
+    this.canalService.obtenerCanalesActivos('Programar notificacion')
+      .subscribe((canales: Canal[]) => {
+        canales.forEach( (canal: Canal, i: number) => {
+          if (i === 0) {
+            $('#canal').append('<option selected value="' + canal.idCanal + '">' + canal.nombre + '</option>')
+            this.cambioCanal(canal.idCanal);
+          } else { 
+            $('#canal').append('<option value="' + canal.idCanal + '">' + canal.nombre + '</option>')
+          }
+        });
+        $('#canal').selectpicker('refresh');
+      });
   }
 
-  public cambiarLimite(canal: string) {
-    if (canal === '1') {
+  public onReady( editor ) {
+    editor.ui.getEditableElement().parentElement.insertBefore(
+        editor.ui.view.toolbar.element,
+        editor.ui.getEditableElement()
+    );
+  }
+
+  public cambioCanal(canal: Number) {
+    if (Number(canal) === CANAL_SMS) {
       if (this.plantilla.plantilla && this.plantilla.plantilla.length > 150) {
         this.plantilla.plantilla = this.plantilla.plantilla.substring(0, 150);
       }
       this.limiteCaracteres = 150;
-    } else if (canal === '2') {
+      document.getElementById('editor1').style.display = 'none';
+      document.getElementById('editor2').style.display = 'block';
+    } else if (Number(canal) === CANAL_EMAIL) {
       this.limiteCaracteres = 2500;
-    } else if (canal === '3') {
+      document.getElementById('editor1').style.display = 'block';
+      document.getElementById('editor2').style.display = 'none';
+    } else if (Number(canal) === CANAL_WHATSAPP) {
       if (this.plantilla.plantilla && this.plantilla.plantilla.length > 150) {
         this.plantilla.plantilla = this.plantilla.plantilla.substring(0, 150);
       }
       this.limiteCaracteres = 150;
+      document.getElementById('editor1').style.display = 'none';
+      document.getElementById('editor2').style.display = 'block';
     }
   }
 

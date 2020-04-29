@@ -10,34 +10,34 @@
                                 <div class="col-md-5 ml-auto">
                                     <div class="info info-horizontal">
                                         <div class="icon icon-rose">
-                                            <i class="material-icons">timeline</i>
+                                            <i class="material-icons">record_voice_over</i>
                                         </div>
                                         <div class="description">
-                                            <h4 class="info-title">Marketing</h4>
+                                            <h4 class="info-title">Experiencia Ideal para cada cliente</h4>
                                             <p class="description">
-                                                We've created the marketing campaign of the website. It was a very interesting collaboration.
+                                                Una plataforma de inteligencia de negocios multicanal que segmenta y personaliza la comunicación con los clientes a través de un canal fiable de comunicación.
                                             </p>
                                         </div>
                                     </div>
                                     <div class="info info-horizontal">
                                         <div class="icon icon-primary">
-                                            <i class="material-icons">code</i>
+                                            <i class="material-icons">assessment</i>
                                         </div>
                                         <div class="description">
-                                            <h4 class="info-title">Fully Coded in HTML5</h4>
+                                            <h4 class="info-title">La información es poder</h4>
                                             <p class="description">
-                                                We've developed the website with HTML5 and CSS3. The client has access to the code using GitHub.
+                                                HeyMe ofrece reporting de los envíos de las notificaciones en tiempo real que permite a los usuarios analizar y comparar las campañas de notificaciones rápidamente.
                                             </p>
                                         </div>
                                     </div>
                                     <div class="info info-horizontal">
                                         <div class="icon icon-info">
-                                            <i class="material-icons">group</i>
+                                            <i class="material-icons">comment</i>
                                         </div>
                                         <div class="description">
-                                            <h4 class="info-title">Built Audience</h4>
+                                            <h4 class="info-title">Notificaciones confiables, Simples y Seguras.</h4>
                                             <p class="description">
-                                                There is also a Fully Customizable CMS Admin Dashboard for this product.
+                                                Con HeyMe, las notificaciones son rápidas, simples, seguras, disponibles en todo momento y lugar.
                                             </p>
                                         </div>
                                     </div>
@@ -57,16 +57,6 @@
                                             </div>
                                             <div class="form-group has-default">
                                                 <div class="input-group">
-                                                    <input type="text" [(ngModel)]="usuario.direccion" name="direccion" class="form-control" placeholder="Direccion..." required>
-                                                </div>
-                                            </div>
-                                            <div class="form-group has-default">
-                                                <div class="input-group">
-                                                    <input type="text" [(ngModel)]="usuario.telefono" name="telefono" class="form-control" placeholder="Telefono..." required>
-                                                </div>
-                                            </div>
-                                            <div class="form-group has-default">
-                                                <div class="input-group">
                                                     <input type="email" [(ngModel)]="usuario.username" name="username" class="form-control" placeholder="Correo electronico..." required>
                                                 </div>
                                             </div>
@@ -81,27 +71,6 @@
                                                 </div>
                                             </div>
                                             <label *ngIf="errorPasswordMatch" class="error" for="required">Las contraseñas proporcionadas no coinciden.</label>
-                                            <div class="row">
-                                                <div class="col-sm-12 checkbox-radios" style="margin-top: 0px;">
-                                                    <div class="form-check form-check-inline" style="margin-top: 0px;">
-                                                        <label class="form-check-label radios-genero">
-                                                            <input class="form-check-input" type="radio" [(ngModel)]="usuario.genero.idGenero" name="idGenero" value="1" > Soy Hombre
-                                                            <span class="circle">
-                                                                <span class="check"></span>
-                                                            </span>
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline" style="margin-top: 0px;">
-                                                        <label class=" form-check-label radios-genero">
-                                                            <input class="form-check-input" type="radio" [(ngModel)]="usuario.genero.idGenero" name="idGenero" value="2" > Soy Mujer
-                                                            <span class="circle">
-                                                                <span class="check"></span>
-                                                            </span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <label *ngIf="errorGenero" class="error" for="required">Debes especificar tu genero.</label>
                                             <div class="form-group has-default">
                                                 <div class="input-group">
                                                     <input type="text" class="form-control" [(ngModel)]="usuario.empresa.codigo" name="codigoEmpresa" id="codigoEmpresa" placeholder=" Codigo de tu empresa... ">
