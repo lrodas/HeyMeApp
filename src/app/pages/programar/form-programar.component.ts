@@ -1,18 +1,25 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ContactoService } from '../../services/contacto/contacto.service';
-import { Contacto } from '../../models/contacto.model';
-import { ContactoResponse } from '../../interfaces/response/contactoResponse.interface';
 import { NgForm } from '@angular/forms';
-import { Notificacion } from '../../models/notificacion.model';
-import { Canal } from '../../models/canal.model';
-import { ModalPlantillaService } from '../../components/modal-plantillas/modal-plantilla.service';
-import { Plantilla } from '../../models/plantilla.model';
-import { NotificacionesService } from '../../services/notificaciones/notificaciones.service';
 import { Router, ActivatedRoute } from '@angular/router';
+
+import { Contacto } from '../../models/contacto.model';
+import { Grupo } from '../../models/grupo.model';
+import { Canal } from '../../models/canal.model';
+import { TagInput } from '../../models/tagInput.model';
+import { Plantilla } from '../../models/plantilla.model';
+import { Notificacion } from '../../models/notificacion.model';
 import { EstadoNotificacion } from '../../models/estadoNotificacion.model';
+
+import { ContactoResponse } from '../../interfaces/response/contactoResponse.interface';
+
+import { ContactoService } from '../../services/contacto/contacto.service';
+import { ModalPlantillaService } from '../../components/modal-plantillas/modal-plantilla.service';
+import { NotificacionesService } from '../../services/notificaciones/notificaciones.service';
 import { CanalService } from '../../services/canal/canal.service';
-import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { CANAL_SMS, CANAL_EMAIL, CANAL_WHATSAPP } from '../../config/config';
+import { GrupoService } from '../../services/grupo/grupo.service';
+
+import { CANAL_SMS, CANAL_EMAIL, CANAL_WHATSAPP, OPCION_PROGRAMAR_NOTIFICACION } from '../../config/config';
+import Swal from 'sweetalert2';
 
 declare var $: any;
 
@@ -24,14 +31,19 @@ declare var $: any;
 export class FormProgramarComponent implements OnInit {
 
   @ViewChild('selectMedio', {static: false}) calendarComponent; // the #calendar in the template
-  @ViewChild('inputCliente', {static: false}) inputContacto;
-  public contactos: Contacto[];
+  @ViewChild('inputContacto', {static: false}) inputContacto;
+  @ViewChild('inputGrupo', {static: false}) inputGrupo;
+  public contactos: TagInput[];
+  public contactosSelecteds: TagInput[];
+  public grupos: TagInput[];
+  public gruposSelecteds: TagInput[];  
   public notificacion: Notificacion;
   public termino: string;
   public limiteCaracteres: number;
   public canales: Canal[];
-  public Editor = ClassicEditor;
   public dataNotificacion: string;
+  public agregarGrupos: boolean;
+  private seleccionoPlantilla: boolean;
 
   constructor(
     private contactoService: ContactoService,
@@ -39,45 +51,24 @@ export class FormProgramarComponent implements OnInit {
     public notificacionService: NotificacionesService,
     public router: Router,
     public activatedRoute: ActivatedRoute,
-    public canalService: CanalService
+    public canalService: CanalService,
+    public grupoService: GrupoService
   ) { }
 
   ngOnInit() {
     // Inicializando variables
     this.termino = '';
     this.contactos = [];
+    this.contactosSelecteds = [];
+    this.grupos = [];
+    this.gruposSelecteds = [];
     this.notificacion = new Notificacion(null, null, null, null, null, null, null, [], new Canal(null, ''));
     this.dataNotificacion = '';
+    this.agregarGrupos = false;
+    this.seleccionoPlantilla = false;
+    this.cambioTipoDestinatario('contactos');
 
     // Jquery manipulacion del dom
-    ($('.tagsinput') as any).tagsinput({itemValue: 'id', itemText: 'text'});
-    $('.bootstrap-tagsinput').addClass('info-badge');
-    $('.bootstrap-tagsinput').addClass('form-input-text');
-    $('.bootstrap-tagsinput input').focus(() => {
-      document.getElementById('myDropdown').classList.toggle('show');
-    });
-    $('.bootstrap-tagsinput input').keyup(() => {
-      this.buscarContacto($('.bootstrap-tagsinput input').val());
-    });
-    $('.bootstrap-tagsinput input').click(() => {
-      document.getElementById('myDropdown').classList.toggle('show');
-    });
-    $('#inputCliente').on('beforeItemAdd', event => {
-      if (!event.item.id) {
-        event.cancel = true;
-      }
-      $('.bootstrap-tagsinput input').val('');
-    });
-    $('#inputCliente').on('beforeItemRemove', event => {
-      const tag = event.item;
-      if (tag.id) {
-        const index = this.notificacion.destinatarios.findIndex( contacto => {
-          return contacto.idContacto === tag.id;
-        });
-        this.notificacion.destinatarios.splice(index, 1);
-      }
-    });
-
     $('.timepicker').datetimepicker({
       //          format: 'H:mm',
       // use this format if you want the 24hours timepicker
@@ -105,19 +96,17 @@ export class FormProgramarComponent implements OnInit {
 
     this.modalPlantillaService.notificacion
       .subscribe( (item: Plantilla) => {
+          this.seleccionoPlantilla = true;
           this.notificacion.titulo = item.titulo;
           this.notificacion.notificacion = item.plantilla;
       });
 
-    this.canalService.obtenerCanalesActivos('Programar notificacion')
+    this.canalService.obtenerCanalesActivos(OPCION_PROGRAMAR_NOTIFICACION)
       .subscribe((canales: Canal[]) => {
+        $('#canal').append('<option>Selecciona un canal</option>')
+        // this.cambioCanal(CANAL_EMAIL);
         canales.forEach( (canal: Canal, i: number) => {
-          if (i === 0) {
-            $('#canal').append('<option selected value="' + canal.idCanal + '">' + canal.nombre + '</option>')
-            this.cambioCanal(canal.idCanal);
-          } else { 
-            $('#canal').append('<option value="' + canal.idCanal + '">' + canal.nombre + '</option>')
-          }
+          $('#canal').append('<option value="' + canal.idCanal + '">' + canal.nombre + '</option>')
         });
         $('#canal').selectpicker('refresh');
       });
@@ -125,19 +114,34 @@ export class FormProgramarComponent implements OnInit {
     this.limiteCaracteres = 150;
   }
 
+  public cambioTipoDestinatario(tipo: string) {
+    this.notificacion.destinatarios = []
+    if (tipo === 'contactos') {
+      this.agregarGrupos = false;
+      if (this.contactos.length === 0) {
+        this.obtenerContactos();
+      }
+    } else{
+      this.agregarGrupos = true;
+      if (this.grupos.length === 0) {
+        this.obtenerGrupos();
+      }
+    }
+  }
+
   public cambioCanal(canal: Number) {
-    if (canal === CANAL_SMS) {
+    if (Number(canal) === CANAL_SMS) {
       if (this.notificacion.notificacion && this.notificacion.notificacion.length > 150) {
         this.notificacion.notificacion = this.notificacion.notificacion.substring(0, 150);
       }
       this.limiteCaracteres = 150;
       document.getElementById('editor1').style.display = 'none';
       document.getElementById('editor2').style.display = 'block';
-    } else if (canal === CANAL_EMAIL) {
+    } else if (Number(canal) === CANAL_EMAIL) {
       this.limiteCaracteres = 2500;
       document.getElementById('editor1').style.display = 'block';
       document.getElementById('editor2').style.display = 'none';
-    } else if (canal === CANAL_WHATSAPP) {
+    } else if (Number(canal) === CANAL_WHATSAPP) {
       if (this.notificacion.notificacion && this.notificacion.notificacion.length > 150) {
         this.notificacion.notificacion = this.notificacion.notificacion.substring(0, 150);
       }
@@ -147,30 +151,66 @@ export class FormProgramarComponent implements OnInit {
     }
   }
 
-  public buscarContacto(nombre: string) {
-
-    if (nombre.trim().length <= 0) {
-      return;
-    }
-
-    this.contactoService.buscarContactoPorNombre(nombre.trim(), 'programar notificacion')
-      .subscribe( (contactos: ContactoResponse) => this.contactos = contactos.contactos);
+  public obtenerContactos() {
+    this.contactoService.obtenerTodosContactos(OPCION_PROGRAMAR_NOTIFICACION)
+      .subscribe((response: ContactoResponse) => {
+        response.contactos.forEach((contacto: Contacto) => {
+          this.contactos.push({display: contacto.nombre + ' ' + contacto.apellido, value: contacto.idContacto});
+        });
+      });
   }
 
-  public seleccionarContacto(contacto: Contacto) {
+  public obtenerGrupos() {
+    this.grupoService.obtenerGrupos(OPCION_PROGRAMAR_NOTIFICACION)
+      .subscribe((grupos: Grupo[]) => {
+        grupos.forEach((grupo: Grupo) => {
+          this.grupos.push(new TagInput(grupo.nombre, grupo.idGrupo));
+        });
+      })
+  }
 
-    if (!this.notificacion.destinatarios) {
-      this.notificacion.destinatarios = [];
-    }
-    this.notificacion.destinatarios.push(contacto);
+  public onAddGrupo(tag: TagInput) {
+    this.contactoService.buscarContactosPorGrupo(tag.value, OPCION_PROGRAMAR_NOTIFICACION)
+          .subscribe((contactos: Contacto[]) => {
+            contactos.forEach(contacto => {
+              const existe = this.notificacion.destinatarios.some((destinatario: Contacto) => destinatario.idContacto === contacto.idContacto);
 
-    $('#inputCliente').tagsinput('add', { id: contacto.idContacto, text: contacto.nombre });
-    document.getElementById('myDropdown').classList.remove('show');
+              if (!existe) {
+                this.notificacion.destinatarios.push(contacto);
+              }
+            });
+          });
+  }
+
+  public onAddContact(tag: TagInput) {
+    this.notificacion.destinatarios.push(new Contacto(tag.value));
   }
 
   public guardarNotificacion(form: NgForm) {
 
     if (form.invalid) {
+      return;
+    }
+
+    if (!this.notificacion.destinatarios || this.notificacion.destinatarios.length <= 0) {
+      Swal.fire({
+        type: 'error',
+        title: 'Sin destinatarios',
+        text: `Debes agregar por lo menos un contacto para enviar la notificacion`,
+        showConfirmButton: false,
+        timer: 3000
+      });
+      return;
+    }
+
+    if (Number(this.notificacion.canal.idCanal) === CANAL_WHATSAPP && !this.seleccionoPlantilla) {
+      Swal.fire({
+        type: 'error',
+        title: 'La plantilla es obligatoria',
+        text: `Debes seleccionar una plantilla para programar una notificacion por whatsapp`,
+        showConfirmButton: false,
+        timer: 3000
+      });
       return;
     }
 

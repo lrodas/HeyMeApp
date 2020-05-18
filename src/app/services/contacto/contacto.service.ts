@@ -13,6 +13,8 @@ import Swal from 'sweetalert2';
 import { Provincia } from 'src/app/models/provincia.model';
 import { Region } from 'src/app/models/region.model';
 import { Pais } from 'src/app/models/pais.model';
+import { Grupo } from 'src/app/models/grupo.model';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -24,6 +26,39 @@ export class ContactoService {
     public http: HttpClient,
     public usuarioService: UsuarioService
   ) { }
+
+  public buscarContactoPorNombreGrupo(nombre: string, pagina: string) {
+
+    const url = URL_SERVICIOS + this.prefixUrl + '/findByGroupName';
+
+    const request: ContactoRequest = {
+      usuario: this.usuarioService.usuario.username,
+      idUsuario: this.usuarioService.usuario.idUsuario,
+      pagina,
+      contacto: new Contacto(null, null, null, null, null, null, null, null, null, null, null, new Grupo(null, nombre))
+    };
+
+    return this.http.post(url, request, {
+      headers: new HttpHeaders()
+        .set('Authorization', 'Bearer ' + this.usuarioService.token)
+    }).pipe(
+      map((response: ContactoResponse) => {
+        if (response.indicador === 'SUCCESS') {
+          return response.contactos;
+        }
+      }),
+      catchError(error => {
+        Swal.fire({
+          type: 'error',
+          title: 'No pudimos obtener los contacots',
+          text: `En estos momentos no fue posible obtener los contactos, por favor intenta mas tarde`,
+          showConfirmButton: false,
+          timer: 3000
+        });
+        return of([error]);
+      })
+    );
+  }
 
   public buscarContactoPorNombre(nombre: string, pagina: string) {
 
@@ -181,6 +216,96 @@ export class ContactoService {
           }
         });
         return response;
+      })
+    );
+  }
+
+  public buscarContactosPorGrupo(idGrupo: number, pagina: string) {
+    const url = URL_SERVICIOS + this.prefixUrl + '/findByGroup';
+
+    const request: ContactoRequest = {
+      usuario: this.usuarioService.usuario.username,
+      idUsuario: this.usuarioService.usuario.idUsuario,
+      pagina,
+      contacto: new Contacto(null, null, null, null, null, null, null, null, null, null, null, new Grupo(idGrupo))
+    };
+
+    return this.http.post(url, request, {
+      headers: new HttpHeaders()
+        .set('Authorization', 'Bearer ' + this.usuarioService.token)
+    }).pipe(
+      map((response: ContactoResponse) => {
+        if (response.indicador === 'SUCCESS') {
+          return response.contactos;
+        }
+      }),
+      catchError(error => {
+        Swal.fire({
+          type: 'error',
+          title: 'No pudimos obtener los contacots',
+          text: `En estos momentos no fue posible obtener los contactos, por favor intenta mas tarde`,
+          showConfirmButton: false,
+          timer: 3000
+        });
+        return of([error]);
+      })
+    );    
+  }
+
+  public guardarContactos(contactos: Contacto[], pagina: string) {
+
+    const url = URL_SERVICIOS + '/contact/saveAll';
+
+    contactos.forEach(contacto => {
+      if (contacto.pais.idPais !== ID_PAIS_GT) {
+        contacto.provincia = null;
+      }
+    });
+    console.log(contactos);
+    const contactoRequest: ContactoRequest = {
+      usuario: this.usuarioService.usuario.username,
+      idUsuario: this.usuarioService.usuario.idUsuario,
+      pagina,
+      contactos
+    };
+    
+    console.log(contactoRequest);
+    return this.http.post(url, contactoRequest, {
+      headers: new HttpHeaders()
+        .set('Authorization', 'Bearer ' + this.usuarioService.token)
+    }).pipe(
+      map((response: ContactoResponse) => {
+
+        if (response.indicador === 'SUCCESS') {
+            Swal.fire({
+              type: 'success',
+              title: 'Contactos guardados exitosamente',
+              text: `La lista de contactos fue guardada con exito`,
+              showConfirmButton: false,
+              timer: 3000
+            });
+            return true;
+        } else {
+          Swal.fire({
+            type: 'error',
+            title: 'No pudimos guardar el listado de contactos',
+            text: response.descripcion,
+            showConfirmButton: false,
+            timer: 3000
+          });
+          return false;
+        }
+
+      }),
+      catchError( error => {
+        Swal.fire({
+          type: 'error',
+          title: 'No pudimos guardar el contacto',
+          text: `En estos momentos no fue posible guardar los contactos, por favor intenta mas tarde`,
+          showConfirmButton: false,
+          timer: 3000
+        });
+        return of(error);
       })
     );
   }

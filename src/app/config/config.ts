@@ -13,3 +13,8 @@ export const CANAL_WHATSAPP = 3;
 export const SPECIAL_KEYS = ['Shift', 'Meta', 'Backspace', 'CapsLock', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Tab'];
 
 export const ID_PAIS_GT = 1;
+
+export const OPCION_CONTACTOS = 'Contactos';
+export const OPCION_PLANTILLAS = 'Plantillas de notificaciones';
+export const OPCION_NOTIFICACION = '';
+export const OPCION_PROGRAMAR_NOTIFICACION = 'Programar notificacion';

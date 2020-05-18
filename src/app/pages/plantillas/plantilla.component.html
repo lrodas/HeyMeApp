@@ -13,7 +13,7 @@
                         <label class="col-md-2 col-form-label">Canal</label>
                         <div class="col-md-10">
                             <div class="form-group">
-                                <select [(ngModel)]="plantilla.canal.idCanal" (change)="cambioCanal(plantilla.canal.idCanal)" id="canal" name="canal" class="selectpicker" data-style="select-with-transition" title="Seleccione Medio" data-size="7" required>
+                                <select [(ngModel)]="plantilla.canal.idCanal" id="canal" name="canal" class="selectpicker" data-style="select-with-transition" title="Seleccione Medio" data-size="7" required>
                                 </select>
                             </div>
                         </div>
@@ -29,7 +29,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <ckeditor id="editor1" [editor]="Editor" [(ngModel)]="plantilla.plantilla" name="notificacion" (ready)="onReady($event)" style="height: 100%;"></ckeditor>
+                                <!--<ckeditor id="editor1" [(ngModel)]="plantilla.plantilla" name="notificacion" style="height: 100%;"></ckeditor>-->
                                 <textarea id="editor2" [(ngModel)]="plantilla.plantilla" name="plantilla" cols="30" rows="10" [maxlength]="limiteCaracteres" class="form-control"></textarea>
                             </div>
                         </div>

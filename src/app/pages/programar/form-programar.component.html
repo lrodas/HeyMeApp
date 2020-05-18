@@ -13,7 +13,7 @@
                         <label class="col-md-2 col-form-label ">Medio</label>
                         <div class="col-md-5">
                             <div class="form-group">
-                                <select [(ngModel)]="notificacion.canal.idCanal" (change)="cambioCanal(notificacion.canal.idCanal)" name="canal" id="canal" class="selectpicker" data-style="select-with-transition" title="Seleccione Medio" required>
+                                <select [(ngModel)]="notificacion.canal.idCanal" name="canal" id="canal" class="selectpicker" data-style="select-with-transition" title="Seleccione Medio" required>
                                   </select>
                             </div>
                         </div>
@@ -25,14 +25,53 @@
                         </div>
                     </div>
                     <div class="row">
-                        <label class="col-md-2 col-form-label ">Contactos</label>
-                        <div class="col-md-10">
-                            <div class="form-group">
-                                <input type="text" #inputCliente id="inputCliente" class="form-control tagsinput" data-role="tagsinput sometext" data-color="info">
-                                <div id="myDropdown" class="dropdown-content pointer">
-                                    <a class="dropbtn" [routerLink]="['/contact', 'new']"><i class="fa fa-user" aria-hidden="true"></i> Crear nuevo contacto</a>
-                                    <a class="dropbtn" *ngFor="let contacto of contactos" (click)="seleccionarContacto(contacto)"><i class="fa fa-user" aria-hidden="true"></i> {{ contacto.nombre + ' ' + contacto.apellido }}</a>
-                                </div>
+                        <label class="col-md-2 col-form-label">Agregar</label>
+                        <div class="col-sm-5 checkbox-radios" style="padding-top: 5px;">
+                            <div class="form-check form-check-inline">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="filtro" (change)="cambioTipoDestinatario('grupos')"> Grupos
+                                    <span class="circle">
+                                        <span class="check"></span>
+                                    </span>
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="filtro" (change)="cambioTipoDestinatario('contactos')" checked> Contactos
+                                    <span class="circle">
+                                        <span class="check"></span>
+                                    </span>
+                                </label>
+                            </div>
+                        </div> 
+                        <label *ngIf="!agregarGrupos" class="col-md-1 col-form-label">Contacto</label>
+                        <label *ngIf="agregarGrupos" class="col-md-1 col-form-label">Grupos</label>
+                        <div class="col-md-4">
+                            <div *ngIf="!agregarGrupos" class="form-group">
+                                <tag-input 
+                                    [(ngModel)]="contactosSelecteds" 
+                                    [onlyFromAutocomplete]="true"
+                                    [displayBy]="'name'"
+                                    (onAdd)="onAddContact($event)"
+                                    name="contatos"
+                                    [placeholder]="'Ingrese el nombre'"
+                                    [secondaryPlaceholder]="'Ingrese el nombre'">
+                                    <tag-input-dropdown [showDropdownIfEmpty]="true" [autocompleteItems]="contactos">
+                                    </tag-input-dropdown>
+                                </tag-input>
+                            </div>
+                            <div *ngIf="agregarGrupos" class="form-group">
+                                <tag-input 
+                                    [(ngModel)]="gruposSelecteds" 
+                                    [onlyFromAutocomplete]="true"
+                                    [displayBy]="'name'"
+                                    (onAdd)="onAddGrupo($event)"
+                                    name="grupo"
+                                    [placeholder]="'Ingrese el nombre'"
+                                    [secondaryPlaceholder]="'Ingrese el nombre'">
+                                    <tag-input-dropdown [showDropdownIfEmpty]="true" [autocompleteItems]="grupos">
+                                    </tag-input-dropdown>
+                                </tag-input>
                             </div>
                         </div>
                     </div>
@@ -51,7 +90,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <textarea id="editor2" class="form-control" [(ngModel)]="notificacion.notificacion" name="notificacion" [maxlength]="limiteCaracteres" placeholder="Contenido de la notificacion" required></textarea>
-                                <ckeditor id="editor1" [editor]="Editor" [(ngModel)]="notificacion.notificacion" name="notificacion" [data]="dataNotificacion" style="height: 100%;"></ckeditor>
+                                <!--<ckeditor id="editor1" [(ngModel)]="notificacion.notificacion" name="notificacion" [data]="dataNotificacion" style="height: 100%;"></ckeditor>-->
                             </div>
                         </div>
                     </div>

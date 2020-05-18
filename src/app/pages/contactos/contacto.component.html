@@ -1,4 +1,4 @@
-<div class="row animated fadeIn">
+<div id="contactoPage" class="row animated fadeIn">
     <div class="col-md-12">
         <div class="card ">
             <div class="card-header card-header-rose card-header-icon">
@@ -39,7 +39,7 @@
                         <label class="col-md-2 col-form-label">Email</label>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <input [(ngModel)]="contacto.email" name="email" placeholder="rosa123@hotmail.com" type="email" class="form-control" required>
+                                <input [(ngModel)]="contacto.email" name="email" placeholder="rosa123@hotmail.com" type="email" class="form-control">
                             </div>
                         </div>
                     </div>
@@ -60,9 +60,18 @@
                     </div>
                     <div class="row">
                         <label class="col-md-2 col-form-label">Direccion</label>
-                        <div class="col-md-10">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <input [(ngModel)]="contacto.direccion" placeholder="Ingresa tu direccion completa" name="direccion" type="text" class="form-control" required>
+                            </div>
+                        </div>
+                        <label class="col-md-2 col-form-label">Grupo</label>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <input placeholder="Ingresa el nombre del grupo" id="grupo" name="grupo" type="text" class="form-control">
+                                <div id="myDropdown" class="dropdown-content pointer">
+                                    <a class="dropbtn" *ngFor="let grupo of grupos" name="grupoItem" (click)="seleccionarGrupo(grupo)"><i class="fa fa-user" aria-hidden="true"></i> {{ grupo.nombre }}</a>
+                                </div>
                             </div>
                         </div>
                     </div>

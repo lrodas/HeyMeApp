@@ -5,9 +5,9 @@ import { PlantillasService } from '../../services/plantillas/plantillas.service'
 import { PlantillaResponse } from '../../interfaces/response/plantillaResponse.interface';
 import { NgForm } from '@angular/forms';
 import { Permiso } from '../../models/permiso.model';
-import { PERMISOS, CANAL_SMS, CANAL_EMAIL, CANAL_WHATSAPP } from '../../config/config';
+import { PERMISOS, CANAL_SMS, CANAL_EMAIL, CANAL_WHATSAPP, OPCION_PLANTILLAS } from '../../config/config';
 import { Canal } from 'src/app/models/canal.model';
-import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
 import { CanalService } from '../../services/canal/canal.service';
 
 declare var $: any;
@@ -22,7 +22,6 @@ export class PlantillaComponent implements OnInit {
   public plantilla: Plantilla;
   public permisos: Permiso;
   public limiteCaracteres: number;
-  public Editor = ClassicEditor;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -46,23 +45,17 @@ export class PlantillaComponent implements OnInit {
 
     this.canalService.obtenerCanalesActivos('Programar notificacion')
       .subscribe((canales: Canal[]) => {
+        console.log(canales);
         canales.forEach( (canal: Canal, i: number) => {
           if (i === 0) {
             $('#canal').append('<option selected value="' + canal.idCanal + '">' + canal.nombre + '</option>')
-            this.cambioCanal(canal.idCanal);
+            // this.cambioCanal(canal.idCanal);
           } else { 
             $('#canal').append('<option value="' + canal.idCanal + '">' + canal.nombre + '</option>')
           }
         });
         $('#canal').selectpicker('refresh');
       });
-  }
-
-  public onReady( editor ) {
-    editor.ui.getEditableElement().parentElement.insertBefore(
-        editor.ui.view.toolbar.element,
-        editor.ui.getEditableElement()
-    );
   }
 
   public cambioCanal(canal: Number) {
@@ -90,7 +83,7 @@ export class PlantillaComponent implements OnInit {
   public cargarPermisos() {
     const permisos: Permiso[] = JSON.parse(localStorage.getItem(PERMISOS));
     return permisos.filter( (permiso: Permiso) => {
-      return permiso.opcion.descripcion === 'Plantillas de notificaciones';
+      return permiso.opcion.descripcion === OPCION_PLANTILLAS;
     })[0];
   }
 

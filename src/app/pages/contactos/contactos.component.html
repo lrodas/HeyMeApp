@@ -25,6 +25,14 @@
                                 </span>
                             </label>
                         </div>
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="radio" name="filtro" (change)="changeFiltro('grupo')"> Grupo
+                                <span class="circle">
+                                    <span class="check"></span>
+                                </span>
+                            </label>
+                        </div>
                     </div>
                 </div>
                 <hr/>
@@ -55,6 +63,14 @@
                         </div>
                     </div>
                 </div>
+                <div *ngIf="filtro === 'grupo'" class="row animated fadeInDown">
+                    <label class="col-md-2 col-form-label">Nombre del grupo: </label>
+                    <div class="col-md-10">
+                        <div class="form-group has-default bmd-form-group">
+                            <input type="text" #grupo (keyup)="buscarPorGrupo(grupo.value)" class="form-control">
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -72,6 +88,13 @@
                 </div>
                 <div class="col-md-6 text-right">
                     <div class='card-header card-header-rose card-header-icon'>
+                        <!--<div class='card-text' style="margin-right: 15px;">-->
+                            <!--<i *ngIf="permisos.alta" class='material-icons pointer'>cloud_upload</i>-->
+                        <div class="card-text btn-file" style="margin-right: 15px;margin-top: -15px;">
+                            <i class="fileinput-exists material-icons pointer">cloud_upload</i>
+                            <input type="file" (change)="subirArchivo( $event.target.files[0] )">
+                        </div>
+                        <!--</div>-->
                         <div class='card-text'>
                             <i *ngIf="permisos.alta" [routerLink]="['/contact', 'new']" class='material-icons pointer'>add</i>
                         </div>
@@ -87,7 +110,8 @@
                             <th scope="col">Nombre</th>
                             <th scope="col">Apellido</th>
                             <th scope="col">Correo electronico</th>
-                            <th scope="col">telefono</th>
+                            <th scope="col">Telefono</th>
+                            <th scope="col">Grupo</th>
                             <th scope="col">Estado</th>
                             <th scope="col">Acciones</th>
                         </tr>
@@ -99,6 +123,7 @@
                             <td data-label="Apellido">{{ contacto.apellido }}</td>
                             <td data-label="Correo">{{ contacto.email }}</td>
                             <td data-label="Telefono">{{ contacto.telefono }}</td>
+                            <td data-label="Grupo"> {{ contacto.grupo?.nombre }}</td>
                             <td *ngIf="contacto.estado" data-label="Estado">Activo</td>
                             <td *ngIf="!contacto.estado" data-label="Estado">Inactivo</td>
                             <td data-label="Acciones" class="td-actions">
@@ -121,6 +146,8 @@
                     </tbody>
                 </table>
                 <pagination-controls *ngIf="screenWidth > 600" (pageChange)="page = $event"></pagination-controls>
+            
+                
             </div>
         </div>
     </div>

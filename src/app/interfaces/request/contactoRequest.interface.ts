@@ -4,6 +4,7 @@ export interface ContactoRequest {
     idUsuario?: number;
     pagina?: string;
     contacto?: Contacto;
+    contactos?: Contacto[];
     fechaFin?: Date;
     fechaInicio?: Date;
 }
