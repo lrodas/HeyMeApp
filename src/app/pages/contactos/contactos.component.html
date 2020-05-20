@@ -87,10 +87,13 @@
                     </div>
                 </div>
                 <div class="col-md-6 text-right">
-                    <div class='card-header card-header-rose card-header-icon'>
+                    <div class='card-header card-header-rose card-header-icon' style="display: flex; justify-content: flex-end;">
                         <!--<div class='card-text' style="margin-right: 15px;">-->
                             <!--<i *ngIf="permisos.alta" class='material-icons pointer'>cloud_upload</i>-->
-                        <div class="card-text btn-file" style="margin-right: 15px;margin-top: -15px;">
+                        <div *ngIf="permisos.alta" class='card-text'  style="margin-right: 15px;">
+                            <i class="fa fa-file-pdf-o" (click)="descargarPlantilla()" aria-hidden="true"></i>
+                        </div>
+                        <div *ngIf="permisos.alta" class="card-text btn-file" style="margin-right: 15px;">
                             <i class="fileinput-exists material-icons pointer">cloud_upload</i>
                             <input type="file" (change)="subirArchivo( $event.target.files[0] )">
                         </div>

@@ -158,7 +158,6 @@ export class ContactoComponent implements OnInit {
         if (response.contacto.provincia === null || response.contacto.provincia === undefined) {
           response.contacto.provincia = new Provincia(0, '', new Region(0, '', new Pais(0, '', '', false)));
         } else { 
-          console.log('si entro a la direccion', response.contacto.provincia)
           $('#idRegion').val(response.contacto.provincia.region.idRegion);
           $('#idRegion').selectpicker('refresh')
           $('#idProvincia').val(response.contacto.provincia.idProvincia); 
@@ -221,7 +220,7 @@ export class ContactoComponent implements OnInit {
       return;
     }
 
-    if ($('#grupo').val() !== '' && this.contacto.grupo.idGrupo === null) {
+    if ($('#grupo').val() !== '' && (this.contacto.grupo === null || this.contacto.grupo.idGrupo === null)) {
       Swal.fire({
         type: 'question',
         title: 'Crear nuevo grupo',
@@ -246,7 +245,6 @@ export class ContactoComponent implements OnInit {
         }
       });
     } else {
-      this.contacto.grupo = null;
       this.contactoService.guardarContacto(this.contacto, 'contacto')
         .subscribe( (respuesta: Contacto) => {
           if (respuesta) {

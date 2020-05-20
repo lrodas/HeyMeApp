@@ -309,4 +309,19 @@ export class ContactoService {
       })
     );
   }
+
+  public descargarPlantillaContactos(pagina: string) {
+    const url = URL_SERVICIOS + '/template/contacts';
+    const request: any = {
+      usuario: this.usuarioService.usuario.username,
+      idUsuario: this.usuarioService.usuario.idUsuario,
+      pagina
+    };
+    
+    return this.http.post(url, request, {
+      headers: new HttpHeaders()
+        .set('Authorization', 'Bearer ' + this.usuarioService.token),
+        responseType: 'blob'
+    });
+  }
 }

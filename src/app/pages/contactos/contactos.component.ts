@@ -14,6 +14,7 @@ import * as XLSX from 'ts-xlsx';
 import { Pais } from 'src/app/models/pais.model';
 import { Provincia } from 'src/app/models/provincia.model';
 import { Router } from '@angular/router';
+import { SubirArchivoService } from 'src/app/services/subirArchivo/subir-archivo.service';
 
 @Component({
   selector: 'app-contactos',
@@ -40,9 +41,7 @@ export class ContactosComponent implements OnInit {
   }
 
   constructor(
-    private contactoService: ContactoService,
-    private grupoService: GrupoService,
-    private router: Router
+    private contactoService: ContactoService
   ) { }
 
   ngOnInit() {
@@ -252,5 +251,37 @@ export class ContactosComponent implements OnInit {
     this.imagenSubir = archivo;
     const urlImagenTemp = reader.readAsDataURL(archivo);
     reader.onloadend = () => this.imagenTemporal = <string> reader.result;*/
+  }
+
+  public descargarPlantilla() {
+    this.contactoService.descargarPlantillaContactos(OPCION_CONTACTOS)
+      .subscribe( x => {
+        // It is necessary to create a new blob object with mime-type explicitly set
+        // otherwise only Chrome works like it should
+        const newBlob = new Blob([x], { type: 'application/pdf' });
+
+        // IE doesn't allow using a blob object directly as link href
+        // instead it is necessary to use msSaveOrOpenBlob
+        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+            window.navigator.msSaveOrOpenBlob(newBlob);
+            return;
+        }
+
+        // For other browsers: 
+        // Create a link pointing to the ObjectURL containing the blob.
+        const data = window.URL.createObjectURL(newBlob);
+
+        const link = document.createElement('a');
+        link.href = data;
+        link.download = `carga_masiva_contactos.xlsx`;
+        // this is necessary as link.click() does not work on the latest firefox
+        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+
+        setTimeout( () => {
+            // For Firefox it is necessary to delay revoking the ObjectURL
+            window.URL.revokeObjectURL(data);
+            link.remove();
+        }, 100);
+    });
   }
 }
