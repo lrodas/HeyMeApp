@@ -157,8 +157,6 @@ export class UsuarioService {
 
     }),
     catchError( error => {
-      console.log(error);
-
       Swal.fire({
         type: 'error',
         title: 'Error al iniciar sesion',
@@ -457,7 +455,6 @@ export class UsuarioService {
         .set('Authorization', 'Bearer ' + this.token)
     }).pipe(
       map( (response: CambioContrasenaResponse) => {
-        console.log(response);
         Swal.close();
         if (response.indicador === 'SUCCESS') {
           Swal.fire({

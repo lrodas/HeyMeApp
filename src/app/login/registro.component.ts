@@ -44,7 +44,7 @@ export class RegistroComponent implements OnInit {
   public guardar(form: NgForm) {
 
     if (form.invalid) {
-      console.log('error');
+      return;      
     }
 
     if (!this.recaptchaResponse) {

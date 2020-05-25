@@ -261,7 +261,6 @@ export class ContactoService {
         contacto.provincia = null;
       }
     });
-    console.log(contactos);
     const contactoRequest: ContactoRequest = {
       usuario: this.usuarioService.usuario.username,
       idUsuario: this.usuarioService.usuario.idUsuario,
@@ -269,7 +268,6 @@ export class ContactoService {
       contactos
     };
     
-    console.log(contactoRequest);
     return this.http.post(url, contactoRequest, {
       headers: new HttpHeaders()
         .set('Authorization', 'Bearer ' + this.usuarioService.token)

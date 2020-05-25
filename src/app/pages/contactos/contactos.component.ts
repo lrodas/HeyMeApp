@@ -124,7 +124,6 @@ export class ContactosComponent implements OnInit {
   }
 
   public subirArchivo(archivo) {
-    console.log('Subir Imagen', archivo);
 
     if (!archivo) {
       this.archivoExcel = null;
@@ -233,14 +232,11 @@ export class ContactosComponent implements OnInit {
           showConfirmButton: true
         });
       } else {
-        console.log(contactos);
         this.contactoService.guardarContactos(contactos, OPCION_CONTACTOS)
           .subscribe((response: Boolean) => {
             this.obtenerContactos();
           });
       }
-      console.log(contactos);
-      console.log(dataError);
     };
 
     reader.readAsArrayBuffer(archivo);

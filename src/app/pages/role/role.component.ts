@@ -106,7 +106,6 @@ export class RoleComponent implements OnInit {
           this.router.navigate(['/roles']);  
         }
       }, error => {
-        console.log(error);
         this.router.navigate(['/roles']);
       });
   }

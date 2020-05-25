@@ -37,7 +37,6 @@ export class PerfilComponent implements OnInit {
   }
 
   public seleccionImagen(archivo) {
-    console.log('Subir Imagen', archivo);
 
     if (!archivo) {
       this.imagenSubir = null;

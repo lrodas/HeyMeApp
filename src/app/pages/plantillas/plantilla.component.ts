@@ -45,7 +45,6 @@ export class PlantillaComponent implements OnInit {
 
     this.canalService.obtenerCanalesActivos('Programar notificacion')
       .subscribe((canales: Canal[]) => {
-        console.log(canales);
         canales.forEach( (canal: Canal, i: number) => {
           if (i === 0) {
             $('#canal').append('<option selected value="' + canal.idCanal + '">' + canal.nombre + '</option>')
