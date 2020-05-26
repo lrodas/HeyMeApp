@@ -18,3 +18,4 @@ export const OPCION_CONTACTOS = 'Contactos';
 export const OPCION_PLANTILLAS = 'Plantillas de notificaciones';
 export const OPCION_NOTIFICACION = '';
 export const OPCION_PROGRAMAR_NOTIFICACION = 'Programar notificacion';
+export const OPCION_EMPRESA_INFO = 'Empresa';

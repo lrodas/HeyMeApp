@@ -51,14 +51,14 @@ export class SidebarComponent implements OnInit {
     this.sharedService.obtenerPermisos(this.usuario.role.idRole, 'Sidebar')
       .subscribe( (response: PermisoResponse) => {
         if (response.indicador === 'SUCCESS') {
-
+          console.log(response);
           for (const permiso of response.permisos) {
 
             const crearNotificacion = permiso.opcion.descripcion;
 
             if (crearNotificacion === 'Programar notificacion' && !permiso.alta) {
               continue;
-            } else {
+            } else if (permiso.opcion.mostrar) {
               if (permiso.opcion.orden.length === 1) {
 
                 this.menus.push(
@@ -88,6 +88,8 @@ export class SidebarComponent implements OnInit {
                   }
                 );
               }
+            } else {
+              continue;
             }
           }
           localStorage.setItem(PERMISOS, JSON.stringify(response.permisos));

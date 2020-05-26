@@ -5,6 +5,7 @@ export class Opcion {
         public orden?: string,
         public url?: string,
         public evento?: boolean,
-        public icono?: string
+        public icono?: string,
+        public mostrar?: boolean
     ) {}
 }

@@ -1,11 +1,48 @@
-<div class='row'>
+<div class='row' *ngIf="permisoEmpresa().imprimir">
     <div class='col-md-12'>
         <div class='card '>
-            <div class='card-header card-header-rose card-header-icon'>
-                <h4 class='card-title'>Menu lateral</h4>
+            <div class='card-header card-header-rose card-header-text'>
+                <div class="card-text">
+                    <h4 class='card-title'>Empresa</h4>
+                </div>
             </div>
             <div class='card-body '>
-
+                <form ngNativeValidate #f="ngForm" (submit)="guardarEmpresa(f)">
+                    <div class="row">
+                        <label class="col-md-2 col-form-label">Nombre de la empresa</label>
+                        <div class="col-md-10">
+                            <div class="form-group">
+                                <input [(ngModel)]="empresa.nombreEmpresa" name="nombreEmpresa" type="text" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-md-2 col-form-label">Direccion</label>
+                        <div class="col-md-10">
+                            <div class="form-group">
+                                <input [(ngModel)]="empresa.direccion" name="direccion" type="text" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-md-2 col-form-label">Telefono</label>
+                        <div class="col-md-10">
+                            <div class="form-group">
+                                <input [(ngModel)]="empresa.telefono" name="telefono" type="number" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-md-2 col-form-label">Codigo</label>
+                        <div class="col-md-10">
+                            <div class="form-group">
+                                <input [(ngModel)]="empresa.codigo" name="codigo" type="text" class="form-control" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <button *ngIf="permisoEmpresa().cambio" type="submit" class="btn btn-rose pull-right">Actualizar</button>
+                    <div class="clearfix"></div>
+                </form>
             </div>
             <div class='card-footer '>
                 
