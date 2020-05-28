@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UsuarioService } from '../services/usuario-service/usuario.service';
 import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import Swal from 'sweetalert2'
 
 @Component({
@@ -17,10 +17,30 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private usuarioService: UsuarioService,
-    private router: Router
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) { }
 
   ngOnInit() {
+
+    this.activatedRoute.params.subscribe( params => {
+      const id = params.id;
+      if (id) {
+        const jsonData = JSON.parse(atob(id));
+        const diffDates = new Date().getTime() - new Date(jsonData.date).getTime();
+        if (this.convertMS(diffDates).hour > 24){
+          Swal.fire({
+            allowOutsideClick: false,
+            type: 'warning',
+            title: 'Link de activacion vencido',
+            text: 'El link de activacion para su usuario a vencido, por favor contacte con su administrador'
+          });      
+        } else {
+          this.usuarioService.activarUsuario(jsonData.username, 'login')
+            .subscribe();
+        }
+      }
+    });
 
     this.email = localStorage.getItem('email') || '';
 
@@ -54,5 +74,22 @@ export class LoginComponent implements OnInit {
         });
       });
   }
+
+  private convertMS( milliseconds ) {
+    var day, hour, minute, seconds;
+    seconds = Math.floor(milliseconds / 1000);
+    minute = Math.floor(seconds / 60);
+    seconds = seconds % 60;
+    hour = Math.floor(minute / 60);
+    minute = minute % 60;
+    day = Math.floor(hour / 24);
+    hour = hour % 24;
+    return {
+        day: day,
+        hour: hour,
+        minute: minute,
+        seconds: seconds
+    };
+}
 
 }

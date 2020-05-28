@@ -255,21 +255,16 @@ export class UsuarioService {
         .set('Authorization', 'Bearer ' + this.token)
     }).pipe(
       map( (usuarioResponse: UsuarioResponse) => {
-        Swal.fire({
-          type: 'success',
-          title: 'Datos actualizados exitosamente',
-          text: 'Datos personales guardados exitosamente'
-        });
         Swal.close();
         return usuarioResponse;
       }),
       catchError( error => {
+        Swal.close();
         Swal.fire({
           type: 'error',
           title: 'En estos momentos no ha sido posible actualizar tus datos',
           text: 'Por favor intenta nuevamente mas tarde'
         });
-        Swal.close();
         return of([error]);
       })
     );
@@ -335,12 +330,7 @@ export class UsuarioService {
     }).pipe(
       map( (usuarioResponse: UsuarioResponse) => {
         Swal.close();
-        Swal.fire({
-          type: 'success',
-          title: 'Estado cambiado exitosamente',
-          text: 'Estado cambiado exitosamente'
-        });
-        return usuarioResponse.usuario;
+        return usuarioResponse;
       }),
       catchError( error => {
         Swal.close();
@@ -482,5 +472,110 @@ export class UsuarioService {
         return of([error]);
       })
     );
+  }
+
+  public activarUsuario(username: string, pagina: string) {
+    const url = URL_SERVICIOS + '/user/activateUser';
+
+    const request: UsuarioRequest = {
+      usuario: '',
+      idUsuario: 0,
+      pagina,
+      datos: new Usuario (null, null, null, null, null, null, username)
+    }
+
+    Swal.fire({
+      allowOutsideClick: false,
+      type: 'info',
+      text: 'Espere por favor',
+      showConfirmButton: false
+    });
+
+    Swal.showLoading();
+
+    return this.http.post(url, request)
+      .pipe(
+        map((response: UsuarioResponse) => {
+          if (response.codigo === "0000") {
+            Swal.close();
+            Swal.fire({
+              type: 'success',
+              title: 'Usuario activado con exito',
+              text: 'Su usuario ha sido activado con exito, contacte con el administrador de su empresa'
+            });
+            return true;
+          } else {
+            Swal.close();
+            Swal.fire({
+              type: 'error',
+              title: 'Error activando usuario',
+              text: 'No hemos podido activar tu usuario, por favor intenta mas tarde'
+            });
+            return false;
+          }
+        }),
+        catchError(error => {
+          Swal.close();
+          Swal.fire({
+            type: 'error',
+            title: 'Error activando usuario',
+            text: 'No hemos podido activar tu usuario, por favor intenta mas tarde'
+          });
+          return of([error]);
+        }));
+  }
+
+  public sendActivationMail(username: string, pagina: string) {
+    const url = URL_SERVICIOS + '/user/sendActivationMail';
+
+    const request: UsuarioRequest = {
+      usuario: this.usuario.username,
+      idUsuario: this.usuario.idUsuario,
+      pagina,
+      datos: new Usuario (null, null, null, null, null, null, username)
+    }
+
+    Swal.fire({
+      allowOutsideClick: false,
+      type: 'info',
+      text: 'Espere por favor',
+      showConfirmButton: false
+    });
+
+    Swal.showLoading();
+
+    return this.http.post(url, request, {
+      headers: new HttpHeaders()
+        .set('Authorization', 'Bearer ' + this.token)
+    })
+      .pipe(
+        map((response: UsuarioResponse) => {
+          if (response.codigo === "0000") {
+            Swal.close();
+            Swal.fire({
+              type: 'success',
+              title: 'Correo de activacion enviado con exito',
+              text: `Se ha enviado el correo de activacion para el usuario: ${username}`
+            });
+            return true;
+          } else {
+            Swal.close();
+            Swal.fire({
+              type: 'error',
+              title: 'Error enviando el correo de activacion',
+              text: 'Ha ocurrido un error al enviar el correo de activacion, por favor intenta mas tarde'
+            });
+            return false;
+          }
+        }),
+        catchError(error => {
+          Swal.close();
+          Swal.fire({
+            type: 'error',
+            title: 'Error enviando el correo de activacion',
+            text: 'Ha ocurrido un error al enviar el correo de activacion, por favor intenta mas tarde'
+          });
+          return of([error]);
+        }));
   }
 }

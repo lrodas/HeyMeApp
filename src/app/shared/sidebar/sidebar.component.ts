@@ -51,7 +51,6 @@ export class SidebarComponent implements OnInit {
     this.sharedService.obtenerPermisos(this.usuario.role.idRole, 'Sidebar')
       .subscribe( (response: PermisoResponse) => {
         if (response.indicador === 'SUCCESS') {
-          console.log(response);
           for (const permiso of response.permisos) {
 
             const crearNotificacion = permiso.opcion.descripcion;

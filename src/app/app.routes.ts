@@ -7,6 +7,7 @@ import { RegistroComponent } from './login/registro.component';
 
 const APP_ROUTE: Routes = [
     { path: 'login', component: LoginComponent },
+    { path: 'login/:id', component: LoginComponent},
     { path: 'register', component: RegistroComponent},
     {
         path: '',

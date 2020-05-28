@@ -19,3 +19,8 @@ export const OPCION_PLANTILLAS = 'Plantillas de notificaciones';
 export const OPCION_NOTIFICACION = '';
 export const OPCION_PROGRAMAR_NOTIFICACION = 'Programar notificacion';
 export const OPCION_EMPRESA_INFO = 'Empresa';
+export const OPCION_USUARIO = 'Usuarios';
+
+export const ESTADO_USUARIO_ACTIVO = 1;
+export const ESTADO_USUARIO_INACTIVO = 2;
+export const ESTADO_USUARIO_BLOQUEADO = 3;

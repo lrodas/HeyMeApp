@@ -1,20 +1,22 @@
-import { Component, OnInit, OnChanges } from '@angular/core';
+import { Component, OnInit, OnChanges, ɵConsole } from '@angular/core';
 import { UsuarioService } from '../../services/usuario-service/usuario.service';
 import { UsuarioResponse } from '../../interfaces/response/usuarioResponse.interface';
 import { Usuario } from '../../models/usuario.model';
 import { NgForm } from '@angular/forms';
 import { Permiso } from '../../models/permiso.model';
-import { PERMISOS } from '../../config/config';
+import { PERMISOS, ESTADO_USUARIO_BLOQUEADO, ESTADO_USUARIO_ACTIVO, ESTADO_USUARIO_INACTIVO, OPCION_CONTACTOS, OPCION_USUARIO } from '../../config/config';
 import { RoleService } from '../../services/role/role.service';
 import { RoleResponse } from '../../interfaces/response/roleResponse.interface';
 import { Role } from '../../models/role.model';
+import { EstadoUsuario } from 'src/app/models/EstadoUsuario.model';
+import Swal from 'sweetalert2';
 
 declare var $: any;
 
 @Component({
   selector: 'app-usuarios',
   templateUrl: './usuarios.component.html',
-  styles: []
+  styleUrls: ['./usuarios.component.css']
 })
 export class UsuariosComponent implements OnInit {
 
@@ -25,6 +27,9 @@ export class UsuariosComponent implements OnInit {
   public fechaActual: Date;
   public permisos: Permiso;
   public page: number;
+  public estadoUsuarioActivo = ESTADO_USUARIO_ACTIVO;
+  public estadoUsuarioBloqueado = ESTADO_USUARIO_BLOQUEADO;
+  public estadoUsuarioInactivo = ESTADO_USUARIO_INACTIVO;
 
   constructor(
     public usuarioService: UsuarioService,
@@ -46,11 +51,7 @@ export class UsuariosComponent implements OnInit {
     usuario.role.nombre = '';
 
     this.usuarioService.actualizarUsuario(usuario, 'Usuario')
-      .subscribe( (response: UsuarioResponse) => {
-        if (response.indicador === 'SUCCESS') {
-          this.obtenerUsuarios();
-        }
-      });
+      .subscribe();
   }
 
   public obtenerRoles(idUsuario: number): Promise<boolean> {
@@ -68,7 +69,7 @@ export class UsuariosComponent implements OnInit {
     });
   }
 
-  changeFiltro(filtro: string) {
+  public changeFiltro(filtro: string) {
     this.filtro = filtro;
   }
 
@@ -80,7 +81,7 @@ export class UsuariosComponent implements OnInit {
   }
 
   public obtenerUsuarios() {
-    this.usuarioService.obtenerUsuarios('usuarios')
+    this.usuarioService.obtenerUsuarios(OPCION_USUARIO)
       .subscribe( (usuarioResponse: UsuarioResponse) => {
         this.usuarios = usuarioResponse.usuarios;
         this.usuarios.forEach( (usuario: Usuario) => {
@@ -96,7 +97,7 @@ export class UsuariosComponent implements OnInit {
       return;
     }
 
-    this.usuarioService.obtenerUsuariosPorNombre(termino, 'Usuarios')
+    this.usuarioService.obtenerUsuariosPorNombre(termino, OPCION_USUARIO)
       .subscribe( (response: UsuarioResponse) => {
         this.usuarios = response.usuarios;
       });
@@ -118,16 +119,26 @@ export class UsuariosComponent implements OnInit {
       });
   }
 
-  public eliminarUsuario(idUsuario: number, estado: boolean) {
+  public eliminarUsuario(idUsuario: number, estado: number) {
 
-    const usuario: Usuario = new Usuario(idUsuario, '', '', '', null, null, null, null, null, null, estado);
+    const usuario: Usuario = new Usuario(idUsuario, '', '', '', null, null, null, null, null, null, null, null, new EstadoUsuario(estado));
 
     this.usuarioService.cambiarEstado(usuario, 'Usuarios')
-      .subscribe( (response: Usuario) => {
-        if (response) {
-          this.obtenerUsuarios();
+      .subscribe((usuarioResponse: UsuarioResponse) => {
+        if (usuarioResponse.codigo === '0000') {
+          Swal.fire({
+            type: 'success',
+            title: 'Datos actualizados exitosamente',
+            text: 'Datos personales guardados exitosamente'
+          }).then(result => {
+            this.obtenerUsuarios();
+          });
         }
       });
   }
 
+  public sendActivationEmail(username: string) {
+    this.usuarioService.sendActivationMail(username, OPCION_USUARIO)
+      .subscribe();
+  }
 }

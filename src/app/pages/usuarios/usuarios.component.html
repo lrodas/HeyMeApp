@@ -72,10 +72,10 @@
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Nombre</th>
-                                <th scope="col">Telefono</th>
-                                <th scope="col">Correo</th>
-                                <th scope="col">Role</th>
+                                <th scope="col" class="w-25-vh">Nombre</th>
+                                <th scope="col" class="w-8-vh">Telefono</th>
+                                <th scope="col" class="w-21-vh">Correo</th>
+                                <th scope="col" class="w-18-vh">Role</th>
                                 <th scope="col">Estado</th>
                                 <th scope="col">Acciones</th>
                             </tr>
@@ -94,18 +94,22 @@
                                         </select>
                                     </div>
                                 </td>
-                                <td *ngIf="usuario.enabled" data-label="Estado">Activo</td>
-                                <td *ngIf="!usuario.enabled" data-label="Estado">Inactivo</td>
+                                <td *ngIf="usuario.estadoUsuario.idEstadoUsuario === estadoUsuarioActivo" data-label="Estado">Activo</td>
+                                <td *ngIf="usuario.estadoUsuario.idEstadoUsuario === estadoUsuarioInactivo " data-label="Estado">Inactivo</td>
+                                <td *ngIf="usuario.estadoUsuario.idEstadoUsuario === estadoUsuarioBloqueado " data-label="Estado">Bloqueado</td>
                                 <td class="td-actions text-center" data-label="Acciones">
                                     <button *ngIf="usuarioService.usuario.idUsuario !== usuario.idUsuario" (click)="guardarUsuario(usuario)" type="button" rel="tooltip" title="Guardar" class="btn btn-primary btn-link">
                                         <i class="material-icons">save</i>
                                     </button>
-                                    <button *ngIf="usuarioService.usuario.idUsuario !== usuario.idUsuario && permisos.baja && usuario.enabled" (click)="eliminarUsuario(usuario.idUsuario, false)" type="button" rel="tooltip" title="Deshabilitar" class="btn btn-danger btn-link">
-                                      <i class="material-icons">close</i>
+                                    <button *ngIf="usuarioService.usuario.idUsuario !== usuario.idUsuario && permisos.baja && usuario.estadoUsuario.idEstadoUsuario === estadoUsuarioActivo" (click)="eliminarUsuario(usuario.idUsuario, 2)" type="button" rel="tooltip" title="Deshabilitar" class="btn btn-danger btn-link">
+                                        <i class="material-icons">close</i>
                                     </button>
-                                    <button *ngIf="usuarioService.usuario.idUsuario !== usuario.idUsuario && permisos.cambio && !usuario.enabled" (click)="eliminarUsuario(usuario.idUsuario, true)" type="button" rel="tooltip" title="Habilitar" class="btn btn-success btn-link">
+                                    <button *ngIf="usuarioService.usuario.idUsuario !== usuario.idUsuario && permisos.cambio && usuario.estadoUsuario.idEstadoUsuario === estadoUsuarioInactivo" (click)="eliminarUsuario(usuario.idUsuario, 1)" type="button" rel="tooltip" title="Habilitar" class="btn btn-success btn-link">
                                         <i class="material-icons">check</i>
-                                      </button>
+                                    </button>
+                                    <button *ngIf="usuarioService.usuario.idUsuario !== usuario.idUsuario && !usuario.enabled" (click)="sendActivationEmail(usuario.username)" type="button" rel="tooltip" title="Reenviar correo de activación" class="btn btn-primary btn-link">
+                                        <i class="material-icons">send</i>
+                                    </button>
                                 </td>
                             </tr>
                         </tbody>
