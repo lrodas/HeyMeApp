@@ -45,12 +45,14 @@ export class PlantillaComponent implements OnInit {
 
     this.canalService.obtenerCanalesActivos('Programar notificacion')
       .subscribe((canales: Canal[]) => {
-        canales.forEach( (canal: Canal, i: number) => {
-          if (i === 0) {
-            $('#canal').append('<option selected value="' + canal.idCanal + '">' + canal.nombre + '</option>')
-            // this.cambioCanal(canal.idCanal);
-          } else { 
-            $('#canal').append('<option value="' + canal.idCanal + '">' + canal.nombre + '</option>')
+        canales.forEach((canal: Canal, i: number) => {
+          if (canal.mostrarPlantilla) {
+            if (i === 0) {
+              $('#canal').append('<option selected value="' + canal.idCanal + '">' + canal.nombre + '</option>')
+              // this.cambioCanal(canal.idCanal);
+            } else { 
+              $('#canal').append('<option value="' + canal.idCanal + '">' + canal.nombre + '</option>')
+            }
           }
         });
         $('#canal').selectpicker('refresh');

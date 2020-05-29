@@ -2,6 +2,7 @@ export class Canal {
     constructor(
         public idCanal?: number,
         public nombre?: string,
-        public estado?: boolean
+        public estado?: boolean,
+        public mostrarPlantilla?: boolean
     ) { }
 }

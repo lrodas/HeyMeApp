@@ -1,3 +1,11 @@
 .form-check {
     padding-left: 1.25rem;
 }
+
+.eye-show-password {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    right: 0;
+    top: 25px;
+}

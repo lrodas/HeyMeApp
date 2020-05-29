@@ -14,6 +14,7 @@ export class LoginComponent implements OnInit {
   public cardClass = 'card-hidden';
   public email: string;
   public recuerdame: boolean = false;
+  public inputType: string;
 
   constructor(
     private usuarioService: UsuarioService,
@@ -23,6 +24,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
 
+    this.inputType = 'password';
     this.activatedRoute.params.subscribe( params => {
       const id = params.id;
       if (id) {
@@ -51,6 +53,14 @@ export class LoginComponent implements OnInit {
     setTimeout( () => {
       this.cardClass = '';
     }, 700 );
+  }
+
+  public showPassword() {
+    if (this.inputType === 'password') {
+      this.inputType = 'text';
+    } else {
+      this.inputType = 'password';
+    }
   }
 
   public iniciarSesion(form: NgForm) {
