@@ -23,7 +23,7 @@ export class SubirArchivoService {
         }
       };
 
-      const url = URL_SERVICIOS + '/image/upload/' + id;
+      const url = URL_SERVICIOS + `/image/upload/${id}_${tipoImagen}`;
 
       xhr.open('POST', url, true);
 

@@ -8,6 +8,7 @@ import { map, catchError } from 'rxjs/operators';
 import { EmpresaResponse } from 'src/app/interfaces/response/empresaResponse.interface';
 import Swal from 'sweetalert2';
 import { of } from 'rxjs';
+import { SubirArchivoService } from '../subirArchivo/subir-archivo.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,8 @@ export class EmpresaService {
 
   constructor(
     private usuarioService: UsuarioService,
-    private http: HttpClient
+    private http: HttpClient,
+    private subirArchivoService: SubirArchivoService
   ) { }
 
   public obtenerEmpresa(pagina: string) {
@@ -74,5 +76,27 @@ export class EmpresaService {
         return of([error])
       })
     );
+  }
+
+  public cambiarLogo(file: File, id: number) {
+
+    Swal.fire({
+      allowOutsideClick: false,
+      type: 'info',
+      text: 'Espere por favor',
+      showConfirmButton: false
+    });
+
+    Swal.showLoading();
+
+    this.subirArchivoService.subirArchivo(file, 'empresa', id+'')
+      .then( (resp: any) => {
+        Swal.close();
+        Swal.fire({
+          type: 'success',
+          title: 'Imagen actualizada exitosamente',
+          text: ''
+        });
+      });
   }
 }

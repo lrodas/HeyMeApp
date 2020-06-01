@@ -17,7 +17,11 @@ export class ImagenPipe implements PipeTransform {
 
 
     if (!img) {
-      url += this.usuarioService.usuario.idUsuario + '-xxx';
+      if (tipo == 'usuario') {
+        url += 'usuario-' + this.usuarioService.usuario.idUsuario + '-xxx';
+      } else {
+        url += 'empresa-' + this.usuarioService.usuario.empresa.idEmpresa + '-xxx';
+      }
       return url;
     }
 
@@ -25,8 +29,11 @@ export class ImagenPipe implements PipeTransform {
       return img;
     }
 
-    url += img;
-
+    if (tipo == 'usuario') {
+      url += 'usuario-' + img;
+    } else {
+      url += 'empresa-' + img;
+    }
     return url;
   }
 

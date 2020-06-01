@@ -4,6 +4,7 @@ export class Empresa {
         public nombreEmpresa?: string,
         public direccion?: string,
         public telefono?: string,
-        public codigo?: string
+        public codigo?: string,
+        public logo?: string,
     ) {}
 }

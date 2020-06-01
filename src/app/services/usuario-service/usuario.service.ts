@@ -216,7 +216,7 @@ export class UsuarioService {
 
     Swal.showLoading();
 
-    this.subirArchivoService.subirArchivo(file, '', id + '')
+    this.subirArchivoService.subirArchivo(file, 'usuario', id+'')
       .then( (resp: any) => {
 
         Swal.fire({

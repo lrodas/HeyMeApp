@@ -1,5 +1,5 @@
 <div class='row' *ngIf="permisoEmpresa().imprimir">
-    <div class='col-md-12'>
+    <div class='col-md-7'>
         <div class='card '>
             <div class='card-header card-header-rose card-header-text'>
                 <div class="card-text">
@@ -46,6 +46,29 @@
             </div>
             <div class='card-footer '>
                 
+            </div>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <div class="card card-profile">
+            <div class="card-avatar">
+                <a href="#pablo">
+                    <img *ngIf="!imagenTemporal" class="img" [src]="empresa.logo | imagen: 'empresa'" />
+                    <img *ngIf="imagenTemporal" class="img" [src]="imagenTemporal" />
+                </a>
+            </div>
+            <div class="card-body">
+                <h6 class="card-category text-gray">{{ empresa.nombreEmpresa }}</h6>
+                <h4 class="card-title">Logo de mi empresa</h4>
+                <span class="btn btn-round btn-rose btn-file">
+                    <span class="fileinput-new">Agregar Logo</span>
+                    <span class="fileinput-exists">Cambiar Logo</span>
+                    <input type="file" (change)="seleccionImagen( $event.target.files[0] )">
+                </span>
+
+                <button (click)="cambiarImagen()" [disabled]="!imagenSubir" class="btn btn-rose btn-round">
+                    <i class="fa fa-save "></i> Actualizar Logo
+                </button>
             </div>
         </div>
     </div>

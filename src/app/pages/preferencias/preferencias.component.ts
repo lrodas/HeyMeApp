@@ -5,6 +5,7 @@ import { EmpresaService } from '../../services/empresa/empresa.service';
 import { OPCION_EMPRESA_INFO, PERMISOS } from '../../config/config';
 import { EmpresaResponse } from '../../interfaces/response/empresaResponse.interface';
 import { Permiso } from '../../models/permiso.model';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-preferencias',
@@ -14,6 +15,8 @@ import { Permiso } from '../../models/permiso.model';
 export class PreferenciasComponent implements OnInit {
 
   public empresa: Empresa;
+  public imagenTemporal: string;
+  public imagenSubir: File;
 
   constructor(
     private empresaService: EmpresaService
@@ -23,6 +26,29 @@ export class PreferenciasComponent implements OnInit {
 
   ngOnInit() {
     this.obtenerEmpresa();
+  }
+
+  public seleccionImagen(archivo) {
+
+    if (!archivo) {
+      this.imagenSubir = null;
+      return;
+    }
+
+    if (archivo.type.indexOf('image') < 0) {
+      this.imagenSubir = null;
+      Swal.fire('Imagenes unicamente', 'El archivo seleccionado no es una imagen', 'error');
+      return;
+    }
+
+    this.imagenSubir = archivo;
+    const reader = new FileReader();
+    const urlImagenTemp = reader.readAsDataURL(archivo);
+    reader.onloadend = () => this.imagenTemporal = <string> reader.result;
+  }
+
+  public cambiarImagen() {
+    this.empresaService.cambiarLogo(this.imagenSubir, this.empresa.idEmpresa);
   }
 
   private obtenerEmpresa () {
