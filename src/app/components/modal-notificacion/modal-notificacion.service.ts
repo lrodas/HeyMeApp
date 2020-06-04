@@ -23,7 +23,7 @@ export class ModalNotificacionService {
       .subscribe( (notificacion: Notificacion) => {
         if (notificacion) {
           this.notificacion = notificacion;
-
+          console.log(JSON.stringify(this.notificacion));
           const fechaEnvioDate = new Date(notificacion.fechaEnvio);
           const fechaProgramacionDate = new Date(notificacion.fechaProgramacion);
           this.fechaEnvio = fechaEnvioDate.getDate() + '/' + fechaEnvioDate.getMonth() + '/' + fechaEnvioDate.getFullYear();

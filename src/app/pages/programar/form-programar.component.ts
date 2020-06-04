@@ -67,6 +67,8 @@ export class FormProgramarComponent implements OnInit {
     this.agregarGrupos = false;
     this.seleccionoPlantilla = false;
     this.cambioTipoDestinatario('contactos');
+    const today = new Date();
+    const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 
     // Jquery manipulacion del dom
     $('.timepicker').datetimepicker({
@@ -75,6 +77,7 @@ export class FormProgramarComponent implements OnInit {
       format: 'H:mm', //use this format if you want the 12hours timpiecker with AM/PM toggle
       icons: {
         time: "fa fa-clock-o",
+        minTime: time,
         date: "fa fa-calendar",
         up: "fa fa-chevron-up",
         down: "fa fa-chevron-down",
