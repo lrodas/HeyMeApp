@@ -62,15 +62,35 @@
                     <button type="button" class="btn btn-danger btn-link fix-broken-card">
                         <i class="material-icons">build</i> Fix Header!
                     </button>
-                    <button type="button" class="btn btn-info btn-link" rel="tooltip" data-placement="bottom" title="Refresh" (click)="obtenerConteoNotificacionesPorMes()">
-                        <i class="material-icons">refresh</i>
-                    </button>
                 </div>
             </div>
             <div class="card-footer">
                 <div class="stats">
-                    <i class="material-icons">access_time</i> campaign sent 2 days ago
+                    <i class="material-icons">access_time</i> Notificaciones enviadas por mes
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row animated fadeIn" style="background-image: url('../../assets/img/bg-pricing.jpg'); max-width: 100%; max-height: 100%; display: blox;">
+    <div *ngFor="let paquete of paquetes; let i = index" class="col-lg-4 col-md-6">
+        <div class="card card-pricing" [ngClass]="{ 'card-plain': i !== 0 }">
+            <h6 class="card-category">{{ paquete.nombre }}</h6>
+            <div class="card-body">
+                <div class="card-icon" [ngClass]="{ 'icon-white': i !== 0, 'icon-rose': i === 0 }">
+                    <i class="material-icons">{{ paquete.icono }}</i>
+                </div>
+                <h3 class="card-title">{{ paquete.precioGTQ | currency: 'GTQ' }}</h3>
+                <p class="card-description">{{ paquete.descripcion }}</p>
+                <ul>
+                    <div *ngFor="let det of paquete?.detalle">
+                        <li *ngIf="det.cuota && det.cuota > 0 && det.cuota < 100000">{{ det?.cuota }} {{ det?.canal?.nombre }}</li> 
+                        <li *ngIf="det.cuota && det.cuota > 0 && det.cuota >= 100000">{{ det?.canal?.nombre }} ILIMITADO</li> 
+                    </div>
+                </ul>
+            </div>
+            <div class="card-footer justify-content-center ">
+                <div [id]="'paypal_button_' + paquete.idPaquete"></div>
             </div>
         </div>
     </div>

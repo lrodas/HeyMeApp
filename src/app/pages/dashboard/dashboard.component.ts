@@ -1,8 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { NotificacionesService } from '../../services/notificaciones/notificaciones.service';
-import { GraficaBarrasResponse } from 'src/app/interfaces/response/graficaBarrasResponse.interface';
-import { DatosNotificacionPrecioResponse } from 'src/app/interfaces/response/datosNotificacionPrecioResponse.interface';
+
+import { GraficaBarrasResponse } from '../../interfaces/response/graficaBarrasResponse.interface';
+import { DatosNotificacionPrecioResponse } from '../../interfaces/response/datosNotificacionPrecioResponse.interface';
 import { PaqueteConsumoResponse } from '../../interfaces/response/paqueteConsumoResponse.interface';
+
+import { NotificacionesService } from '../../services/notificaciones/notificaciones.service';
+import { PaqueteService } from '../../services/paquete/paquete.service';
+
+import { OPCION_DASHBOARD, PAYPAL_CLIENT_ID } from '../../config/config';
+import { Paquete } from '../../models/paquete.model';
+import Swal from 'sweetalert2';
+
+declare var paypal;
 
 @Component({
   selector: 'app-dashboard',
@@ -16,6 +25,9 @@ export class DashboardComponent implements OnInit {
   public restanteMail: number;
   public mailIlimitado: Boolean;
   single: any[] = [];
+
+  public paquetes: Paquete[];
+  private addScript = false;
 
   // options
   showXAxis = true;
@@ -33,7 +45,8 @@ export class DashboardComponent implements OnInit {
   };
 
   constructor(
-    private notificacionService: NotificacionesService
+    private notificacionService: NotificacionesService,
+    public paqueteService: PaqueteService
   ) { }
 
   ngOnInit() {
@@ -44,17 +57,84 @@ export class DashboardComponent implements OnInit {
     this.restanteSms = 0;
     this.obtenerConteoNotificacionesPorMes();
     this.obtenerNotificacionRestantes();
+    const self = this;
+
+    if (!this.addScript) {
+      this.addPaypalScript().then(() => {
+        this.paqueteService.obtenerPaquetesActivos(OPCION_DASHBOARD)
+          .subscribe((paquetes: Paquete[]) => {
+            this.paquetes = paquetes;
+            setTimeout(() => {
+              this.paquetes.forEach(paquete => {
+                paypal
+                  .Buttons({
+                    style: {
+                      shape: 'pill',
+                      color: 'silver',
+                      layout: 'horizontal',
+                      label: 'pay',
+                      tagline: true
+                    },
+                    createOrder: function(data, actions) {
+                      return actions.order.create({
+                          purchase_units: [{
+                              amount: {
+                                  value: paquete.precioUSD
+                              }
+                          }]
+                      });
+                    },
+                    onApprove: function(data, actions) {
+                      console.log(data);
+                      console.log(actions);
+                      return actions.order.capture().then(function(details) {
+                          console.log(JSON.stringify(details));
+
+                          self.paqueteService.activarPaquete(OPCION_DASHBOARD, paquete.idPaquete, paquete.nombre, JSON.stringify(details))
+                            .subscribe( response => {
+                              if (!response) {
+                                Swal.fire({
+                                  type: 'error',
+                                  title: 'Error al activar paquete',
+                                  text: `No hemos podido activar el paquete: ${paquete.nombre}, por favor contacta con soporte`,
+                                  showConfirmButton: false,
+                                  timer: 3000
+                                });
+                              }
+                            });
+                      });
+                    }
+                  })
+                  .render(document.getElementById('paypal_button_' + paquete.idPaquete));
+                });
+            }, 3000);
+          });
+      });
+    }
+    
+  }
+
+  private addPaypalScript() {
+    this.addScript = true;
+
+    return new Promise((resolve, reject) => {
+      let scriptTagElement = document.createElement('script');
+      scriptTagElement.src =  `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&currency=USD`;
+      scriptTagElement.setAttribute('data-sdk-integration-source', 'button-factory');
+      scriptTagElement.onload = resolve;
+      document.body.appendChild(scriptTagElement);
+    });
   }
 
   public obtenerConteoNotificacionesPorMes() {
-    this.notificacionService.obtenerConteoNotificacionesPorMes('Dashboard')
+    this.notificacionService.obtenerConteoNotificacionesPorMes(OPCION_DASHBOARD)
       .subscribe( (response: GraficaBarrasResponse) => {
         this.single = response.series;      
       });
   }
 
   public obtenerPrecioNotificacionesPorMes() {
-    this.notificacionService.obtenerPrecioNotificacionesPorMes('Dashboard')
+    this.notificacionService.obtenerPrecioNotificacionesPorMes(OPCION_DASHBOARD)
       .subscribe( (response: DatosNotificacionPrecioResponse) => {
         for (const dato of response.datos) {
           switch(dato.canal) {
@@ -75,7 +155,7 @@ export class DashboardComponent implements OnInit {
   public obtenerNotificacionRestantes() {
 
     const fechaFin = new Date(new Date().getFullYear(), (new Date().getMonth() + 1), 0);
-    this.notificacionService.obtenerNotificacionesRestantes('Dashboard', fechaFin)
+    this.notificacionService.obtenerNotificacionesRestantes(OPCION_DASHBOARD, fechaFin)
       .subscribe( (response: PaqueteConsumoResponse) => {
         if (response.indicador === 'SUCCESS') {
           this.restanteSms = response.paqueteActivo.cantidadMensajes;

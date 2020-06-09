@@ -1,5 +1,6 @@
 import { environment } from '../../environments/environment';
 export const URL_SERVICIOS = environment.url;
+export const PAYPAL_CLIENT_ID = environment.paypalClientId;
 
 export const USUARIO_STORAGE = 'usuario';
 export const TOKEN_STORAGE = 'token';
@@ -20,6 +21,7 @@ export const OPCION_NOTIFICACION = '';
 export const OPCION_PROGRAMAR_NOTIFICACION = 'Programar notificacion';
 export const OPCION_EMPRESA_INFO = 'Empresa';
 export const OPCION_USUARIO = 'Usuarios';
+export const OPCION_DASHBOARD = 'Dashboard';
 
 export const ESTADO_USUARIO_ACTIVO = 1;
 export const ESTADO_USUARIO_INACTIVO = 2;
