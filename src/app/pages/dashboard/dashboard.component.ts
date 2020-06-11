@@ -85,10 +85,7 @@ export class DashboardComponent implements OnInit {
                       });
                     },
                     onApprove: function(data, actions) {
-                      console.log(data);
-                      console.log(actions);
                       return actions.order.capture().then(function(details) {
-                          console.log(JSON.stringify(details));
 
                           self.paqueteService.activarPaquete(OPCION_DASHBOARD, paquete.idPaquete, paquete.nombre, JSON.stringify(details))
                             .subscribe( response => {
