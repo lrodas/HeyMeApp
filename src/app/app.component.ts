@@ -20,11 +20,11 @@ export class AppComponent {
       .pipe(
         filter(event => event instanceof NavigationEnd)
       );
-    
+
     navEndEvents$.subscribe( (event: NavigationEnd) => {
       gtag('config', 'UA-163687507-1', {
-        'page_path': event.urlAfterRedirects
-      })
+        page_path: event.urlAfterRedirects
+      });
     });
   }
 }

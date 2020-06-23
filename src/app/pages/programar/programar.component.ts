@@ -16,7 +16,7 @@ export class ProgramarComponent implements OnInit {
 
   @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
   permiso: Permiso;
-  locale: string = 'es';
+  locale = 'es';
   view: CalendarView = CalendarView.Month;
   CalendarView = CalendarView;
   viewDate: Date = new Date();
@@ -30,12 +30,12 @@ export class ProgramarComponent implements OnInit {
       label: '<i class="fa fa-fw fa-times"></i>',
       a11yLabel: 'Delete',
       onClick: ({ event }: { event: CalendarEvent }): void => {
-        
+
       }
     }
   ];
 
-  activeDayIsOpen: boolean = false;
+  activeDayIsOpen = false;
 
   constructor(
     public router: Router

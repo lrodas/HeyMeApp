@@ -47,7 +47,8 @@ export class ContactoComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.contacto = new Contacto(null, null, null, null, null, new Pais(null, null, null, null), new Provincia(null, null, new Region(null, null, null)), null, null, null, null, new Grupo(null));
+    this.contacto = new Contacto(null, null, null, null, null,
+      new Pais(null, null, null, null), new Provincia(null, null, new Region(null, null, null)), null, null, null, null, new Grupo(null));
     this.obtenerRegiones();
     this.obtenerProvincias();
 
@@ -57,7 +58,7 @@ export class ContactoComponent implements OnInit {
       this.obtenerProvincias()
     ]).then( respuesta => {
       this.activatedRoute.params.subscribe( params => {
-        const id = params['id'];
+        const id = params.id;
         if (id !== 'new') {
           this.obtenerContacto(id);
         }
@@ -95,17 +96,17 @@ export class ContactoComponent implements OnInit {
   public obtenerRegionPorPais() {
     const self = this;
 
-    $('#idPais').on('change', function () {
+    $('#idPais').on('change', () => {
       const idPais = Number($('#idPais').val());
 
       if (idPais === ID_PAIS_GT) {
         $('#ubicacion').show();
-        $("#idRegion").attr('required',true);
-        $("#idProvincia").attr('required',true);
+        $('#idRegion').attr('required', true);
+        $('#idProvincia').attr('required', true);
       } else {
         $('#ubicacion').hide();
-        $("#idRegion").removeAttr('required',true);
-        $("#idProvincia").removeAttr('required',true);
+        $('#idRegion').removeAttr('required', true);
+        $('#idProvincia').removeAttr('required', true);
       }
     });
   }
@@ -113,19 +114,19 @@ export class ContactoComponent implements OnInit {
   public obtenerProvinciaPorRegion() {
     const self = this;
 
-    $('#idRegion').on('change', function(){
-      $("#idProvincia").children('option').remove();
-      $("#idProvincia").selectpicker('destroy');
-      
+    $('#idRegion').on('change', () => {
+      $('#idProvincia').children('option').remove();
+      $('#idProvincia').selectpicker('destroy');
+
       const region = $('#idRegion').val();
       if (!Number(region)) {
         return;
       }
-  
+
       self.provinciaService.obtenerProvinciaPorRegion(region, 'contacto')
         .subscribe((response: ProvinciaResponse) => {
           response.provincias.forEach( (provincia: Provincia) => {
-            $('#idProvincia').append('<option value="' + provincia.idProvincia + '">' + provincia.nombre + '</option>')
+            $('#idProvincia').append('<option value="' + provincia.idProvincia + '">' + provincia.nombre + '</option>');
           });
           $('#idProvincia').selectpicker('refresh');
         });
@@ -148,7 +149,7 @@ export class ContactoComponent implements OnInit {
         reject(false);
       });
     });
-    
+
   }
 
   public obtenerContacto(idContacto: number) {
@@ -157,11 +158,11 @@ export class ContactoComponent implements OnInit {
       .subscribe( (response: ContactoResponse) => {
         if (response.contacto.provincia === null || response.contacto.provincia === undefined) {
           response.contacto.provincia = new Provincia(0, '', new Region(0, '', new Pais(0, '', '', false)));
-        } else { 
+        } else {
           $('#idRegion').val(response.contacto.provincia.region.idRegion);
-          $('#idRegion').selectpicker('refresh')
-          $('#idProvincia').val(response.contacto.provincia.idProvincia); 
-          $('#idProvincia').selectpicker('refresh')
+          $('#idRegion').selectpicker('refresh');
+          $('#idProvincia').val(response.contacto.provincia.idProvincia);
+          $('#idProvincia').selectpicker('refresh');
         }
         this.contacto = response.contacto;
 
@@ -170,27 +171,27 @@ export class ContactoComponent implements OnInit {
         }
 
         $('#idPais').val(this.contacto.pais.idPais);
-        $('#idPais').selectpicker('refresh')
+        $('#idPais').selectpicker('refresh');
 
         if (this.contacto.pais.idPais === ID_PAIS_GT) {
           $('#ubicacion').show();
-          $("#idRegion").attr('required',true);
-          $("#idProvincia").attr('required',true);
+          $('#idRegion').attr('required', true);
+          $('#idProvincia').attr('required', true);
         } else {
           $('#ubicacion').hide();
-          $("#idRegion").removeAttr('required',true);
-          $("#idProvincia").removeAttr('required',true);
+          $('#idRegion').removeAttr('required', true);
+          $('#idProvincia').removeAttr('required', true);
         }
-        
+
       });
   }
 
-  public obtenerProvincias(): Promise<Boolean> {
+  public obtenerProvincias(): Promise<boolean> {
     return new Promise( (resolve, reject) => {
       this.provinciaService.obtenerProvincias('Contacto')
       .subscribe( (provincias: ProvinciaResponse) => {
         provincias.provincias.forEach( (provincia: Provincia) => {
-          $('#idProvincia').append('<option value="' + provincia.idProvincia + '">' + provincia.nombre + '</option>')
+          $('#idProvincia').append('<option value="' + provincia.idProvincia + '">' + provincia.nombre + '</option>');
         });
         $('#idProvincia').selectpicker('refresh');
         resolve(true);
@@ -200,7 +201,7 @@ export class ContactoComponent implements OnInit {
     });
   }
 
-  public obtenerRegiones(): Promise<Boolean> {
+  public obtenerRegiones(): Promise<boolean> {
     return new Promise( (resolve, reject) => {
       this.regionService.obtenerRegiones('contacto')
       .subscribe( (regiones: RegionResponse) => {
@@ -241,7 +242,8 @@ export class ContactoComponent implements OnInit {
                 this.router.navigate(['contact', respuesta.idContacto]);
               }
             });
-          this.contacto = new Contacto(null, null, null, null, null, new Pais(null, null, null, null), new Provincia(null, null, new Region(null, null, null)), null, null);
+          this.contacto = new Contacto(null, null, null, null, null,
+            new Pais(null, null, null, null), new Provincia(null, null, new Region(null, null, null)), null, null);
         }
       });
     } else {
@@ -252,8 +254,8 @@ export class ContactoComponent implements OnInit {
             this.router.navigate(['contact', respuesta.idContacto]);
           }
         });
-      this.contacto = new Contacto(null, null, null, null, null, new Pais(null, null, null, null), new Provincia(null, null, new Region(null, null, null)), null, null);
+      this.contacto = new Contacto(null, null, null, null, null,
+        new Pais(null, null, null, null), new Provincia(null, null, new Region(null, null, null)), null, null);
     }
   }
-
 }

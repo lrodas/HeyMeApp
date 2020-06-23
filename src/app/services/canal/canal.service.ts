@@ -44,10 +44,10 @@ export class CanalService {
     }).pipe(
       map((response: CanalResponse) => {
         Swal.close();
-        if (response.indicador === "SUCCESS") {
+        if (response.indicador === 'SUCCESS') {
           return response.canals;
         } else {
-          
+
           Swal.fire({
             type: 'error',
             title: 'Ups!',

@@ -33,6 +33,8 @@ import { UsuariosComponent } from './usuarios/usuarios.component';
 import { RolesComponent } from './roles/roles.component';
 import { RoleComponent } from './role/role.component'; // <-- import the module
 
+import { CardStatsComponent } from './../components/card-stats/card-stats.component';
+
 registerLocaleData(localeEs);
 
 @NgModule({
@@ -50,7 +52,8 @@ registerLocaleData(localeEs);
         BorradoresComponent,
         UsuariosComponent,
         RolesComponent,
-        RoleComponent
+        RoleComponent,
+        CardStatsComponent
     ],
     exports: [
         DashboardComponent,

@@ -8,12 +8,12 @@ export class ModalEmpresaService {
 
   public oculto: string;
   public empresa: Empresa;
-  
+
   constructor() {
     this.empresa = new Empresa();
     this.oculto = 'd-none';
   }
-  
+
   public mostrarModal() {
     this.oculto = '';
   }

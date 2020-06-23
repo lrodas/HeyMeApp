@@ -48,10 +48,10 @@ export class PlantillaComponent implements OnInit {
         canales.forEach((canal: Canal, i: number) => {
           if (canal.mostrarPlantilla) {
             if (i === 0) {
-              $('#canal').append('<option selected value="' + canal.idCanal + '">' + canal.nombre + '</option>')
+              $('#canal').append('<option selected value="' + canal.idCanal + '">' + canal.nombre + '</option>');
               // this.cambioCanal(canal.idCanal);
-            } else { 
-              $('#canal').append('<option value="' + canal.idCanal + '">' + canal.nombre + '</option>')
+            } else {
+              $('#canal').append('<option value="' + canal.idCanal + '">' + canal.nombre + '</option>');
             }
           }
         });
@@ -59,7 +59,7 @@ export class PlantillaComponent implements OnInit {
       });
   }
 
-  public cambioCanal(canal: Number) {
+  public cambioCanal(canal: number) {
     if (Number(canal) === CANAL_SMS) {
       if (this.plantilla.plantilla && this.plantilla.plantilla.length > 150) {
         this.plantilla.plantilla = this.plantilla.plantilla.substring(0, 150);

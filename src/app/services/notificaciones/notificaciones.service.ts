@@ -54,7 +54,7 @@ export class NotificacionesService {
     }).pipe(
       map( (notificacionResponse: NotificacionResponse) => {
         Swal.close();
-        
+
         if (notificacionResponse.indicador !== 'SUCCESS') {
           Swal.fire({
             type: 'error',
@@ -73,7 +73,7 @@ export class NotificacionesService {
           title: 'En estos momentos no es posible obtener los datos de la notificacion',
           text: 'Por favor intenta nuevamente mas tarde'
         });
-        
+
         return of([error]);
       })
     );
@@ -89,7 +89,7 @@ export class NotificacionesService {
       pagina,
       notificacion: new Notificacion(idNotificacion)
     };
-    
+
     Swal.fire({
       allowOutsideClick: false,
       type: 'info',
@@ -105,7 +105,7 @@ export class NotificacionesService {
     }).pipe(
       map( (notificacionResponse: NotificacionResponse) => {
         Swal.close();
-        
+
         if (notificacionResponse.indicador === 'SUCCESS') {
           Swal.fire({
             type: 'success',
@@ -129,7 +129,7 @@ export class NotificacionesService {
           title: 'En estos momentos no es posible cancelar la notificacion',
           text: 'Por favor intenta nuevamente mas tarde'
         });
-        
+
         return of([error]);
       })
     );
@@ -161,7 +161,7 @@ export class NotificacionesService {
     }).pipe(
       map( (notificacionResponse: NotificacionResponse) => {
         Swal.close();
-        
+
         if (notificacionResponse.indicador === 'SUCCESS') {
           Swal.fire({
             type: 'success',
@@ -185,7 +185,7 @@ export class NotificacionesService {
           title: 'En estos momentos no es posible enviar la notificacion',
           text: 'Por favor intenta nuevamente mas tarde'
         });
-        
+
         return of([error]);
       })
     );
@@ -334,7 +334,7 @@ export class NotificacionesService {
     );
   }
 
-  public obtenerNotificacionesPorFechaProgramacion(fechaInicio: String, fechaFin: String, pagina: string) {
+  public obtenerNotificacionesPorFechaProgramacion(fechaInicio: string, fechaFin: string, pagina: string) {
 
     const url = URL_SERVICIOS + '/notification/findByProgrammingDate';
 
@@ -342,7 +342,8 @@ export class NotificacionesService {
     this.pagina = pagina;
     this.usuario = '';
     this.titulo = '';
-    this.fechaInicio = new Date(Number(fechaInicio.split('-')[0]), Number(fechaInicio.split('-')[1]) - 1, Number(fechaInicio.split('-')[2]));
+    this.fechaInicio =
+      new Date(Number(fechaInicio.split('-')[0]), Number(fechaInicio.split('-')[1]) - 1, Number(fechaInicio.split('-')[2]));
     this.fechaFin = new Date(Number(fechaFin.split('-')[0]), Number(fechaFin.split('-')[1]) - 1, Number(fechaFin.split('-')[2]));
     const request: NotificacionRequest = {
       usuario: this.usuarioService.usuario.username,
@@ -351,7 +352,7 @@ export class NotificacionesService {
       fechaInicio: this.fechaInicio,
       fechaFin: this.fechaFin
     };
-    
+
     return this.http.post(url, request, {
       headers: new HttpHeaders()
         .set('Authorization', 'Bearer ' + this.usuarioService.token)
@@ -372,7 +373,7 @@ export class NotificacionesService {
     );
   }
 
-  public obtenerNotificacionesPorFechaEnvio(fechaInicio: String, fechaFin: String, pagina: string) {
+  public obtenerNotificacionesPorFechaEnvio(fechaInicio: string, fechaFin: string, pagina: string) {
 
     const url = URL_SERVICIOS + '/notification/findByShippingDate';
 
@@ -380,7 +381,8 @@ export class NotificacionesService {
     this.pagina = pagina;
     this.usuario = '';
     this.titulo = '';
-    this.fechaInicio = new Date(Number(fechaInicio.split('-')[0]), Number(fechaInicio.split('-')[1]) - 1, Number(fechaInicio.split('-')[2]));
+    this.fechaInicio =
+      new Date(Number(fechaInicio.split('-')[0]), Number(fechaInicio.split('-')[1]) - 1, Number(fechaInicio.split('-')[2]));
     this.fechaFin = new Date(Number(fechaFin.split('-')[0]), Number(fechaFin.split('-')[1]) - 1, Number(fechaFin.split('-')[2]));
 
     const request: NotificacionRequest = {

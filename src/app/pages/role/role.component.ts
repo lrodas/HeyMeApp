@@ -33,7 +33,7 @@ export class RoleComponent implements OnInit {
     this.obtenerOpciones();
 
     this.activatedRoute.params.subscribe( params => {
-      const id = params['id'];
+      const id = params.id;
 
       if (id !== 'new' && this.cargarPermisos().cambio) {
         this.obtenerRolePorId(id);
@@ -103,7 +103,7 @@ export class RoleComponent implements OnInit {
             this.role = response.role;
           }
         } else {
-          this.router.navigate(['/roles']);  
+          this.router.navigate(['/roles']);
         }
       }, error => {
         this.router.navigate(['/roles']);

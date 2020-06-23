@@ -1,52 +1,13 @@
 <div class="row animated fadeIn">
     <div class="col-lg-4 col-md-6 col-sm-6">
-        <div class="card card-stats">
-            <div class="card-header card-header-rose card-header-icon">
-                <div class="card-icon">
-                    <i class="material-icons">equalizer</i>
-                </div>
-                <p class="card-category">Mensajes de texto</p>
-                <h3 class="card-title">{{ restanteSms }}</h3>
-            </div>
-            <div class="card-footer">
-                <div class="stats">
-                    <i class="material-icons">local_offer</i> Mensajes de texto restantes del paquete contratado
-                </div>
-            </div>
-        </div>
+        <app-card-stats [titulo]="'Mensajes de texto'" [icono]="'equalizer'" [cantidad]="restanteSms" [descripcion]="'Mensajes de texto restantes del paquete contratado'"></app-card-stats>
     </div>
     <div class="col-lg-4 col-md-6 col-sm-6">
-        <div class="card card-stats">
-            <div class="card-header card-header-rose card-header-icon">
-                <div class="card-icon">
-                    <i class="material-icons">equalizer</i>
-                </div>
-                <p class="card-category">Correo electrónico</p>
-                <h3 *ngIf="!mailIlimitado" class="card-title">{{ restanteMail }}</h3>
-                <h3 *ngIf="mailIlimitado" class="card-title">Ilimitado</h3>
-            </div>
-            <div class="card-footer">
-                <div class="stats">
-                    <i class="material-icons">local_offer</i> Correos restantes del paquete contratado
-                </div>
-            </div>
-        </div>
+        <app-card-stats *ngIf="!mailIlimitado" [titulo]="'Correo electrónico'" [icono]="'equalizer'" [cantidad]="restanteMail" [descripcion]="'Correos restantes del paquete contratado'"></app-card-stats>
+        <app-card-stats *ngIf="mailIlimitado" [titulo]="'Correo electrónico'" [icono]="'equalizer'" [cantidad]="'Iliimitado'" [descripcion]="'Correos restantes del paquete contratado'"></app-card-stats>
     </div>
     <div class="col-lg-4 col-md-6 col-sm-6">
-        <div class="card card-stats">
-            <div class="card-header card-header-rose card-header-icon">
-                <div class="card-icon">
-                    <i class="material-icons">equalizer</i>
-                </div>
-                <p class="card-category">Whatsapp</p>
-                <h3 class="card-title">{{ restanteWhatsapp }}</h3>
-            </div>
-            <div class="card-footer">
-                <div class="stats">
-                    <i class="material-icons">local_offer</i> Mensajes de whatsapp restantes del paquete contratado
-                </div>
-            </div>
-        </div>
+        <app-card-stats [titulo]="'Whatsapp'" [icono]="'equalizer'" [cantidad]="restanteWhatsapp" [descripcion]="'Mensajes de whatsapp restantes del paquete contratado'"></app-card-stats>
     </div>
 </div>
 <div class="row animated fadeIn">

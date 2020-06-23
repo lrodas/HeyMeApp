@@ -52,7 +52,7 @@ export class PerfilComponent implements OnInit {
     this.imagenSubir = archivo;
     const reader = new FileReader();
     const urlImagenTemp = reader.readAsDataURL(archivo);
-    reader.onloadend = () => this.imagenTemporal = <string> reader.result;
+    reader.onloadend = () => this.imagenTemporal = reader.result as string;
   }
 
   public cambiarImagen() {
@@ -101,5 +101,4 @@ export class PerfilComponent implements OnInit {
         }
       });
   }
-
 }

@@ -26,7 +26,7 @@ export class RegistroComponent implements OnInit {
   public recaptchaResponse: string;
   public dataKey: string;
   @ViewChild('recaptcha', {static: true }) recaptchaElement: ElementRef;
-  
+
   constructor(
     private modalEmpresaService: ModalEmpresaService,
     private usuarioService: UsuarioService,
@@ -44,7 +44,7 @@ export class RegistroComponent implements OnInit {
   public guardar(form: NgForm) {
 
     if (form.invalid) {
-      return;      
+      return;
     }
 
     if (!this.recaptchaResponse) {
@@ -65,7 +65,7 @@ export class RegistroComponent implements OnInit {
       this.errorCodigoEmpresa = false;
     }
 
-    if ((document.getElementById("terminos") as HTMLInputElement).checked === false) {
+    if ((document.getElementById('terminos') as HTMLInputElement).checked === false) {
       this.errorTerminos = true;
     } else {
       this.errorTerminos = false;

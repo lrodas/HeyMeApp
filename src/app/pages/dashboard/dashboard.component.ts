@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { GraficaBarrasResponse } from '../../interfaces/response/graficaBarrasResponse.interface';
 import { DatosNotificacionPrecioResponse } from '../../interfaces/response/datosNotificacionPrecioResponse.interface';
@@ -18,23 +18,24 @@ declare var paypal;
   templateUrl: './dashboard.component.html',
   styles: []
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
 
   public restanteSms: number;
   public restanteWhatsapp: number;
   public restanteMail: number;
-  public mailIlimitado: Boolean;
+  public mailIlimitado: boolean;
   single: any[] = [];
 
   public paquetes: Paquete[];
   private addScript = false;
+  private paypayInterval: any;
 
   // options
   showXAxis = true;
   showYAxis = true;
   gradient = false;
   showLegend = true;
-  legendTitle = 'Canales'
+  legendTitle = 'Canales';
   showXAxisLabel = true;
   xAxisLabel = 'Mes';
   showYAxisLabel = true;
@@ -48,6 +49,12 @@ export class DashboardComponent implements OnInit {
     private notificacionService: NotificacionesService,
     public paqueteService: PaqueteService
   ) { }
+
+  ngOnDestroy() {
+    if  (this.paypayInterval != null) {
+      clearInterval(this.paypayInterval);
+    }
+  }
 
   ngOnInit() {
 
@@ -64,7 +71,7 @@ export class DashboardComponent implements OnInit {
         this.paqueteService.obtenerPaquetesActivos(OPCION_DASHBOARD)
           .subscribe((paquetes: Paquete[]) => {
             this.paquetes = paquetes;
-            setTimeout(() => {
+            this.paypayInterval = setTimeout(() => {
               this.paquetes.forEach(paquete => {
                 paypal
                   .Buttons({
@@ -75,7 +82,7 @@ export class DashboardComponent implements OnInit {
                       label: 'pay',
                       tagline: true
                     },
-                    createOrder: function(data, actions) {
+                    createOrder: (datos, actions) => {
                       return actions.order.create({
                           purchase_units: [{
                               amount: {
@@ -84,9 +91,8 @@ export class DashboardComponent implements OnInit {
                           }]
                       });
                     },
-                    onApprove: function(data, actions) {
-                      return actions.order.capture().then(function(details) {
-
+                    onApprove: (datos, actions) => {
+                      return actions.order.capture().then((details) => {
                           self.paqueteService.activarPaquete(OPCION_DASHBOARD, paquete.idPaquete, paquete.nombre, JSON.stringify(details))
                             .subscribe( response => {
                               if (!response) {
@@ -108,14 +114,13 @@ export class DashboardComponent implements OnInit {
           });
       });
     }
-    
   }
 
   private addPaypalScript() {
     this.addScript = true;
 
     return new Promise((resolve, reject) => {
-      let scriptTagElement = document.createElement('script');
+      const scriptTagElement = document.createElement('script');
       scriptTagElement.src =  `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&currency=USD`;
       scriptTagElement.setAttribute('data-sdk-integration-source', 'button-factory');
       scriptTagElement.onload = resolve;
@@ -126,7 +131,7 @@ export class DashboardComponent implements OnInit {
   public obtenerConteoNotificacionesPorMes() {
     this.notificacionService.obtenerConteoNotificacionesPorMes(OPCION_DASHBOARD)
       .subscribe( (response: GraficaBarrasResponse) => {
-        this.single = response.series;      
+        this.single = response.series;
       });
   }
 
@@ -134,7 +139,7 @@ export class DashboardComponent implements OnInit {
     this.notificacionService.obtenerPrecioNotificacionesPorMes(OPCION_DASHBOARD)
       .subscribe( (response: DatosNotificacionPrecioResponse) => {
         for (const dato of response.datos) {
-          switch(dato.canal) {
+          switch (dato.canal) {
             case 'MAIL':
               this.restanteMail = dato.precio;
               break;
@@ -172,7 +177,7 @@ export class DashboardComponent implements OnInit {
   public chartClicked({ event, active }: { event: MouseEvent, active: {}[] }): void {
     console.log(event, active);
   }
-  
+
   public chartHovered({ event, active }: { event: MouseEvent, active: {}[] }): void {
     console.log(event, active);
   }

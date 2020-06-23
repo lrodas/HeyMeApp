@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UsuarioService } from '../services/usuario-service/usuario.service';
 import { NgForm } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +13,7 @@ export class LoginComponent implements OnInit {
 
   public cardClass = 'card-hidden';
   public email: string;
-  public recuerdame: boolean = false;
+  public recuerdame: boolean;
   public inputType: string;
 
   constructor(
@@ -30,13 +30,13 @@ export class LoginComponent implements OnInit {
       if (id) {
         const jsonData = JSON.parse(atob(id));
         const diffDates = new Date().getTime() - new Date(jsonData.date).getTime();
-        if (this.convertMS(diffDates).hour > 24){
+        if (this.convertMS(diffDates).hour > 24) {
           Swal.fire({
             allowOutsideClick: false,
             type: 'warning',
             title: 'Link de activacion vencido',
             text: 'El link de activacion para su usuario a vencido, por favor contacte con su administrador'
-          });      
+          });
         } else {
           this.usuarioService.activarUsuario(jsonData.username, 'login')
             .subscribe();
@@ -86,7 +86,10 @@ export class LoginComponent implements OnInit {
   }
 
   private convertMS( milliseconds ) {
-    var day, hour, minute, seconds;
+    let day: number;
+    let hour: number;
+    let minute: number;
+    let seconds: number;
     seconds = Math.floor(milliseconds / 1000);
     minute = Math.floor(seconds / 60);
     seconds = seconds % 60;
@@ -95,11 +98,10 @@ export class LoginComponent implements OnInit {
     day = Math.floor(hour / 24);
     hour = hour % 24;
     return {
-        day: day,
-        hour: hour,
-        minute: minute,
-        seconds: seconds
+        day,
+        hour,
+        minute,
+        seconds
     };
-}
-
+  }
 }

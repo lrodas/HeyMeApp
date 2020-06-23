@@ -20,7 +20,7 @@ export class PreferenciasComponent implements OnInit {
 
   constructor(
     private empresaService: EmpresaService
-  ) { 
+  ) {
     this.empresa = new Empresa();
   }
 
@@ -44,14 +44,14 @@ export class PreferenciasComponent implements OnInit {
     this.imagenSubir = archivo;
     const reader = new FileReader();
     const urlImagenTemp = reader.readAsDataURL(archivo);
-    reader.onloadend = () => this.imagenTemporal = <string> reader.result;
+    reader.onloadend = () => this.imagenTemporal = reader.result as string;
   }
 
   public cambiarImagen() {
     this.empresaService.cambiarLogo(this.imagenSubir, this.empresa.idEmpresa);
   }
 
-  private obtenerEmpresa () {
+  private obtenerEmpresa() {
     this.empresaService.obtenerEmpresa(OPCION_EMPRESA_INFO)
       .subscribe((response: EmpresaResponse) => this.empresa = response.empresa);
   }

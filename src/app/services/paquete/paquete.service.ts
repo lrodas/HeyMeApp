@@ -29,7 +29,7 @@ export class PaqueteService {
       idUsuario: this.usuarioService.usuario.idUsuario,
       usuario: this.usuarioService.usuario.username,
       pagina
-    }
+    };
 
     Swal.fire({
       allowOutsideClick: false,
@@ -44,7 +44,7 @@ export class PaqueteService {
     }).pipe(
       map((response: PaqueteResponse) => {
         Swal.close();
-        if (response.codigo == '0000') {
+        if (response.codigo === '0000') {
           return response.paquetes;
         } else {
           return [];
@@ -80,8 +80,8 @@ export class PaqueteService {
     }).pipe(
       map((response: PaqueteResponse) => {
         Swal.close();
-        if (response.codigo == '0000') {
-         
+        if (response.codigo === '0000') {
+
           Swal.close();
           Swal.fire({
             type: 'success',

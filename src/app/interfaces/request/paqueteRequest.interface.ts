@@ -5,5 +5,5 @@ export interface PaqueteRequest {
     idUsuario?: number;
     pagina?: string;
     paquete?: Paquete;
-    jsonResponse?: string
+    jsonResponse?: string;
 }

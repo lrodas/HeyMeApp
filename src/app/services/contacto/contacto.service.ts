@@ -10,10 +10,10 @@ import { UsuarioService } from '../usuario-service/usuario.service';
 import { Contacto } from '../../models/contacto.model';
 
 import Swal from 'sweetalert2';
-import { Provincia } from 'src/app/models/provincia.model';
-import { Region } from 'src/app/models/region.model';
-import { Pais } from 'src/app/models/pais.model';
-import { Grupo } from 'src/app/models/grupo.model';
+import { Provincia } from '../../models/provincia.model';
+import { Region } from '../../models/region.model';
+import { Pais } from '../../models/pais.model';
+import { Grupo } from '../../models/grupo.model';
 
 @Injectable({
   providedIn: 'root'
@@ -100,7 +100,7 @@ export class ContactoService {
       pagina,
       contacto
     };
-    
+
     return this.http.post(url, contactoRequest, {
       headers: new HttpHeaders()
         .set('Authorization', 'Bearer ' + this.usuarioService.token)
@@ -204,7 +204,7 @@ export class ContactoService {
       fechaInicio,
       fechaFin
     };
-    
+
     return this.http.post(url, contactoRequest, {
       headers: new HttpHeaders()
         .set('Authorization', 'Bearer ' + this.usuarioService.token)
@@ -249,7 +249,7 @@ export class ContactoService {
         });
         return of([error]);
       })
-    );    
+    );
   }
 
   public guardarContactos(contactos: Contacto[], pagina: string) {
@@ -267,7 +267,7 @@ export class ContactoService {
       pagina,
       contactos
     };
-    
+
     return this.http.post(url, contactoRequest, {
       headers: new HttpHeaders()
         .set('Authorization', 'Bearer ' + this.usuarioService.token)
@@ -315,7 +315,7 @@ export class ContactoService {
       idUsuario: this.usuarioService.usuario.idUsuario,
       pagina
     };
-    
+
     return this.http.post(url, request, {
       headers: new HttpHeaders()
         .set('Authorization', 'Bearer ' + this.usuarioService.token),

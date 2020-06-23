@@ -1,20 +1,17 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Contacto } from '../../models/contacto.model';
 import { ContactoService } from '../../services/contacto/contacto.service';
 import { ContactoResponse } from '../../interfaces/response/contactoResponse.interface';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Permiso } from '../../models/permiso.model';
 import { PERMISOS, OPCION_CONTACTOS } from '../../config/config';
-import { HostListener } from "@angular/core";
-import { GrupoService } from '../../services/grupo/grupo.service';
+import { HostListener } from '@angular/core';
 import { Grupo } from 'src/app/models/grupo.model';
 import Swal from 'sweetalert2';
 
 import * as XLSX from 'ts-xlsx';
 import { Pais } from 'src/app/models/pais.model';
 import { Provincia } from 'src/app/models/provincia.model';
-import { Router } from '@angular/router';
-import { SubirArchivoService } from 'src/app/services/subirArchivo/subir-archivo.service';
 
 @Component({
   selector: 'app-contactos',
@@ -130,7 +127,8 @@ export class ContactosComponent implements OnInit {
       return;
     }
 
-    if (archivo.name.substr(archivo.name.lastIndexOf('.') + 1) !== 'xls' && archivo.name.substr(archivo.name.lastIndexOf('.') + 1) !== 'xlsx') {
+    if (archivo.name.substr(archivo.name.lastIndexOf('.') + 1) !== 'xls' &&
+      archivo.name.substr(archivo.name.lastIndexOf('.') + 1) !== 'xlsx') {
       Swal.fire({
         type: 'warning',
         title: 'Tipo de archivo incorrecto',
@@ -140,20 +138,22 @@ export class ContactosComponent implements OnInit {
       });
       return;
     }
-    
-    let reader = new FileReader();
+
+    const reader = new FileReader();
     let arrayBuffer: any;
 
     reader.onload = e => {
       arrayBuffer = reader.result;
       const data = new Uint8Array(arrayBuffer);
-      let arrData = new Array();
+      const arrData = new Array();
 
-      for(let i = 0; i != data.length; ++i) arrData[i] = String.fromCharCode(data[i]);
+      for (let i = 0; i < data.length; ++i) {
+        arrData[i] = String.fromCharCode(data[i]);
+      }
 
-      const workbook = XLSX.read(arrData.join(""), {type:"binary"});
-      
-      const jsonData = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]],{raw:true});
+      const workbook = XLSX.read(arrData.join(''), {type: 'binary'});
+
+      const jsonData = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], { raw: true});
 
       if (!jsonData || jsonData.length <= 0) {
         Swal.fire({
@@ -170,54 +170,54 @@ export class ContactosComponent implements OnInit {
       const regexEmail: RegExp = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
       const dataError: any[] = [];
 
-      jsonData.forEach((data: any, i: number) => {
+      jsonData.forEach((datos: any, i: number) => {
 
-        let index = i + 2;
+        const index = i + 2;
 
-        if (!data['NOMBRES'] || data['NOMBRES'].length <= 0) {
-          dataError.push(`El nombre del contacto en la linea ${index} es obligatorio, por favor verificar`);          
+        if (!datos.NOMBRES || datos.NOMBRES.length <= 0) {
+          dataError.push(`El nombre del contacto en la linea ${index} es obligatorio, por favor verificar`);
         }
-        if (!data['APELLIDOS'] || data['APELLIDOS'].length <= 0) {
+        if (!datos.APELLIDOS || datos.APELLIDOS.length <= 0) {
           dataError.push(`El apellido del contacto en la linea ${index} es obligatorio, por favor verificar`);
         }
-        if (!data['DIRECCION'] || data['DIRECCION'].length <= 0) {
+        if (!datos.DIRECCION || datos.DIRECCION.length <= 0) {
           dataError.push(`La direccion del contacto en la linea ${index} es obligatorio, por favor verificar`);
         }
-        if (data['CORREO ELECTRONICO'] && (data['CORREO ELECTRONICO'].length === 0 || !regexEmail.test(data['CORREO ELECTRONICO']))) {
+        if (datos['CORREO ELECTRONICO'] && (datos['CORREO ELECTRONICO'].length === 0 || !regexEmail.test(datos['CORREO ELECTRONICO']))) {
           dataError.push(`El correo que se especifica en el contacto de la linea ${index} no es valido, por favor verifique el formato`);
         }
-        if (!data['TELEFONO'] || data['TELEFONO'].length <= 0) {
+        if (!datos.TELEFONO || datos.TELEFONO.length <= 0) {
           dataError.push(`El telefono del contacto en la linea ${index} es obligatorio, por favor verificar`);
         }
-        if (!data['ESTADO'] || typeof data['ESTADO'] === 'string' || data['ESTADO'] < 0 && data['ESTADO'] > 1) {
+        if (!datos.ESTADO || typeof datos.ESTADO === 'string' || datos.ESTADO < 0 && datos.ESTADO > 1) {
           dataError.push(`El estado del contacto en la linea ${index} no es valido, por favor verificar`);
         }
-        if (!data['PAIS'] || typeof data['PAIS'] === 'string' || data['PAIS'] < 0) {
+        if (!datos.PAIS || typeof datos.PAIS === 'string' || datos.PAIS < 0) {
           dataError.push(`El pais del contacto en la linea ${index} no es valido, por favor verificar`);
         }
-        if (data['PROVINCIA'] && (typeof data['PROVINCIA'] === 'string' || data['PROVINCIA'] <= 0)) {
+        if (datos.PROVINCIA && (typeof datos.PROVINCIA === 'string' || datos.PROVINCIA <= 0)) {
           dataError.push(`La provincia que se especifica en el contacto de la linea ${index} no es valida, por favor ferifique el formato`);
         }
-        if (dataError.length === 0){
+        if (dataError.length === 0) {
           const contacto = new Contacto();
-          contacto.nombre = data['NOMBRES'];
-          contacto.apellido = data['APELLIDOS'];
-          contacto.direccion = data['DIRECCION'];
-          contacto.telefono = data['TELEFONO'];
-          contacto.email = data['CORREO ELECTRONICO'];
-          contacto.estado = data['ESTADO'];
-          contacto.pais = new Pais(data['PAIS']);
-          contacto.provincia = new Provincia(data['PROVINCIA']);
-          
-          if (data['GRUPO']) {
-            contacto.grupo = new Grupo(null, data['GRUPO']);
+          contacto.nombre = datos.NOMBRES;
+          contacto.apellido = datos.APELLIDOS;
+          contacto.direccion = datos.DIRECCION;
+          contacto.telefono = datos.TELEFONO;
+          contacto.email = datos['CORREO ELECTRONICO'];
+          contacto.estado = datos.ESTADO;
+          contacto.pais = new Pais(datos.PAIS);
+          contacto.provincia = new Provincia(datos.PROVINCIA);
+
+          if (datos.GRUPO) {
+            contacto.grupo = new Grupo(null, datos.GRUPO);
           }
           contactos.push(contacto);
         }
       });
 
       if (dataError.length > 0) {
-        
+
         let errorsHTML = '<ul>';
         dataError.forEach(text => {
           errorsHTML += `<li>${text}</li><br/>`;
@@ -233,14 +233,14 @@ export class ContactosComponent implements OnInit {
         });
       } else {
         this.contactoService.guardarContactos(contactos, OPCION_CONTACTOS)
-          .subscribe((response: Boolean) => {
+          .subscribe((response: boolean) => {
             this.obtenerContactos();
           });
       }
     };
 
     reader.readAsArrayBuffer(archivo);
-    
+
     return;
     /*
 
@@ -263,7 +263,7 @@ export class ContactosComponent implements OnInit {
             return;
         }
 
-        // For other browsers: 
+        // For other browsers:
         // Create a link pointing to the ObjectURL containing the blob.
         const data = window.URL.createObjectURL(newBlob);
 

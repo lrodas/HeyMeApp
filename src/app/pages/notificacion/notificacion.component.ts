@@ -16,10 +16,10 @@ export class NotificacionComponent implements OnInit {
 
   public filtro: string;
   public notificaciones: Notificacion[];
-  public fechaInicioProgracion: String;
-  public fechaFinProgracion: String;
-  public fechaInicioEnvio: String;
-  public fechaFinEnvio: String;
+  public fechaInicioProgracion: string;
+  public fechaFinProgracion: string;
+  public fechaInicioEnvio: string;
+  public fechaFinEnvio: string;
   public imprimir: boolean;
   public page: number;
 
@@ -151,7 +151,7 @@ export class NotificacionComponent implements OnInit {
             return;
         }
 
-        // For other browsers: 
+        // For other browsers:
         // Create a link pointing to the ObjectURL containing the blob.
         const data = window.URL.createObjectURL(newBlob);
 

@@ -6,12 +6,12 @@ import { Notificacion } from '../../models/notificacion.model';
   providedIn: 'root'
 })
 export class ModalNotificacionService {
-  
+
   public oculto: string;
-  public notificacion: Notificacion
-  public fechaProgramacion: String;
-  public fechaEnvio: String;
-  
+  public notificacion: Notificacion;
+  public fechaProgramacion: string;
+  public fechaEnvio: string;
+
   constructor(
     public notificacionService: NotificacionesService
   ) {
@@ -26,8 +26,8 @@ export class ModalNotificacionService {
           const fechaEnvioDate = new Date(notificacion.fechaEnvio);
           const fechaProgramacionDate = new Date(notificacion.fechaProgramacion);
           this.fechaEnvio = fechaEnvioDate.getDate() + '/' + fechaEnvioDate.getMonth() + '/' + fechaEnvioDate.getFullYear();
-          this.fechaProgramacion = fechaProgramacionDate.getDate() + '/' + fechaProgramacionDate.getMonth() + '/' + fechaProgramacionDate.getFullYear();
-
+          this.fechaProgramacion =
+            fechaProgramacionDate.getDate() + '/' + fechaProgramacionDate.getMonth() + '/' + fechaProgramacionDate.getFullYear();
           this.oculto = '';
         } else {
           this.oculto = 'd-none';

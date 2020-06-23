@@ -28,7 +28,7 @@ export class PaisService {
     });
 
     Swal.showLoading();
-    
+
     const url = URL_SERVICIOS + '/country/findAll';
 
     const request: PaisRequest = {

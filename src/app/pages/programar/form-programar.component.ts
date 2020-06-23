@@ -36,7 +36,7 @@ export class FormProgramarComponent implements OnInit {
   public contactos: TagInput[];
   public contactosSelecteds: TagInput[];
   public grupos: TagInput[];
-  public gruposSelecteds: TagInput[];  
+  public gruposSelecteds: TagInput[];
   public notificacion: Notificacion;
   public termino: string;
   public limiteCaracteres: number;
@@ -68,19 +68,19 @@ export class FormProgramarComponent implements OnInit {
     this.seleccionoPlantilla = false;
     this.cambioTipoDestinatario('contactos');
     const today = new Date();
-    const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    const time = today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds();
 
     // Jquery manipulacion del dom
     $('.timepicker').datetimepicker({
       //          format: 'H:mm',
       // use this format if you want the 24hours timepicker
-      format: 'H:mm', //use this format if you want the 12hours timpiecker with AM/PM toggle
+      format: 'H:mm', // use this format if you want the 12hours timpiecker with AM/PM toggle
       icons: {
-        time: "fa fa-clock-o",
+        time: 'fa fa-clock-o',
         minTime: time,
-        date: "fa fa-calendar",
-        up: "fa fa-chevron-up",
-        down: "fa fa-chevron-down",
+        date: 'fa fa-calendar',
+        up: 'fa fa-chevron-up',
+        down: 'fa fa-chevron-down',
         previous: 'fa fa-chevron-left',
         next: 'fa fa-chevron-right',
         today: 'fa fa-screenshot',
@@ -106,10 +106,10 @@ export class FormProgramarComponent implements OnInit {
 
     this.canalService.obtenerCanalesActivos(OPCION_PROGRAMAR_NOTIFICACION)
       .subscribe((canales: Canal[]) => {
-        $('#canal').append('<option>Selecciona un canal</option>')
+        $('#canal').append('<option>Selecciona un canal</option>');
         // this.cambioCanal(CANAL_EMAIL);
         canales.forEach( (canal: Canal, i: number) => {
-          $('#canal').append('<option value="' + canal.idCanal + '">' + canal.nombre + '</option>')
+          $('#canal').append('<option value="' + canal.idCanal + '">' + canal.nombre + '</option>');
         });
         $('#canal').selectpicker('refresh');
       });
@@ -118,13 +118,13 @@ export class FormProgramarComponent implements OnInit {
   }
 
   public cambioTipoDestinatario(tipo: string) {
-    this.notificacion.destinatarios = []
+    this.notificacion.destinatarios = [];
     if (tipo === 'contactos') {
       this.agregarGrupos = false;
       if (this.contactos.length === 0) {
         this.obtenerContactos();
       }
-    } else{
+    } else {
       this.agregarGrupos = true;
       if (this.grupos.length === 0) {
         this.obtenerGrupos();
@@ -132,7 +132,7 @@ export class FormProgramarComponent implements OnInit {
     }
   }
 
-  public cambioCanal(canal: Number) {
+  public cambioCanal(canal: number) {
     if (Number(canal) === CANAL_SMS) {
       if (this.notificacion.notificacion && this.notificacion.notificacion.length > 150) {
         this.notificacion.notificacion = this.notificacion.notificacion.substring(0, 150);
@@ -169,14 +169,16 @@ export class FormProgramarComponent implements OnInit {
         grupos.forEach((grupo: Grupo) => {
           this.grupos.push(new TagInput(grupo.nombre, grupo.idGrupo));
         });
-      })
+      });
   }
 
   public onAddGrupo(tag: TagInput) {
     this.contactoService.buscarContactosPorGrupo(tag.value, OPCION_PROGRAMAR_NOTIFICACION)
           .subscribe((contactos: Contacto[]) => {
             contactos.forEach(contacto => {
-              const existe = this.notificacion.destinatarios.some((destinatario: Contacto) => destinatario.idContacto === contacto.idContacto);
+              const existe = this.notificacion.destinatarios.some((destinatario: Contacto) => {
+                return destinatario.idContacto === contacto.idContacto;
+              });
 
               if (!existe) {
                 this.notificacion.destinatarios.push(contacto);

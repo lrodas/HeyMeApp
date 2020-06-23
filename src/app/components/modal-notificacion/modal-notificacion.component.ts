@@ -20,7 +20,7 @@ export class ModalNotificacionComponent implements OnInit {
 
   ngOnInit() {
     this.canalEmail = CANAL_EMAIL;
-    this.modalNotificacionService.notificacion = new Notificacion(0, '', null, null, new EstadoNotificacion(), new Usuario(), '', [], new Canal());
+    this.modalNotificacionService.notificacion = new Notificacion(0, '', null, null,
+      new EstadoNotificacion(), new Usuario(), '', [], new Canal());
   }
-
 }

@@ -43,8 +43,8 @@ export class EmpresaService {
       usuario: this.usuarioService.usuario.username,
       idUsuario: this.usuarioService.usuario.idUsuario,
       pagina,
-      empresa: empresa
-    }
+      empresa
+    };
 
     return this.http.post(url, request, {
       headers: new HttpHeaders()
@@ -73,7 +73,7 @@ export class EmpresaService {
           title: 'No pudimos actualizar tus datos',
           text: 'Actualmente tenemos problemas al actualizar los datos de tu empresa, por favor intenta mas tarde'
         });
-        return of([error])
+        return of([error]);
       })
     );
   }
@@ -89,7 +89,7 @@ export class EmpresaService {
 
     Swal.showLoading();
 
-    this.subirArchivoService.subirArchivo(file, 'empresa', id+'')
+    this.subirArchivoService.subirArchivo(file, 'empresa', id + '')
       .then( (resp: any) => {
         Swal.close();
         Swal.fire({

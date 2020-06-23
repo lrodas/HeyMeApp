@@ -4,6 +4,6 @@ export interface EmpresaRequest {
     usuario?: string;
     idUsuario?: number;
     pagina?: string;
-    empresa?: Empresa,
-    empresas?: Empresa[]
+    empresa?: Empresa;
+    empresas?: Empresa[];
 }

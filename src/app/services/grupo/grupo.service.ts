@@ -21,8 +21,8 @@ export class GrupoService {
 
   public obtenerGrupos(pagina: string) {
     const url = URL_SERVICIOS + '/group/findAll';
-    
-    let grupo: Grupo = new Grupo(null);
+
+    const grupo: Grupo = new Grupo(null);
     const request: GrupoRequest = {
       idUsuario: this.usuarioService.usuario.idUsuario,
       usuario: this.usuarioService.usuario.username,
@@ -37,7 +37,7 @@ export class GrupoService {
       map((grupoResponse: GrupoResponse) => {
         return grupoResponse.grupos;
       }),
-      catchError(error =>{
+      catchError(error => {
         Swal.fire({
           type: 'error',
           title: 'No pudimos obtener los grupos',
