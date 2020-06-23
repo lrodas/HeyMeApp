@@ -30,7 +30,7 @@ export class RolesComponent implements OnInit {
     this.roleService.cambiarEstado('roles', id, estado)
       .subscribe( (response: Role) => {
         if (response) {
-          const index: number = this.roles.findIndex(item => item.idRole == response.idRole);
+          const index: number = this.roles.findIndex(item => item.idRole === response.idRole);
           this.roles[index] = response;
         }
       });

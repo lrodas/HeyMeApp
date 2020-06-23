@@ -6,5 +6,5 @@ export interface UsuarioRequest {
     fechaInicio?: Date;
     fechaFin?: Date;
     datos?: Usuario;
-    recaptchaResponse?: string
+    recaptchaResponse?: string;
 }

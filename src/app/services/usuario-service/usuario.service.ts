@@ -79,7 +79,7 @@ export class UsuarioService {
           });
           return false;
         }
-        
+
       }),
       catchError( error => {
         Swal.close();
@@ -216,7 +216,7 @@ export class UsuarioService {
 
     Swal.showLoading();
 
-    this.subirArchivoService.subirArchivo(file, 'usuario', id+'')
+    this.subirArchivoService.subirArchivo(file, 'usuario', id + '')
       .then( (resp: any) => {
 
         Swal.fire({
@@ -429,7 +429,7 @@ export class UsuarioService {
       pagina,
       contrasenaActual: currentPassword,
       nuevaContrasena: newPassword
-    }
+    };
 
     Swal.fire({
       allowOutsideClick: false,
@@ -482,7 +482,7 @@ export class UsuarioService {
       idUsuario: 0,
       pagina,
       datos: new Usuario (null, null, null, null, null, null, username)
-    }
+    };
 
     Swal.fire({
       allowOutsideClick: false,
@@ -496,7 +496,7 @@ export class UsuarioService {
     return this.http.post(url, request)
       .pipe(
         map((response: UsuarioResponse) => {
-          if (response.codigo === "0000") {
+          if (response.codigo === '0000') {
             Swal.close();
             Swal.fire({
               type: 'success',
@@ -533,7 +533,7 @@ export class UsuarioService {
       idUsuario: this.usuario.idUsuario,
       pagina,
       datos: new Usuario (null, null, null, null, null, null, username)
-    }
+    };
 
     Swal.fire({
       allowOutsideClick: false,
@@ -550,7 +550,7 @@ export class UsuarioService {
     })
       .pipe(
         map((response: UsuarioResponse) => {
-          if (response.codigo === "0000") {
+          if (response.codigo === '0000') {
             Swal.close();
             Swal.fire({
               type: 'success',

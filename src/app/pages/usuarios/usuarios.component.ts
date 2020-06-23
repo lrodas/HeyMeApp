@@ -4,7 +4,11 @@ import { UsuarioResponse } from '../../interfaces/response/usuarioResponse.inter
 import { Usuario } from '../../models/usuario.model';
 import { NgForm } from '@angular/forms';
 import { Permiso } from '../../models/permiso.model';
-import { PERMISOS, ESTADO_USUARIO_BLOQUEADO, ESTADO_USUARIO_ACTIVO, ESTADO_USUARIO_INACTIVO, OPCION_CONTACTOS, OPCION_USUARIO } from '../../config/config';
+import { PERMISOS,
+  ESTADO_USUARIO_BLOQUEADO,
+  ESTADO_USUARIO_ACTIVO,
+  ESTADO_USUARIO_INACTIVO,
+  OPCION_USUARIO } from '../../config/config';
 import { RoleService } from '../../services/role/role.service';
 import { RoleResponse } from '../../interfaces/response/roleResponse.interface';
 import { Role } from '../../models/role.model';
