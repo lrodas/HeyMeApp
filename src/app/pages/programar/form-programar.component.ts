@@ -30,9 +30,9 @@ declare var $: any;
 })
 export class FormProgramarComponent implements OnInit {
 
-  @ViewChild('selectMedio', {static: false}) calendarComponent; // the #calendar in the template
-  @ViewChild('inputContacto', {static: false}) inputContacto;
-  @ViewChild('inputGrupo', {static: false}) inputGrupo;
+  @ViewChild('selectMedio') calendarComponent; // the #calendar in the template
+  @ViewChild('inputContacto') inputContacto;
+  @ViewChild('inputGrupo') inputGrupo;
   public contactos: TagInput[];
   public contactosSelecteds: TagInput[];
   public grupos: TagInput[];

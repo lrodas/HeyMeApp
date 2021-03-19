@@ -21,8 +21,8 @@ export class PerfilComponent implements OnInit {
   public nuevaContrasena: string;
   public strClassErrorPassVerification: string;
   public strClassErrorPass: string;
-  @ViewChild('lblErrorPassword', {static: false}) lblError: ElementRef;
-  @ViewChild('inputValidatePassword', {static: false}) inputValidatePassword: ElementRef;
+  @ViewChild('lblErrorPassword') lblError: ElementRef;
+  @ViewChild('inputValidatePassword') inputValidatePassword: ElementRef;
 
   constructor(
     public usuarioService: UsuarioService
