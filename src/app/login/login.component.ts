@@ -13,6 +13,7 @@ export class LoginComponent implements OnInit {
 
   public cardClass = 'card-hidden';
   public email: string;
+  public password: string;
   public recuerdame: boolean;
   public inputType: string;
 
