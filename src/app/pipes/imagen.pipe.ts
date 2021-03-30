@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { URL_SERVICIOS } from '../config/config';
+import { REMOTE_IMAGE_URL, URL_SERVICIOS } from '../config/config';
 import { UsuarioService } from '../services/usuario-service/usuario.service';
 
 @Pipe({
@@ -11,30 +11,19 @@ export class ImagenPipe implements PipeTransform {
     private usuarioService: UsuarioService
   ) {}
 
-  transform(img: string, tipo: string = 'usuario'): any {
+  transform(img: string, tipo: string = 'user'): any {
+    let url = REMOTE_IMAGE_URL + 'images/';
 
-    let url = URL_SERVICIOS + '/image/view/';
-
-
-    if (!img) {
-      if (tipo === 'usuario') {
-        url += 'usuario-' + this.usuarioService.usuario.idUsuario + '-xxx';
-      } else {
-        url += 'empresa-' + this.usuarioService.usuario.empresa.idEmpresa + '-xxx';
-      }
-      return url;
-    }
-
-    if (img.indexOf('https') >= 0) {
-      return img;
-    }
-
-    if (tipo === 'usuario') {
-      url += 'usuario-' + img;
+    if (!img || img.length <= 0 || !tipo || tipo.length <= 0) {
+      return 'data:image/png;base64,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';
     } else {
-      url += 'empresa-' + img;
+        if (img.indexOf('assets') >= 0 || img.indexOf('https') >= 0 || img.indexOf('http') >= 0) {
+        return img;
+      } else {
+        url = url + tipo + '/' + img;
+        return url;
+      }
     }
-    return url;
   }
 
 }

@@ -1,5 +1,6 @@
 import { environment } from '../../environments/environment';
 export const URL_SERVICIOS = environment.url;
+export const REMOTE_IMAGE_URL = environment.remoteImgUrl;
 export const PAYPAL_CLIENT_ID = environment.paypalClientId;
 
 export const USUARIO_STORAGE = 'usuario';
