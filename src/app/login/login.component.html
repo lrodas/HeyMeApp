@@ -1,65 +1,77 @@
 <div class="wrapper wrapper-full-page">
-    <div class="page-header login-page header-filter" filter-color="black" style="background-image: url('assets/img/login.jpg'); background-size: cover; background-position: top center;">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4 col-md-6 col-sm-8 ml-auto mr-auto">
-                    <form class="form" ngNativeValidate #f="ngForm" id="loginform" (submit)="iniciarSesion(f)">
-                        <div [class]="'card card-login ' + cardClass">
-                            <div class="card-header card-header-rose text-center">
-                                <h4 class="card-title">Inicio de sesion</h4>
-                            </div>
-                            <div class="card-body ">
-                                <span class="bmd-form-group">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="material-icons">email</i>
-                                            </span>
-                                        </div>
-                                        <input type="email" [(ngModel)]="email" name="email" class="form-control" placeholder="Correo electronico" required>
-                                    </div>
-                                </span>
-                                <span class="bmd-form-group">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="material-icons">lock_outline</i>
-                                            </span>
-                                        </div>
-                                        <input [type]="inputType" [(ngModel)]="password" name="password" class="form-control" placeholder="Contraseña" required>
-                                        <i class="material-icons eye-show-password pointer" *ngIf="inputType == 'password'" (click)="showPassword()">visibility</i>
-                                        <i class="material-icons eye-show-password pointer" *ngIf="inputType == 'text'" (click)="showPassword()">visibility_off</i>
-                                    </div>
-                                </span>
-                                <span class="bmd-form-group">
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" [(ngModel)]="recuerdame" name="recordar" type="checkbox" value=""> Recordar Usuario
-                                            <span class="form-check-sign">
-                                                <span class="check"></span>
-                                            </span>
-                                        </label>
-                                    </div>
-                                </span>
-                            </div>
-                            <div class="card-footer justify-content-center">
-                                <input type="submit" class="btn btn-rose btn-link btn-lg" value="Iniciar"/>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+  <div class="page-header login-page header-filter" filter-color="black"
+    style="background-image: url('assets/img/login.jpg'); background-size: cover; background-position: top center;">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4 col-md-6 col-sm-8 ml-auto mr-auto">
+          <form class="form" ngNativeValidate #f="ngForm" id="loginform" (submit)="iniciarSesion(f)">
+            <div [class]="'card card-login ' + cardClass">
+              <div class="card-header card-header-rose text-center">
+                <h4 class="card-title">Inicio de sesion</h4>
+              </div>
+              <div class="card-body ">
+                <span class="bmd-form-group">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="material-icons">email</i>
+                      </span>
+                    </div>
+                    <input type="email" [(ngModel)]="email" name="email" class="form-control"
+                      placeholder="Correo electronico" required>
+                  </div>
+                </span>
+                <span class="bmd-form-group">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="material-icons">lock_outline</i>
+                      </span>
+                    </div>
+                    <input [type]="inputType" [(ngModel)]="password" name="password" class="form-control"
+                      placeholder="Contraseña" required>
+                    <i class="material-icons eye-show-password pointer" *ngIf="inputType == 'password'"
+                      (click)="showPassword()">visibility</i>
+                    <i class="material-icons eye-show-password pointer" *ngIf="inputType == 'text'"
+                      (click)="showPassword()">visibility_off</i>
+                  </div>
+                </span>
+                <span class="bmd-form-group">
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input class="form-check-input" [(ngModel)]="recuerdame" name="recordar" type="checkbox" value="">
+                      Recordar Usuario
+                      <span class="form-check-sign">
+                        <span class="check"></span>
+                      </span>
+                    </label>
+                  </div>
+                </span>
+              </div>
+              <div class="card-footer justify-content-center">
+                <input type="submit" class="btn btn-rose btn-link btn-lg" value="Iniciar" />
+              </div>
+              <hr class="divider" />
+              <div class="card-footer justify-content-center">
+                <button routerLink="/register" class="btn btn-link btn-success">
+                  Crea una cuenta nueva
+                </button>
+              </div>
             </div>
+          </form>
         </div>
-        <footer class="footer">
-            <div class="container">
-                <div class="copyright float-right">
-                    &copy;
-                    <script>
-                        document.write(new Date().getFullYear())
-                    </script>, hecho con <i class="material-icons">favorite</i> por
-                    <a href="https://www.cycsystemsgt.com" target="_blank">C y C Systems Guatemala</a>.
-                </div>
-            </div>
-        </footer>
+      </div>
     </div>
+    <footer class="footer">
+      <div class="container">
+        <div class="copyright float-right">
+          &copy;
+          <script>
+            document.write(new Date().getFullYear())
+          </script>, hecho con <i class="material-icons">favorite</i> por
+          <a href="https://www.cycsystemsgt.com" target="_blank">C y C Systems Guatemala</a>.
+        </div>
+      </div>
+    </footer>
+  </div>
 </div>
