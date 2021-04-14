@@ -61,7 +61,7 @@ export class UsuarioService {
           Swal.fire({
             type: 'success',
             title: 'Registro exitoso',
-            text: 'Tu usuario ha sido creado exitosamente, ahora podrás disfrutar de tus beneficios'
+            text: 'Tu usuario ha sido creado exitosamente, por favor verifica tu usuario para disfrutar de tus beneficios'
           });
           return true;
         } else if (usuarioResponse.codigo === '0058') {
@@ -496,6 +496,7 @@ export class UsuarioService {
     return this.http.post(url, request)
       .pipe(
         map((response: UsuarioResponse) => {
+          debugger;
           if (response.codigo === '0000') {
             Swal.close();
             Swal.fire({

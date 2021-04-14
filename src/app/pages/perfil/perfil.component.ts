@@ -6,6 +6,7 @@ import { NgForm } from '@angular/forms';
 import { UsuarioResponse } from '../../interfaces/response/usuarioResponse.interface';
 import { USUARIO_STORAGE } from '../../config/config';
 import { CambioContrasenaResponse } from '../../interfaces/response/cambioContrasenaResponse.interface';
+import { Genero } from 'src/app/models/genero.model';
 
 @Component({
   selector: 'app-perfil',
@@ -29,8 +30,11 @@ export class PerfilComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-
+    this.imagenTemporal = undefined;
     this.usuario = JSON.parse(localStorage.getItem(USUARIO_STORAGE));
+    if (!this.usuario.genero) {
+      this.usuario.genero = new Genero();
+    }
     this.strClassErrorPass = 'd-none';
     this.strClassErrorPassVerification = 'd-none';
 

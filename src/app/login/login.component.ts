@@ -26,22 +26,12 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
 
     this.inputType = 'password';
-    this.activatedRoute.params.subscribe( params => {
-      const id = params.id;
+
+    this.activatedRoute.queryParamMap.subscribe(parametros => {
+      const id = parametros.get('id');
       if (id) {
-        const jsonData = JSON.parse(atob(id));
-        const diffDates = new Date().getTime() - new Date(jsonData.date).getTime();
-        if (this.convertMS(diffDates).hour > 24) {
-          Swal.fire({
-            allowOutsideClick: false,
-            type: 'warning',
-            title: 'Link de activacion vencido',
-            text: 'El link de activacion para su usuario a vencido, por favor contacte con su administrador'
-          });
-        } else {
-          this.usuarioService.activarUsuario(jsonData.username, 'login')
+          this.usuarioService.activarUsuario(id, 'login')
             .subscribe();
-        }
       }
     });
 
