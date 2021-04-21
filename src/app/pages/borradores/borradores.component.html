@@ -130,13 +130,13 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let notificacion of notificaciones | paginate: { itemsPerPage: 5, currentPage: page }">
-                            <td data-label="Codigo">{{ notificacion.idNotificacion }}</td>
+                            <td data-label="Codigo">{{ notificacion.idNotificaciones }}</td>
                             <td data-label="Titulo">{{ notificacion.titulo }}</td>
 
                             <td data-label="Acciones" class="td-actions">
                                 <button type="button" rel="tooltip" class="btn btn-success btn-link">
                                     <i class="material-icons">edit</i>
-                                </button>   
+                                </button>
                             </td>
                         </tr>
                     </tbody>

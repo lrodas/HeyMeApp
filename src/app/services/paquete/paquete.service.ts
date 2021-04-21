@@ -9,6 +9,7 @@ import { URL_SERVICIOS } from '../../config/config';
 import { PaqueteRequest } from '../../interfaces/request/paqueteRequest.interface';
 import { PaqueteResponse } from '../../interfaces/response/paqueteResponse.interface';
 import { Paquete } from '../../models/paquete.model';
+import { ExchangeResponse } from '../../interfaces/response/exchangeResponse.interface';
 
 import Swal from 'sweetalert2';
 
@@ -97,6 +98,30 @@ export class PaqueteService {
       }),
       catchError( error => {
         return of([error]);
+      })
+    );
+  }
+
+  public retrieveCurrentExchangeRate(page: string): Observable<number> {
+    const url = URL_SERVICIOS + '/exchange/retriveExchange';
+
+    Swal.fire({
+      allowOutsideClick: false,
+      type: 'info',
+      text: 'Espere por favor',
+      showConfirmButton: false
+    });
+
+    return this.http.post<ExchangeResponse>(url, null, {
+      headers: new HttpHeaders()
+        .set('Authorization', 'Bearer ' + this.usuarioService.token)
+    }).pipe(
+      map(response => {
+        if (response.codigo === '0000') {
+          return response.tipoCambio.valor;
+        } else {
+          return undefined;
+        }
       })
     );
   }

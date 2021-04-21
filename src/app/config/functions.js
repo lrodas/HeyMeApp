@@ -96,7 +96,7 @@ export const Base64 = {
 };
 
 export const Paypal = {
-  fnc: (amount) => {
+  fnc: (amount, idElement) => {
 
       return new Promise(resolve => {
 
@@ -124,7 +124,7 @@ export const Paypal = {
           onError: function(data) {
               resolve(false);
           }
-        }).render('#paypal-button-container');
+        }).render('#' + idElement);
       });
   }
 }
